@@ -11,7 +11,7 @@ export const cards = [
     id: "2",
     title: "Atelier théorique à prix libre en ligne :",
     description:
-      "Notre serveur discord vous acceuille pour des ateliers théoriques en ligne et en groupe sur des sujets comprends que vous pouvez proposer, le tout à prix libre et conscient.",
+      "Notre serveur discord vous acceuille pour des ateliers théoriques en ligne et en groupe sur des sujets choisis par nos intervenants ou que vous aurez proposer, le tout à prix libre et conscient.",
     imageUrl: "/images/discord.jpg",
     link: "https://discord.gg/8Z8Q6Z8",
   },
