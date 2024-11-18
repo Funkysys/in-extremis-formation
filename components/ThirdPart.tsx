@@ -9,7 +9,7 @@ const ThirdPart: React.FC = () => {
         conférence sur les thèmes de musique et société
       </h3>
       <Link
-        href="https://stageMusicaldulot.fr"
+        href="https://www.in-extremis-conferences.eu/"
         target="_blank"
         className="text-yellow-500 hover:text-sky-900 hover:bg-yellow-500 bg-sky-900 hover:text-yello-700 text-xl mt-4 px-4 py-2 border-4 border-yellow-500 rounded"
       >
