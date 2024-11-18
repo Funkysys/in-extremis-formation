@@ -19,7 +19,7 @@ export const cards = [
     id: "3",
     title: "Nos Stages : ",
     description:
-      "Retrouvez nos stages de musique en groupe, pour tous les niveaux et tous les âges sur notre site : ",
+      "Retrouvez nos stages de musique en groupe centré sur l'improvisation, pour tous les niveaux et tous les âges sur notre site : ",
     link: "https://stageMusicaldulot.fr",
     imageUrl: "/images/stage.jpg",
   },
