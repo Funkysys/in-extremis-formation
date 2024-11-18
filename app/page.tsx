@@ -30,16 +30,7 @@ export default function Home() {
     <main className="overflow-y-scroll bg-sky-900">
       {/* Première section avec texte */}
       <div className="w-[100vw] h-[100vh] flex flex-col justify-center items-center relative ">
-        <div
-          className="absolute inset-0 flex flex-col justify-center items-center"
-          style={{
-            position: "fixed", // Position fixe pour que le texte suive le scroll
-            top: 0,
-            left: 0,
-            right: 0,
-            opacity: fadeOut, // L'opacité change selon le scroll
-          }}
-        >
+        <div className="absolute inset-0 flex flex-col justify-center items-center">
           <h1 className="text-4xl font-bold ">
             Bienvenue sur In Extremis Formation
           </h1>

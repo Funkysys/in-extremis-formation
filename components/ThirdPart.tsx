@@ -3,7 +3,7 @@ import React from "react";
 
 const ThirdPart: React.FC = () => {
   return (
-    <div className="w-[100vw] h-[100vh] bg-blue-500 flex flex-col justify-center items-center">
+    <div className="w-[100vw] h-[100vh] bg-sky-600 flex flex-col justify-center items-center">
       <h3 className="text-3xl text-white text-center mb-6">
         Avant de partir, découvrez aussi notre catalogue de <br />
         conférence sur les thèmes de musique et société
