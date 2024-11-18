@@ -13,7 +13,7 @@ const Card = ({ id, title, description, imageUrl, link, mail }: CardType) => {
     >
       {/* Image de la carte */}
       {imageUrl && (
-        <div className="w-full h-[100%] lg:h-[50%] relative mb-4">
+        <div className="w-full h-[100%] lg:h-[70%] relative mb-4">
           <Image
             src={imageUrl}
             alt={title}
