@@ -30,7 +30,7 @@ export default function Home() {
     <main className="overflow-y-scroll bg-sky-900">
       {/* Première section avec texte */}
       <div className="w-[100vw] h-[100vh] flex flex-col justify-center items-center relative ">
-        <div className="absolute inset-0 flex flex-col justify-center items-center">
+        <div className="absolute inset-0 flex flex-col justify-center items-center text-white">
           <h1 className="text-4xl font-bold ">
             Bienvenue sur In Extremis Formation
           </h1>
