@@ -13,7 +13,7 @@ export const cards = [
     description:
       "Notre serveur discord vous acceuille pour des ateliers théoriques en ligne et en groupe sur des sujets choisis par nos intervenants ou que vous aurez proposé, le tout à prix libre et conscient.",
     imageUrl: "/images/discord.jpg",
-    link: "https://discord.gg/8Z8Q6Z8",
+    link: "https://discord.com/invite/4pf66NfEHN",
   },
   {
     id: "3",
