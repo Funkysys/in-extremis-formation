@@ -7,11 +7,11 @@ import LinksCard from "./LinksCard";
 const ThirdPart: React.FC = () => {
   return (
     <div className="w-[100vw] h-[100vh] bg-sky-600 flex flex-col justify-center items-center">
-      <h3 className="text-3xl text-white text-center mb-6">
+      <h3 className="text-3xl text-white text-center mb-6 mt-6">
         Avant de partir, découvrez aussi notre catalogue de <br />
         conférence sur les thèmes de musique et société sur In Extremis Society
       </h3>
-      <div className="relative w-[90vw] h-[70wh] lg:w-[50vw] xl:h-[50vh]">
+      <div className="relative w-[70vw] lg:w-[50vw] h-[50vh]">
         <Link href="https://www.in-extremis-conferences.eu/" target="_blank">
           <Image
             src={"/images/in-extremis-society.png"}
