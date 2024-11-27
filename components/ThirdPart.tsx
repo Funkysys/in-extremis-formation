@@ -31,7 +31,7 @@ const ThirdPart: React.FC = () => {
       <h3 className="text-3xl text-white text-center mt-10 mb-6">
         Ainsi que nos différents outils
       </h3>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-col-6 gap-4 p-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-col-6 gap-4 py-10 lg:p-10">
         {cards.map((card: CardType) => (
           <LinksCard
             id={card.id}
