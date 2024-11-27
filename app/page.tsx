@@ -35,7 +35,7 @@ export default function Home() {
             Bienvenue sur In Extremis Formation
           </h1>
           <h2 className="text-lg">
-            Pour apprendre la musique en toute bienveillance
+            Pour apprendre la musique à votre rythme !
           </h2>
         </div>
       </div>

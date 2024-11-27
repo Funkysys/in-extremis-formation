@@ -3,7 +3,7 @@ export const cards = [
     id: "1",
     title: "Ecole de musique de Toulouse : ",
     description:
-      "Pour prendre des cours d'instruments, de pratique collective ou de théorie musicale, nous vous acceuillons à bras ouverts.",
+      "Pour prendre des cours d'instruments, de pratique collective ou de théorie musicale, contactez nous !",
     imageUrl: "/images/ecole.jpg",
     mail: "assoinextremis@gmail.com",
   },
@@ -11,7 +11,7 @@ export const cards = [
     id: "2",
     title: "Atelier théorique à prix libre en ligne :",
     description:
-      "Notre serveur discord vous acceuille pour des ateliers théoriques en ligne et en groupe sur des sujets choisis par nos intervenants ou que vous aurez proposer, le tout à prix libre et conscient.",
+      "Notre serveur discord vous acceuille pour des ateliers théoriques en ligne et en groupe sur des sujets choisis par nos intervenants ou que vous aurez proposé, le tout à prix libre et conscient.",
     imageUrl: "/images/discord.jpg",
     link: "https://discord.gg/8Z8Q6Z8",
   },
