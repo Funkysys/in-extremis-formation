@@ -1,16 +1,26 @@
 import { cards } from "@/data/outils";
 import { CardType } from "@/types";
-import LinksCard from "./LinksCard";
-
+import Image from "next/image";
 import Link from "next/link";
+import LinksCard from "./LinksCard";
 
 const ThirdPart: React.FC = () => {
   return (
     <div className="w-[100vw] h-[100vh] bg-sky-600 flex flex-col justify-center items-center">
       <h3 className="text-3xl text-white text-center mb-6">
         Avant de partir, découvrez aussi notre catalogue de <br />
-        conférence sur les thèmes de musique et société
+        conférence sur les thèmes de musique et société sur In Extremis Society
       </h3>
+      <div className="relative w-[90vw] h-[70wh] lg:w-[50vw] xl:h-[50vh]">
+        <Link href="https://www.in-extremis-conferences.eu/" target="_blank">
+          <Image
+            src={"/images/in-extremis-society.png"}
+            alt="In Extremis Society"
+            layout="fill"
+            className="object-cover rounded-lg"
+          />
+        </Link>
+      </div>
       <Link
         href="https://www.in-extremis-conferences.eu/"
         target="_blank"
