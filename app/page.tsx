@@ -31,10 +31,10 @@ export default function Home() {
       {/* Première section avec texte */}
       <div className="w-[100vw] h-[100vh] flex flex-col justify-center items-center relative ">
         <div className="absolute inset-0 flex flex-col justify-center items-center text-white">
-          <h1 className="text-4xl font-bold ">
+          <h1 className="text-xl md-text-2xl xl:text-5xl font-bold ">
             Bienvenue sur In Extremis Formation
           </h1>
-          <h2 className="text-lg">
+          <h2 className="text-lg md:text-xl xl:text-2xl">
             Pour apprendre la musique à votre rythme !
           </h2>
         </div>
