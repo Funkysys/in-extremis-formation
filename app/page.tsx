@@ -52,10 +52,10 @@ export default function Home() {
 
       {/* Deuxième section avec texte */}
       <div
-        className="w-[100vw] md:min-h-[100vh] md:pt-10 md:px-10 bg-sky-700 flex flex-col justify-center items-center opacity-0 transition-opacity duration-500 sticky top-0"
+        className="w-[100vw] md:min-h-[100vh] pt-10 md:px-10 bg-sky-700 flex flex-col justify-center items-center opacity-0 transition-opacity duration-500 sticky top-0"
         style={{ opacity: 1 - fadeOut }} // Quand la première section disparaît, la deuxième apparaît
       >
-        <h3 className="text-3xl text-white ">Notre concept :</h3>
+        <h3 className="text-3xl text-white mb-5">Notre concept :</h3>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:p-10">
           {cards.map((card: CardType) => (
             <Card
