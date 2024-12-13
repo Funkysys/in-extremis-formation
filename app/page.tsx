@@ -37,7 +37,8 @@ export default function Home() {
             alt="Image de fond"
             width={1000}
             height={1000}
-            className=" rounded-lg"
+            objectFit="cover"
+            className=" rounded-lg animate-fade-up animate-once animate-duration-[1000ms] animate-ease-in-out"
           />
 
           <h1 className="text-xl md-text-2xl xl:text-5xl font-bold hidden">
