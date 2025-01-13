@@ -15,8 +15,30 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "in extremis formation",
-  description: "Apprendre la musique à son rythme !",
+  title: "In Extremis Formation - Apprendre la musique à son rythme",
+  description:
+    "Découvrez des cours de musique adaptés à votre niveau et vos envies. Progressez à votre rythme avec In Extremis Formation.",
+  keywords:
+    "musique, cours de musique, apprentissage, rythme, formation musicale",
+  authors: [{ name: "Antoine Delbos" }],
+  viewport: "width=device-width, initial-scale=1",
+  openGraph: {
+    type: "website",
+    locale: "fr_FR",
+    title: "In Extremis Formation",
+    description:
+      "Apprendre la musique à son rythme avec des cours personnalisés.",
+    siteName: "In Extremis Formation",
+    url: "https://www.inextremisformation.com",
+    images: [
+      {
+        url: "https://www.inextremisformation.com/images/logo_white.png",
+        width: 1200,
+        height: 630,
+        alt: "In Extremis Formation - Apprendre la musique",
+      },
+    ],
+  },
 };
 
 export default function RootLayout({
