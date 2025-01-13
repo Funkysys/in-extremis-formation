@@ -16,6 +16,14 @@ const geistMono = localFont({
 
 export const metadata: Metadata = {
   title: "In Extremis Formation - Apprendre la musique à son rythme",
+  icons: {
+    icon: "/images/logo_white.png", // Chemin vers votre favicon
+    shortcut: "/images/logo_white.png", // Chemin pour le raccourci
+    apple: "/images/logo_white.png", // Favicon pour les appareils Apple
+    other: [
+      { rel: "mask-icon", url: "/images/logo_white.png", color: "#5bbad5" },
+    ],
+  },
   description:
     "Découvrez des cours de musique adaptés à votre niveau et vos envies. Progressez à votre rythme avec In Extremis Formation.",
   keywords:
