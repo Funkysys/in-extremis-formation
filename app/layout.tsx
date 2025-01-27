@@ -15,37 +15,61 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "In Extremis Formation - Apprendre la musique à son rythme",
+  metadataBase: new URL('https://www.inextremisformation.vercel.app'),
+  title: {
+    default: "In Extremis Formation - Éducation musicale populaire en Ligne",
+    template: "%s | In Extremis Formation"
+  },
   icons: {
-    icon: "/images/logo_white.png", // Chemin vers votre favicon
-    shortcut: "/images/logo_white.png", // Chemin pour le raccourci
-    apple: "/images/logo_white.png", // Favicon pour les appareils Apple
+    icon: "/images/logo_white.png",
+    shortcut: "/images/logo_white.png",
+    apple: "/images/logo_white.png",
     other: [
       { rel: "mask-icon", url: "/images/logo_white.png", color: "#5bbad5" },
     ],
   },
-  description:
-    "Découvrez des cours de musique adaptés à votre niveau et vos envies. Progressez à votre rythme avec In Extremis Formation.",
-  keywords:
-    "musique, cours de musique, apprentissage, rythme, formation musicale",
-  authors: [{ name: "Antoine Delbos" }],
+  description: "In Extremis Formation propose des cours de musique en ligne personnalisés. Apprenez la musique à votre rythme avec des instructeurs professionnels. Cours de guitare, piano, batterie et plus encore.",
+  keywords: "cours de musique en ligne, formation musicale, cours de guitare, cours de piano, cours de batterie, apprentissage musical, cours particuliers musique, formation musique en ligne, école de musique en ligne, cours de musique débutant, cours de musique avancé",
+  authors: [{ name: "Antoine Delbos", url: "https://www.inextremisformation.vercel.app" }],
   viewport: "width=device-width, initial-scale=1",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
   openGraph: {
     type: "website",
     locale: "fr_FR",
-    title: "In Extremis Formation",
-    description:
-      "Apprendre la musique à son rythme avec des cours personnalisés.",
+    title: "In Extremis Formation - Cours de Musique Personnalisés en Ligne",
+    description: "Apprenez la musique à votre rythme avec des cours personnalisés. Découvrez nos formations en guitare, piano, batterie et plus encore.",
     siteName: "In Extremis Formation",
-    url: "https://www.inextremisformation.com",
+    url: "https://www.inextremisformation.vercel.app",
     images: [
       {
         url: "https://www.inextremisformation.com/images/logo_white.png",
         width: 1200,
         height: 630,
-        alt: "In Extremis Formation - Apprendre la musique",
+        alt: "In Extremis Formation - École de musique en ligne",
       },
     ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'In Extremis Formation - Éducation musicale populaire en Ligne',
+    description: 'Apprenez la musique à votre rythme avec des cours personnalisés. Découvrez nos formations en ligne.',
+    images: ['https://www.inextremisformation.vercel.app/images/logo_white.png'],
+  },
+  alternates: {
+    canonical: 'https://www.inextremisformation.vercel.app',
+  },
+  verification: {
+    google: 'ajoutez_votre_code_de_verification_google',
   },
 };
 
@@ -55,7 +79,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="fr">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
