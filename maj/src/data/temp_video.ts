@@ -1,7 +1,7 @@
 const temp_video_data = [
   {
     id: 1,
-    title: "Video 1",
+    title: "les débits part 3",
     description: "Description of video 1",
     imageUrl: "/images/discophiles.png",
     link: "https://www.youtube.com/watch?v=video_1",
@@ -50,7 +50,7 @@ const temp_video_data = [
   },
   {
     id: 8,
-    title: "Video 8",
+    title: "les débits part 2",
     description: "Description of video 8",
     imageUrl: "/images/discophiles.png",
     link: "https://www.youtube.com/watch?v=video_8",

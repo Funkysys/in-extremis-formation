@@ -27,14 +27,16 @@ const FormationMenu = () => {
 
   return (
     <div
-      className={`fixed ${isScrolled ? "top-2" : "top-24"} md:top-none z-500 transition-all duration-300 ml-2 `}
+      className={`fixed ${
+        isScrolled ? "top-2" : "top-24"
+      } md:top-none z-500 transition-all duration-300 ml-2 `}
     >
       <div className="drawer">
         <input id="my-drawer" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content p-4">
           <label
             htmlFor="my-drawer"
-            className="btn btn-warning drawer-button shadow-none text-slate-800"
+            className="btn bg-amber-300 hover:bg-amber-400 drawer-button shadow-none text-slate-900 border-none"
           >
             Menu des formations
           </label>
@@ -51,7 +53,7 @@ const FormationMenu = () => {
               <label
                 htmlFor="my-drawer"
                 aria-label="close sidebar"
-                className="btn btn-warning drawer-button text-slate-800"
+                className="btn bg-amber-300 hover:bg-amber-400 drawer-button shadow-none text-slate-900 border-none"
               >
                 Fermer le menu
               </label>

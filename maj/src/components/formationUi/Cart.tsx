@@ -81,7 +81,7 @@ export default function Cart({ onClose }: CartProps) {
     <motion.div
       initial={{ opacity: 0, right: "-100vw" }}
       animate={{ opacity: 1, right: 0 }}
-      transition={{ duration: 0.7, ease: "easeInOut" }}
+      transition={{ duration: 0.7, ease: "easeInOut", delay: 0 }}
       exit={{ opacity: 0, right: "-100vw" }}
       className={
         "fixed right-4 rounded-md h-[100%] w-[100vw] lg:w-[30vw] z-50 bg-sky-100 p-4"
@@ -89,7 +89,7 @@ export default function Cart({ onClose }: CartProps) {
     >
       <button
         onClick={onClose}
-        className="btn btn-warning absolute right-2 top-2 border-none"
+        className="btn absolute right-2 top-2 bg-amber-300 hover:bg-amber-400 drawer-button shadow-none text-slate-900 border-none "
       >
         Fermer le panier
       </button>

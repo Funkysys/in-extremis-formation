@@ -19,8 +19,9 @@ const CourseCard = ({ temp_video_data }: CourseCardProps) => {
                 ? `${video.description.slice(0, 100)}...`
                 : video.description}
             </p>
-            <div className="card-actions justify-end">
-              <button className="btn bg-yellow-300 hover:bg-yellow-400">{`Voir +`}</button>
+            <div className="card-actions justify-end flex ">
+              <button className="btn text-slate-800 bg-yellow-300 hover:bg-yellow-400 border-none">{`Voir +`}</button>
+              <button className="btn text-slate-800 bg-yellow-300 hover:bg-yellow-400 border-none">{`+ (liste de souhait)`}</button>
               <button className="btn btn-primary">{`Acheter l'atelier`}</button>
             </div>
           </div>
