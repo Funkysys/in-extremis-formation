@@ -11,5 +11,5 @@ interface LayoutProps {
 }
 
 export default function FormationLayout({ children }: LayoutProps) {
-  return <main className="">{children}</main>;
+  return <>{children}</>;
 }

@@ -2,9 +2,11 @@
 import Link from "next/link";
 import { useState } from "react";
 import Cart from "./Cart";
+import Account from "./Account";
 
 const HorizontalMenu = () => {
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isAccountOpen, setIsAccountOpen] = useState(false);
 
   const handleCartOpen = () => {
     setIsCartOpen(!isCartOpen);
@@ -37,7 +39,7 @@ const HorizontalMenu = () => {
         </li>
         <li className="border-b-2 border-sky-900 hover:border-sky-600">
           <Link
-            href="/my-formation"
+            href="/ma-formation"
             className="tooltip"
             data-tip="Ma Formation"
           >
@@ -58,7 +60,11 @@ const HorizontalMenu = () => {
           </Link>
         </li>
         <li className="border-b-2 border-sky-900 hover:border-sky-600">
-          <Link href="/profile" className="tooltip" data-tip="Profil">
+          <button
+            className="tooltip"
+            data-tip="Profil"
+            onClick={() => setIsAccountOpen(true)}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5"
@@ -70,10 +76,10 @@ const HorizontalMenu = () => {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth="2"
-                d="M5.121 17.804A4 4 0 018 16h8a4 4 0 012.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                d="M5.121 17.804A13.937 13.937 0 0112 15c2.5 0 4.847.655 6.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0z"
               />
             </svg>
-          </Link>
+          </button>
         </li>
         <li className="border-b-2 border-sky-900 hover:border-sky-600">
           <button
@@ -99,6 +105,7 @@ const HorizontalMenu = () => {
         </li>
       </ul>
       {isCartOpen && <Cart onClose={handleCartClose} />}
+      {isAccountOpen && <Account onClose={() => setIsAccountOpen(false)} />}
     </div>
   );
 };

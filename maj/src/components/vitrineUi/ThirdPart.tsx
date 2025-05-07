@@ -8,7 +8,7 @@ const ThirdPart: React.FC = () => {
   return (
     <section className="w-[100vw] min-h-[100vh] bg-sky-600 flex flex-col justify-center items-center">
       <header>
-        <h2 className="text-xl md:text-3xl text-white text-center mb-6 mt-6">
+        <h2 className="text-xl md:text-3xl text-white text-center mb-6 mt-6 font-roboto">
           Avant de partir, découvrez aussi notre catalogue de <br />
           conférence sur les thèmes de musique et société sur In Extremis
           Society
@@ -37,7 +37,7 @@ const ThirdPart: React.FC = () => {
       </Link>
 
       <section className="w-full mt-10">
-        <h2 className="text-3xl text-white text-center mb-6">
+        <h2 className="text-3xl text-white text-center mb-6 font-roboto">
           Ainsi que nos différents outils
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-col-6 gap-4 py-10 lg:p-10">

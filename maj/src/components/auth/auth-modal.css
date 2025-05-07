@@ -1,0 +1,29 @@
+
+@layer utilities {
+  .animate-modalIn {
+    animation: modalIn 0.35s cubic-bezier(0.4,0,0.2,1) both;
+  }
+  .animate-modalOut {
+    animation: modalOut 0.25s cubic-bezier(0.4,0,0.2,1) both;
+  }
+  @keyframes modalIn {
+    0% {
+      opacity: 0;
+      transform: scaleX(0);
+    }
+    100% {
+      opacity: 1;
+      transform: scaleX(1);
+    }
+  }
+  @keyframes modalOut {
+    0% {
+      opacity: 1;
+      transform: scaleX(1);
+    }
+    100% {
+      opacity: 0;
+      transform: scaleX(0);
+    }
+  }
+}

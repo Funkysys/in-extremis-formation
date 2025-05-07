@@ -1,3 +1,4 @@
+import temp_formation_data from "@/data/temp_formation";
 const SearchAndFilter = () => {
   return (
     <div className="join text-slate-900 w-full flex justify-center items-center py-4 ">
@@ -5,17 +6,19 @@ const SearchAndFilter = () => {
         <div>
           <input
             className="input join-item bg-slate-100 text-slate-900"
-            placeholder="Search"
+            placeholder="Rechercher"
           />
         </div>
       </div>
       <select className="select join-item bg-slate-100 text-slate-900">
-        <option disabled defaultValue={"Filter"}>
-          Filter
+        <option disabled defaultValue={"Filtres"}>
+          {`Filtres`}
         </option>
-        <option>Sci-fi</option>
-        <option>Drama</option>
-        <option>Action</option>
+        {temp_formation_data.map((formation) => (
+          <option key={formation.id} value={formation.id}>
+            {formation.title}
+          </option>
+        ))}
       </select>
     </div>
   );
