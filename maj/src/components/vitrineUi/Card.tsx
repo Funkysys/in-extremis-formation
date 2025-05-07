@@ -3,9 +3,6 @@ import Image from "next/image";
 import Link from "next/link";
 
 const Card = ({ id, title, description, imageUrl, link, mail }: CardType) => {
-  if (mail) {
-    console.log("Mail: ", mail);
-  }
   return (
     <article
       key={id}

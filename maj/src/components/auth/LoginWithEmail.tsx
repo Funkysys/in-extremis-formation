@@ -10,7 +10,6 @@ export default function LoginWithEmail({ onSuccess }: { onSuccess: () => void })
   const [login, { loading }] = useMutation(LOGIN_MUTATION, {
     onCompleted: (data) => {
       if (data.login.token) {
-        // Stocke le token, gère l'auth ici (localStorage/cookie)
         localStorage.setItem("token", data.login.token);
         onSuccess();
       } else {

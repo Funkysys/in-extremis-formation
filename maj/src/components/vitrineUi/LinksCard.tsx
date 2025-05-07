@@ -10,9 +10,6 @@ const LinksCard = ({
   link,
   mail,
 }: CardType) => {
-  if (mail) {
-    console.log("Mail: ", mail);
-  }
   return (
     <div
       key={id}

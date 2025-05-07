@@ -4,23 +4,36 @@ import { useState } from "react";
 import Cart from "./Cart";
 import Account from "./Account";
 
-const HorizontalMenu = () => {
+interface HorizontalMenuProps {
+  role?: string | null;
+}
+
+const HorizontalMenu = ({ role }: HorizontalMenuProps) => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isAccountOpen, setIsAccountOpen] = useState(false);
 
   const handleCartOpen = () => {
     setIsCartOpen(!isCartOpen);
+    setIsAccountOpen(false);
   };
 
   const handleCartClose = () => {
     setIsCartOpen(false);
+  };
+  const handleAccountOpen = () => {
+    setIsAccountOpen(!isAccountOpen);
+    setIsCartOpen(false);
+  };
+
+  const handleAccountClose = () => {
+    setIsAccountOpen(false);
   };
 
   return (
     <div className="relative">
       <ul className="menu md:menu-horizontal rounded-box text-slate-900 bg-sky-200 ">
         <li className="border-b-2 border-sky-900 hover:border-sky-600">
-          <Link href="/" className="tooltip" data-tip="Accueil">
+          <Link href="/formation" className="tooltip" data-tip="Accueil">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5"
@@ -63,7 +76,7 @@ const HorizontalMenu = () => {
           <button
             className="tooltip"
             data-tip="Profil"
-            onClick={() => setIsAccountOpen(true)}
+            onClick={() => handleAccountOpen()}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -103,9 +116,10 @@ const HorizontalMenu = () => {
             </svg>
           </button>
         </li>
+
       </ul>
-      {isCartOpen && <Cart onClose={handleCartClose} />}
-      {isAccountOpen && <Account onClose={() => setIsAccountOpen(false)} />}
+      {isCartOpen && !isAccountOpen && <Cart onClose={handleCartClose} />}
+      {isAccountOpen && !isCartOpen && <Account onClose={handleAccountClose} role={role} />}
     </div>
   );
 };

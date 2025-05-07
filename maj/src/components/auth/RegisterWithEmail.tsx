@@ -1,24 +1,43 @@
 "use client";
-import { useState } from "react";
+import React, { useState } from "react";
+import { useToaster } from "../formationUi/Toaster";
 import { useMutation } from "@apollo/client";
-import { CREATE_USER_MUTATION } from "@/graphql/mutations/user-mutations";
+import { CREATE_USER_MUTATION, LOGIN_MUTATION } from "@/graphql/mutations/user-mutations";
 
 export default function RegisterWithEmail({ onSuccess }: { onSuccess: () => void }) {
+  const { addToast } = useToaster();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+  const [login] = useMutation(LOGIN_MUTATION);
   const [register, { loading }] = useMutation(CREATE_USER_MUTATION, {
-    onCompleted: (data) => {
-      // Correction: reset error et affiche succès
+    onCompleted: async (data) => {
       setError("");
       if (data.createUser && data.createUser.user) {
-        setSuccess(true);
-        onSuccess();
+        try {
+          const loginResult = await login({ variables: { email, password } });
+          const loginData = loginResult.data;
+          if (loginData && loginData.login && loginData.login.token) {
+            localStorage.setItem("token", loginData.login.token);
+            setSuccess(true);
+            addToast("Compte créé avec succès !", "success");
+            onSuccess();
+          } else {
+            setError(loginData?.login?.error || "Erreur lors de la connexion automatique");
+            setSuccess(false);
+            addToast(loginData?.login?.error || "Erreur lors de la connexion automatique", "error");
+          }
+        } catch (loginErr: any) {
+          setError(loginErr.message || "Erreur lors de la connexion automatique");
+          setSuccess(false);
+          addToast(loginErr.message || "Erreur lors de la connexion automatique", "error");
+        }
       } else {
         setError(data.createUser?.error || "Erreur lors de l'inscription");
         setSuccess(false);
+        addToast(data.createUser?.error || "Erreur lors de l'inscription", "error");
       }
     },
     onError: (err) => setError(err.message),
@@ -28,7 +47,6 @@ export default function RegisterWithEmail({ onSuccess }: { onSuccess: () => void
     e.preventDefault();
     setError("");
     setSuccess(false);
-    // Vérification côté client du mot de passe
     if (!/[^A-Za-z0-9]/.test(password)) {
       setError("Le mot de passe doit contenir au moins un caractère spécial.");
       return;

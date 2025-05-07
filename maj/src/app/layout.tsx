@@ -102,6 +102,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html lang="fr">
       <body
@@ -109,6 +110,7 @@ export default function RootLayout({
       >
         <CustomApolloProvider>
           <Suspense fallback={<Loading />}>
+
             {children}
             <Footer />
           </Suspense>

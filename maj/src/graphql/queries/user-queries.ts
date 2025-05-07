@@ -1,4 +1,3 @@
-// Toutes les queries utilisateur prêtes à l'emploi
 
 import { gql } from "@apollo/client";
 
@@ -8,9 +7,17 @@ export const ME_QUERY = gql`
       id
       email
       fullName
+      zipCode
+      phone
+      address
+      city
+      country
       isOauth
       isActive
       isSuperuser
+      roles {
+        name
+      }
       createdAt
       updatedAt
       oauthAccounts {
@@ -33,6 +40,11 @@ export const USERS_QUERY = gql`
       id
       email
       fullName
+      zipCode
+      phone
+      address
+      city
+      country
       isOauth
       isActive
       isSuperuser
@@ -58,6 +70,11 @@ export const USER_QUERY = gql`
       id
       email
       fullName
+      zipCode
+      phone
+      address
+      city
+      country
       isOauth
       isActive
       isSuperuser
