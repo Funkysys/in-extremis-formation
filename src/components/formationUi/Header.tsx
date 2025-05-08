@@ -8,11 +8,10 @@ import { ME_QUERY } from "@/graphql/queries/user-queries";
 
 interface HeaderProps {
   title?: string;
-  forceLoggedOut?: boolean;
 }
 type Role = { name: string };
 
-const Header = ({ title, forceLoggedOut }: HeaderProps) => {
+const Header = ({ title }: HeaderProps) => {
   const { addToast } = useToaster();
   const [loggedIn, setLoggedIn] = useState(false);
   const { data } = useQuery(ME_QUERY, { skip: !loggedIn });

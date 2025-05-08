@@ -6,7 +6,8 @@ export default function AuthSuccessPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [profile, setProfile] = useState<any>(null);
+  type UserProfile = { fullName?: string; email?: string };
+  const [profile, setProfile] = useState<UserProfile | null>(null);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -31,11 +32,15 @@ export default function AuthSuccessPage() {
       });
       if (!res.ok) throw new Error("Impossible de récupérer le profil utilisateur.");
       const data = await res.json();
-      setProfile(data);
+      setProfile(data as UserProfile);
       setLoading(false);
       setTimeout(() => router.replace("/"), 1500);
-    } catch (e: any) {
-      setError(e.message || "Erreur lors de la récupération du profil.");
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        setError(e.message || "Erreur lors de la récupération du profil.");
+      } else {
+        setError("Erreur lors de la récupération du profil.");
+      }
       setLoading(false);
       setTimeout(() => router.replace("/login?error=profile"), 2500);
     }

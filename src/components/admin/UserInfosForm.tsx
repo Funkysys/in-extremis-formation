@@ -145,7 +145,7 @@ export default function UserInfosForm({ onDeleted }: UserInfosFormProps) {
       });
       addToast("Informations mises à jour !", "success");
       refetch();
-    } catch (err) {
+    } catch {
       addToast("Erreur lors de la mise à jour", "error");
     }
   };

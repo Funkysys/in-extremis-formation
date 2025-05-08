@@ -56,7 +56,7 @@ export default function RoleList() {
     setError(null);
     setSuccess(null);
     try {
-      const userRoles = users.find((user) => user.id === userId)?.roles.map((role) => role.name) || [];
+  
       await updateUserRoles({
         variables: {
           userId,
@@ -66,12 +66,8 @@ export default function RoleList() {
       setSaving(null);
       setSuccess("Rôles mis à jour avec succès !");
       setTimeout(() => setSuccess(null), 1800);
-    } catch (e: unknown) {
-      if (e instanceof Error) {
-        setError(e.message);
-      } else {
-        setError("Erreur lors de la mise à jour des rôles.");
-      }
+    } catch {
+      setError("Erreur lors de la mise à jour des rôles.");
       setSaving(null);
     }
   };
@@ -129,11 +125,8 @@ export default function RoleList() {
                               className="ml-1 text-amber-900 hover:text-red-700 focus:outline-none"
                               aria-label={`Retirer le rôle ${roleName}`}
                               onClick={() => {
-                                let next = (selectedRoles[user.id] || (user.roles ? user.roles.map((role) => role.name) : []))
+                                const next = (selectedRoles[user.id] || (user.roles ? user.roles.map((role) => role.name) : []))
                                   .filter((role: string) => role !== roleName);
-                                if (roleName === "superadmin" && next.includes("admin")) {
-                                  next = next;
-                                }
                                 setSelectedRoles((prev) => ({ ...prev, [user.id]: next }));
                               }}
                             >
@@ -149,7 +142,7 @@ export default function RoleList() {
                       type="button"
                       className="ml-2 px-2 py-1 bg-amber-100 text-amber-900 border border-amber-300 rounded hover:bg-amber-200 focus:outline-none focus:ring-2 focus:ring-amber-500 text-xs"
                       tabIndex={0}
-                      onClick={e => {
+                      onClick={() => {
                         const dropdown = document.getElementById(`dropdown-roles-${user.id}`);
                         if (dropdown) dropdown.classList.toggle("hidden");
                       }}
