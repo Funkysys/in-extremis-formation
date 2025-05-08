@@ -27,6 +27,8 @@ const ROLES_QUERY = gql`
 
 import { UPDATE_USER_ROLES_MUTATION } from "@/graphql/mutations/user-mutations";
 
+import type { User, Role } from "@/types";
+
 export default function RoleList() {
   const { data: usersData, loading: usersLoading, error: usersError } = useQuery(USERS_QUERY);
   const { data: rolesData, loading: rolesLoading, error: rolesError } = useQuery(ROLES_QUERY);
@@ -46,25 +48,30 @@ export default function RoleList() {
     </div>
   );
 
-  const users = usersData?.users || [];
-  const roles = rolesData?.roles || [];
+  const users: User[] = usersData?.users || [];
+  const roles: Role[] = rolesData?.roles || [];
 
   const handleSave = async (userId: string) => {
     setSaving(userId);
     setError(null);
     setSuccess(null);
     try {
+      const userRoles = users.find((user) => user.id === userId)?.roles.map((role) => role.name) || [];
       await updateUserRoles({
         variables: {
           userId,
-          roles: selectedRoles[userId] || users.find((u: any) => u.id === userId)?.roles?.map((r: any) => r.name) || [],
+          roles: selectedRoles[userId] || users.find((u) => u.id === userId)?.roles?.map((r) => r.name) || [],
         },
       });
       setSaving(null);
       setSuccess("Rôles mis à jour avec succès !");
       setTimeout(() => setSuccess(null), 1800);
-    } catch (e: any) {
-      setError(e.message || "Erreur lors de la mise à jour des rôles.");
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        setError(e.message);
+      } else {
+        setError("Erreur lors de la mise à jour des rôles.");
+      }
       setSaving(null);
     }
   };
@@ -98,7 +105,7 @@ export default function RoleList() {
           </tr>
         </thead>
         <tbody>
-          {users.map((user: any) => (
+          {users.map((user: User) => (
             <tr key={user.id}>
               <td>{user.fullName}</td>
               <td>{user.email}</td>
@@ -106,32 +113,35 @@ export default function RoleList() {
                 <label className="block lg:sr-only font-semibold mb-1">Rôles</label>
                 <div className={`flex flex-wrap gap-2 items-center min-h-[3rem] w-full border border-slate-300 rounded-lg bg-slate-50 px-2 py-2 ${saving === user.id ? 'opacity-60 pointer-events-none' : ''}`}>
                   
-                  {(selectedRoles[user.id] || (user.roles ? user.roles.map((r: any) => r.name) : [])).length === 0 ? (
+                  {(selectedRoles[user.id] || (user.roles ? user.roles.map((role) => role.name) : [])).length === 0 ? (
                     <span className="badge bg-slate-200 text-slate-500">Aucun rôle</span>
                   ) : (
-                    (selectedRoles[user.id] || (user.roles ? user.roles.map((r: any) => r.name) : [])).map((r: string) => (
-                      <span key={r} className="flex items-center gap-1 badge bg-amber-200 text-amber-900 border border-amber-400 px-2 py-1 rounded-full text-xs font-semibold">
-                        {r}
-                        
-                        {!(r === "admin" && (selectedRoles[user.id] || (user.roles ? user.roles.map((r: any) => r.name) : [])).includes("superadmin")) && (
-                          <button
-                            type="button"
-                            className="ml-1 text-amber-900 hover:text-red-700 focus:outline-none"
-                            aria-label={`Retirer le rôle ${r}`}
-                            onClick={() => {
-                              let next = (selectedRoles[user.id] || (user.roles ? user.roles.map((r: any) => r.name) : [])).filter((role: string) => role !== r);
-                              
-                              if (r === "superadmin" && next.includes("admin")) {
-                                next = next;
-                              }
-                              setSelectedRoles(prev => ({ ...prev, [user.id]: next }));
-                            }}
-                          >
-                            ×
-                          </button>
-                        )}
-                      </span>
-                    ))
+                    (selectedRoles[user.id] || (user.roles ? user.roles.map((role) => role.name) : []))
+                      .map((roleName: string) => (
+                        <span
+                          key={roleName}
+                          className="flex items-center gap-1 badge bg-amber-200 text-amber-900 border border-amber-400 px-2 py-1 rounded-full text-xs font-semibold"
+                        >
+                          {roleName}
+                          {!(roleName === "admin" && (selectedRoles[user.id] || (user.roles ? user.roles.map((role) => role.name) : [])).includes("superadmin")) && (
+                            <button
+                              type="button"
+                              className="ml-1 text-amber-900 hover:text-red-700 focus:outline-none"
+                              aria-label={`Retirer le rôle ${roleName}`}
+                              onClick={() => {
+                                let next = (selectedRoles[user.id] || (user.roles ? user.roles.map((role) => role.name) : []))
+                                  .filter((role: string) => role !== roleName);
+                                if (roleName === "superadmin" && next.includes("admin")) {
+                                  next = next;
+                                }
+                                setSelectedRoles((prev) => ({ ...prev, [user.id]: next }));
+                              }}
+                            >
+                              ×
+                            </button>
+                          )}
+                        </span>
+                      ))
                   )}
                   
                   <div className="relative">
@@ -150,18 +160,18 @@ export default function RoleList() {
                       id={`dropdown-roles-${user.id}`}
                       className="hidden absolute z-10 mt-1 left-0 w-32 bg-white border border-slate-300 rounded shadow-lg"
                     >
-                      {roles.filter((role: any) => !(selectedRoles[user.id] || (user.roles ? user.roles.map((r: any) => r.name) : [])).includes(role.name)).length === 0 ? (
+                      {roles.filter((role: Role) => !(selectedRoles[user.id] || (user.roles ? user.roles.map((role) => role.name) : [])).includes(role.name)).length === 0 ? (
                         <div className="px-2 py-1 text-slate-400 text-xs">Aucun rôle à ajouter</div>
                       ) : (
                         roles
-                          .filter((role: any) => !(selectedRoles[user.id] || (user.roles ? user.roles.map((r: any) => r.name) : [])).includes(role.name))
-                          .map((role: any) => (
+                          .filter((role: Role) => !(selectedRoles[user.id] || (user.roles ? user.roles.map((role) => role.name) : [])).includes(role.name))
+                          .map((role: Role) => (
                             <button
                               key={role.name}
                               type="button"
                               className="w-full text-left px-2 py-1 hover:bg-amber-100 text-xs text-amber-900"
                               onClick={() => {
-                                let next = [...(selectedRoles[user.id] || (user.roles ? user.roles.map((r: any) => r.name) : [])), role.name];
+                                let next = [...(selectedRoles[user.id] || (user.roles ? user.roles.map((role) => role.name) : [])), role.name];
                                 if (role.name === "superadmin" && !next.includes("admin")) {
                                   next = [...next, "admin"];
                                 }

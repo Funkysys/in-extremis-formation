@@ -8,10 +8,9 @@ import { SiDiscord } from "react-icons/si";
  * 
  * This component handles OAuth login with Google and Discord.
  * 
- * @param {object} props - Component props.
- * @param {function} props.onSuccess - Callback function to call on successful login.
+
  */
-export default function LoginWithOAuth({ onSuccess }: { onSuccess: () => void }) {
+export default function LoginWithOAuth() {
   const [error, setError] = useState("");
 
   /**

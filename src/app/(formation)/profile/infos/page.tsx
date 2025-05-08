@@ -1,4 +1,4 @@
-import UserInfosForm from "@/components/UserInfosForm";
+import UserInfosForm from "@/components/admin/UserInfosForm";
 
 export default function InfosPage() {
   return (

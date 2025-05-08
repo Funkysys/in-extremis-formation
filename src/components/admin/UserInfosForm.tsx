@@ -9,10 +9,9 @@ import { useRouter } from "next/navigation";
 
 interface UserInfosFormProps {
   onDeleted?: () => void;
-  onLoginRequest?: () => void;
 }
 
-export default function UserInfosForm({ onDeleted, onLoginRequest }: UserInfosFormProps) {
+export default function UserInfosForm({ onDeleted }: UserInfosFormProps) {
   const { addToast } = useToaster();
   const { data, loading, error, refetch } = useQuery(ME_QUERY);
   const [updateUser, { loading: updating }] = useMutation(UPDATE_USER_MUTATION);
@@ -42,17 +41,18 @@ export default function UserInfosForm({ onDeleted, onLoginRequest }: UserInfosFo
     { code: "DZ", name: "Algérie" },
   ];
 
-  const isValidPhone = (value: string) => {
+  const isValidPhone = (value: string): boolean => {
     return /^([+]?\d{1,3}[-.\s]?)?(\d{6,15})$/.test(value.replace(/\s/g, ""));
   };
 
   const router = useRouter();
 
-  // Calculer tokenExpired et isNotAuthenticated toujours AVANT tout hook ou return
-  const tokenExpired = error?.graphQLErrors?.some((err: any) =>
+  type MinimalGraphQLError = { message: string; extensions?: { code?: string } };
+
+  const tokenExpired = error?.graphQLErrors?.some((err: MinimalGraphQLError) =>
     err.extensions?.code === "TOKEN_EXPIRED"
   );
-  const isNotAuthenticated = error?.graphQLErrors?.some((err: any) =>
+  const isNotAuthenticated = error?.graphQLErrors?.some((err: MinimalGraphQLError) =>
     typeof err.message === "string" && err.message.toLowerCase().includes("user is not authenticated")
   );
 
@@ -94,7 +94,7 @@ export default function UserInfosForm({ onDeleted, onLoginRequest }: UserInfosFo
     if (error.networkError) {
       errorMsg = `Erreur réseau : ${error.networkError.message}`;
     } else if (error.graphQLErrors && error.graphQLErrors.length > 0) {
-      errorMsg = error.graphQLErrors.map((e: any) => e.message).join(" | ");
+      errorMsg = error.graphQLErrors.map((e: MinimalGraphQLError) => e.message).join(" | ");
     } else if (error.message) {
       errorMsg = error.message;
     }
@@ -103,7 +103,7 @@ export default function UserInfosForm({ onDeleted, onLoginRequest }: UserInfosFo
         <div className="w-full max-w-md p-8 rounded-lg shadow-lg bg-slate-100 mx-2 flex flex-col items-center">
           <h1 className="text-2xl md:text-3xl font-bold mb-4 text-red-600 font-roboto text-center">Erreur</h1>
           <div className="mb-6 text-base md:text-lg text-red-700 text-center">{errorMsg}</div>
-          <Link href="/" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 font-semibold text-center">Retour à l'accueil</Link>
+          <Link href="/" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 font-semibold text-center">{`Retour à l'accueil`}</Link>
         </div>
       </div>
     );
@@ -161,11 +161,16 @@ export default function UserInfosForm({ onDeleted, onLoginRequest }: UserInfosFo
     try {
       await deleteUser({ variables: { userId: data.me.id } });
       addToast("Compte supprimé avec succès !", "success");
+      setShowConfirm(false);
       if (onDeleted) onDeleted();
-      window.location.href = "/logout";
-    } catch (err: any) {
-      addToast("Erreur lors de la suppression du compte.", "error");
-      console.error("ApolloError deleteUser:", err);
+      router.replace("/formation");
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        addToast(error.message, "error");
+      } else {
+        addToast("Erreur lors de la suppression du compte.", "error");
+      }
+      setShowConfirm(false);
     }
   };
 

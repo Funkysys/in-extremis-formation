@@ -2,20 +2,21 @@
 import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { SiDiscord } from "react-icons/si";
-// import { signUpWithProvider } from "better-auth";
 
-export default function RegisterWithOAuth({ onSuccess }: { onSuccess: () => void }) {
+export default function RegisterWithOAuth() {
   const [error, setError] = useState("");
 
-  // À brancher sur better-auth
   const handleOAuth = async (provider: "google" | "discord") => {
     setError("");
     try {
-      // await signUpWithProvider(provider);
-      // onSuccess();
+
       alert(`Redirection vers inscription ${provider}... (à brancher sur better-auth)`);
-    } catch (e: any) {
-      setError(e.message || "Erreur OAuth");
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        setError(e.message || "Erreur OAuth");
+      } else {
+        setError("Erreur OAuth");
+      }
     }
   };
 
@@ -27,7 +28,7 @@ export default function RegisterWithOAuth({ onSuccess }: { onSuccess: () => void
         type="button"
       >
         <FcGoogle size={22} />
-        S'inscrire avec Google
+        {`S'inscrire avec Google`}
       </button>
       <button
         className="btn btn-outline btn-secondary flex items-center gap-2"
@@ -35,7 +36,7 @@ export default function RegisterWithOAuth({ onSuccess }: { onSuccess: () => void
         type="button"
       >
         <SiDiscord size={22} />
-        S'inscrire avec Discord
+        {`S'inscrire avec Discord`}
       </button>
       {error && <div className="text-error text-sm mt-1">{error}</div>}
     </div>

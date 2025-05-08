@@ -9,6 +9,8 @@ const FormationMenu = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [selectedFormation, setSelectedFormation] = useState<string>("");
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
+  console.log(formation, setFormation, formationList, setFormationList, open, setOpen, selectedFormation, setSelectedFormation, isScrolled, setIsScrolled);
+  
 
   useEffect(() => {
     const handleScroll = () => {

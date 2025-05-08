@@ -18,3 +18,17 @@ export type VideoData = {
 export type CourseCardProps = {
   temp_video_data: VideoData[];
 };
+
+// --- User & Role Types ---
+export interface Role {
+  id: string;
+  name: string;
+  description: string;
+}
+
+export interface User {
+  id: string;
+  email: string;
+  fullName: string;
+  roles: Role[];
+}

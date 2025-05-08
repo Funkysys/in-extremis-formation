@@ -29,10 +29,15 @@ export default function RegisterWithEmail({ onSuccess }: { onSuccess: () => void
             setSuccess(false);
             addToast(loginData?.login?.error || "Erreur lors de la connexion automatique", "error");
           }
-        } catch (loginErr: any) {
-          setError(loginErr.message || "Erreur lors de la connexion automatique");
+        } catch (loginErr: unknown) {
+          if (loginErr instanceof Error) {
+            setError(loginErr.message || "Erreur lors de la connexion automatique");
+            addToast(loginErr.message || "Erreur lors de la connexion automatique", "error");
+          } else {
+            setError("Erreur lors de la connexion automatique");
+            addToast("Erreur lors de la connexion automatique", "error");
+          }
           setSuccess(false);
-          addToast(loginErr.message || "Erreur lors de la connexion automatique", "error");
         }
       } else {
         setError(data.createUser?.error || "Erreur lors de l'inscription");

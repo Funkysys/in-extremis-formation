@@ -1,4 +1,3 @@
-"use client";
 import Link from "next/link";
 
 export default function AdminPage() {
@@ -10,12 +9,12 @@ export default function AdminPage() {
           href="/formation/admin/roles"
           className="btn bg-amber-700 hover:bg-amber-800 text-slate-100 font-semibold w-full max-w-xs shadow-md"
         >
-          Gérer les rôles
+          {`Gérer les rôles`}
         </Link>
       </nav>
       <div className="bg-white rounded-lg shadow p-6 text-slate-800">
         <p>
-          Bienvenue sur la page d'administration. Utilisez la navigation ci-dessus pour accéder aux différentes fonctionnalités réservées aux administrateurs.
+          {`Bienvenue sur la page d'administration. Utilisez la navigation ci-dessus pour accéder aux différentes fonctionnalités réservées aux administrateurs.`}
         </p>
       </div>
     </div>

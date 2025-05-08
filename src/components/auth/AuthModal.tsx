@@ -13,7 +13,6 @@ export default function AuthModal({ open, onClose, onSuccess }: { open: boolean;
   const [tab, setTab] = useState<"email" | "oauth" | "magic">("email");
   const modalRef = useRef<HTMLDivElement>(null);
 
-  // Animation Tailwind (opacity + scaleX)
   useEffect(() => {
     if (open && modalRef.current) {
       modalRef.current.classList.remove("animate-modalOut");
@@ -54,7 +53,7 @@ export default function AuthModal({ open, onClose, onSuccess }: { open: boolean;
             onClick={() => setMode("register")}
             type="button"
           >
-            S'inscrire
+            {`S'inscrire`}
           </button>
         </div>
         <div className="flex gap-2 mb-4 justify-center w-full">
