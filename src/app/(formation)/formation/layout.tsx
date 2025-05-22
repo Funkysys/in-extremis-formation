@@ -1,5 +1,5 @@
+import Header from "@/components/formationUi/Header";
 import { Metadata } from "next";
-import React from "react";
 
 export const metadata: Metadata = {
   title: "Formation | In-Extremis",
@@ -11,5 +11,7 @@ interface LayoutProps {
 }
 
 export default function FormationLayout({ children }: LayoutProps) {
-  return <>{children}</>;
+  return <>
+          <Header title="Découvrez toutes nos formations" />
+          {children}</>;
 }

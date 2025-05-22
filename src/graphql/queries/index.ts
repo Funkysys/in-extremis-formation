@@ -5,3 +5,4 @@ export * from './comment-queries';
 export * from './image-queries';
 export * from './purchase-queries';
 export * from './video-queries';
+export * from './cart-queries';

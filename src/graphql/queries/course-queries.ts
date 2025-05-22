@@ -1,21 +1,14 @@
-// Toutes les queries course prêtes à l'emploi
-
 import { gql } from "@apollo/client";
 
 export const COURSES_QUERY = gql`
-  query($published_only: Boolean) {
-    courses(published_only: $published_only) {
+  query($publishedOnly: Boolean) {
+    courses(publishedOnly: $publishedOnly) {
       id
-      slug
       title
       description
-      published
+      isPublished
       createdAt
       updatedAt
-      author {
-        id
-        fullName
-      }
     }
   }
 `;
@@ -24,16 +17,40 @@ export const COURSE_QUERY = gql`
   query($id: UUID!) {
     course(id: $id) {
       id
-      slug
       title
       description
-      published
+      isPublished
       createdAt
       updatedAt
-      author {
-        id
-        fullName
-      }
+    }
+  }
+`;
+
+export const COURSE_BY_TITLE_QUERY = gql`
+  query($title: String!) {
+    courseByTitle(title: $title) {
+      id
+      title
+      description
+      isPublished
+      createdAt
+      updatedAt
+    }
+  }
+`;
+
+// Query pour récupérer les cours du formateur connecté
+export const MY_COURSES_QUERY = gql`
+  query {
+    myCourses {
+      id
+      title
+      description
+      price
+      isPublished
+      createdAt
+      updatedAt
+      # Ajoute ici d'autres champs si besoin
     }
   }
 `;

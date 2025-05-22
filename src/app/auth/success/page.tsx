@@ -21,7 +21,6 @@ export default function AuthSuccessPage() {
       setLoading(false);
       setTimeout(() => router.replace("/login?error=oauth"), 2000);
     }
-    // eslint-disable-next-line
   }, [router]);
 
   const fetchProfile = async (token: string) => {

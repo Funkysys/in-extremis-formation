@@ -6,7 +6,7 @@ export default function AdminPage() {
       <h1 className="text-3xl font-bold mb-8 text-slate-100 border-b-2 border-slate-300 pb-2">Administration</h1>
       <nav className="flex flex-col gap-4 mb-8">
         <Link
-          href="/formation/admin/roles"
+          href="/admin/roles"
           className="btn bg-amber-700 hover:bg-amber-800 text-slate-100 font-semibold w-full max-w-xs shadow-md"
         >
           {`Gérer les rôles`}

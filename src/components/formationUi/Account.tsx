@@ -48,11 +48,23 @@ export default function Account({ onClose, role }: AccountProps) {
             className="btn w-full bg-amber-700 hover:bg-amber-800 text-slate-100 font-semibold shadow-md flex items-center gap-2"
             onClick={() => {
               onClose();
-              router.push("/formateur/videos");
+              router.push("/formateur");
             }}
             data-tip="Gérer mes vidéos"
           >
-            <span role="img" aria-label="vidéos">🎬</span> Gérer mes vidéos
+            <span role="img" aria-label="vidéos">🎬</span> Mon espace formateur
+          </button>
+        )}
+        {(role === "admin" || role === "superadmin") && (
+          <button
+            className="btn w-full bg-red-700 hover:bg-red-800 text-slate-100 font-semibold shadow-md flex items-center gap-2"
+            onClick={() => {
+              onClose();
+              router.push("/admin");
+            }}
+            data-tip="Espace Admin"
+          >
+            <span role="img" aria-label="admin">🛡️</span> Espace Admin
           </button>
         )}
         

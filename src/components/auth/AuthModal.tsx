@@ -26,7 +26,7 @@ export default function AuthModal({ open, onClose, onSuccess }: { open: boolean;
   if (!open) return null;
 
   return (
-    <div className="modal modal-open text-slate-800">
+    <div className="modal modal-open text-slate-100 ">
       <div
         className="modal-box flex flex-col items-center justify-center p-8 rounded-xl shadow-xl max-w-2xl w-[520px] min-h-[420px] relative animate-none"
         ref={modalRef}

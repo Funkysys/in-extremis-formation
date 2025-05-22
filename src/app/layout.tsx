@@ -1,4 +1,5 @@
-import Footer from "@/components/Footer";
+import Footer from "@/components/global/Footer";
+import { ToastProvider } from "@/providers/ToastProvider";
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Roboto } from "next/font/google";
 import { Suspense } from "react";
@@ -110,9 +111,10 @@ export default function RootLayout({
       >
         <CustomApolloProvider>
           <Suspense fallback={<Loading />}>
-
-            {children}
-            <Footer />
+            <ToastProvider>
+              {children}
+              <Footer />
+            </ToastProvider>
           </Suspense>
         </CustomApolloProvider>
       </body>

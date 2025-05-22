@@ -7,3 +7,4 @@ export * from './chapter-mutations';
 export * from './image-mutations';
 export * from './purchase-mutations';
 export * from './video-mutations';
+export * from './cart-mutations';

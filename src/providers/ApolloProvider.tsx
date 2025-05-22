@@ -2,7 +2,6 @@
 import { ApolloProvider, InMemoryCache, ApolloClient, createHttpLink } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 
-// Récupère le token du localStorage
 const getToken = () => {
   if (typeof window !== "undefined") {
     return localStorage.getItem("token");

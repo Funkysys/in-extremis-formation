@@ -1,6 +1,10 @@
 "use client";
 import { useQuery, useMutation, gql } from "@apollo/client";
 import { useState } from "react";
+import { UPDATE_USER_ROLES_MUTATION } from "@/graphql/mutations/user-mutations";
+import { CREATE_TRAINER } from "@/graphql/mutations/trainer-mutations";
+
+import type { User, Role } from "@/types";
 
 const USERS_QUERY = gql`
   query {
@@ -25,14 +29,12 @@ const ROLES_QUERY = gql`
   }
 `;
 
-import { UPDATE_USER_ROLES_MUTATION } from "@/graphql/mutations/user-mutations";
-
-import type { User, Role } from "@/types";
 
 export default function RoleList() {
   const { data: usersData, loading: usersLoading, error: usersError } = useQuery(USERS_QUERY);
   const { data: rolesData, loading: rolesLoading, error: rolesError } = useQuery(ROLES_QUERY);
   const [updateUserRoles] = useMutation(UPDATE_USER_ROLES_MUTATION);
+  const [createTrainer] = useMutation(CREATE_TRAINER);
   const [selectedRoles, setSelectedRoles] = useState<Record<string, string[]>>({});
   const [saving, setSaving] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -56,13 +58,22 @@ export default function RoleList() {
     setError(null);
     setSuccess(null);
     try {
-  
+      const prevRoles = users.find((u) => u.id === userId)?.roles?.map((r) => r.name) || [];
+      const nextRoles = selectedRoles[userId] || prevRoles;
+      const wasTrainer = prevRoles.includes("formateur") || prevRoles.includes("admin");
+      const willBeTrainer = nextRoles.includes("formateur") || nextRoles.includes("admin");
+
       await updateUserRoles({
         variables: {
           userId,
-          roles: selectedRoles[userId] || users.find((u) => u.id === userId)?.roles?.map((r) => r.name) || [],
+          roles: nextRoles,
         },
       });
+
+      if (!wasTrainer && willBeTrainer) {
+        await createTrainer({ variables: { userId } });
+      }
+
       setSaving(null);
       setSuccess("Rôles mis à jour avec succès !");
       setTimeout(() => setSuccess(null), 1800);
