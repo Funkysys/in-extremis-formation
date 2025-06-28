@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 
-// Mutations video (bunny_videos)
+// Bunny videos mutations
 
 export const CREATE_BUNNY_VIDEO_MUTATION = gql`
   mutation($input: CreateBunnyVideoInput!) {
@@ -17,9 +17,55 @@ export const CREATE_BUNNY_VIDEO_MUTATION = gql`
   }
 `;
 
+// Get MediaCMS upload token
+export const GET_UPLOAD_TOKEN_MUTATION = gql`
+  mutation GetMediaCMSUploadToken {
+    getMediacmsUploadToken {
+      token
+      uploadUrl
+      userId
+      error
+    }
+  }
+`;
+
+// Register uploaded video to MediaCMS
+export const REGISTER_UPLOADED_VIDEO_MUTATION = gql`
+  mutation RegisterUploadedVideo(
+    $mediaCmsId: String!, 
+    $title: String!, 
+    $description: String, 
+    $duration: Float!, 
+    $url: String!, 
+    $thumbnailUrl: String
+  ) {
+    registerUploadedVideo(
+      mediaCmsId: $mediaCmsId, 
+      title: $title, 
+      description: $description, 
+      duration: $duration, 
+      url: $url, 
+      thumbnailUrl: $thumbnailUrl
+    ) {
+      video {
+        id
+        title
+        url
+        description
+        duration
+        thumbnailUrl
+        createdAt
+        updatedAt
+      }
+      error
+    }
+  }
+`;
+
+// Direct video upload mutation
 export const UPLOAD_VIDEO_MUTATION = gql`
-  mutation UploadVideo($file: Upload!, $title: String!) {
-    uploadVideo(input: { file: $file, title: $title }) {
+  mutation UploadVideo($file: Upload!, $title: String!, $description: String) {
+    uploadVideo(file: $file, title: $title, description: $description) {
       video {
         id
         title

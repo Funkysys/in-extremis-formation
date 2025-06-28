@@ -6,6 +6,7 @@ import { Suspense } from "react";
 import "./globals.css";
 import Loading from "./loading";
 import CustomApolloProvider from "@/providers/ApolloProvider";
+import { AuthProvider } from "@/providers/AuthProvider";
 
 const roboto = Roboto({
   variable: "--font-roboto",
@@ -107,15 +108,17 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${roboto.variable} antialiased `}
+        className={`${roboto.variable} ${geistSans.variable} ${geistMono.variable} bg-background font-sans antialiased`}
       >
         <CustomApolloProvider>
-          <Suspense fallback={<Loading />}>
-            <ToastProvider>
-              {children}
-              <Footer />
-            </ToastProvider>
-          </Suspense>
+          <AuthProvider>
+            <Suspense fallback={<Loading />}>
+              <ToastProvider>
+                {children}
+                <Footer />
+              </ToastProvider>
+            </Suspense>
+          </AuthProvider>
         </CustomApolloProvider>
       </body>
     </html>

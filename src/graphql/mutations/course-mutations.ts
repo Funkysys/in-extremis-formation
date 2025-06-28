@@ -3,55 +3,47 @@
 import { gql } from "@apollo/client";
 
 export const CREATE_COURSE_MUTATION = gql`
-  mutation($title: String!, $description: String!, $published: Boolean!) {
-    create_course(title: $title, description: $description, published: $published) {
+  mutation CreateCourse(
+    $title: String!
+    $description: String!
+    $price: Float!
+  ) {
+    createCourse(
+      title: $title
+      description: $description
+      price: $price
+    ) {
+      course {
+        id
+        title
+        description
+        price
+      }
+      error
+    }
+  }
+`;
+
+export const CREATE_CHAPTER_MUTATION = gql`
+  mutation CreateChapter(
+    $title: String!
+    $description: String
+    $order: Int
+    $courseId: UUID!
+    $videoId: UUID
+  ) {
+    create_chapter(
+      title: $title
+      description: $description
+      order: $order
+      courseId: $courseId
+      videoId: $videoId
+    ) {
       id
       title
       description
-      cover_image {
-        id
-        url
-        alt_text
-        publicId
-        width
-        height
-        format
-        created_at
-        updated_at
-      }
-      published
-      created_at
-      updated_at
-      chapters {
-        id
-        title
-        description
-        order
-        created_at
-        updated_at
-      }
-      videos {
-        id
-        title
-        description
-        url
-        duration
-        order
-        thumbnail {
-          id
-          url
-          alt_text
-        }
-        markers {
-          id
-          label
-          time
-          created_at
-          updated_at
-        }
-        created_at
-        updated_at
-      }
+      order
+      videoId
     }
   }
 `;

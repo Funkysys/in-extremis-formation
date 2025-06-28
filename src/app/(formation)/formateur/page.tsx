@@ -1,7 +1,7 @@
-import Header from '@/components/formationUi/Header';
 import Link from 'next/link';
+import ProtectedRoute from '@/components/auth/ProtectedRoute';
 
-export default function FormateurHome() {
+function FormateurContent() {
   return (
       <div className="flex flex-col items-center justify-center py-16">
         <div className="bg-slate-800 rounded-xl shadow-lg p-10 flex flex-col items-center">
@@ -11,5 +11,13 @@ export default function FormateurHome() {
           </Link>
         </div>
       </div>
+  );
+}
+
+export default function FormateurHome() {
+  return (
+    <ProtectedRoute requiredRole="formateur">
+      <FormateurContent />
+    </ProtectedRoute>
   );
 }

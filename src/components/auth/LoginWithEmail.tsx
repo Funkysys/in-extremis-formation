@@ -1,9 +1,17 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useMutation } from "@apollo/client";
 import { LOGIN_MUTATION } from "@/graphql/mutations/user-mutations";
 
 export default function LoginWithEmail({ onSuccess }: { onSuccess: () => void }) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectUrl = searchParams.get('redirect') || '/';
+  const [initialLoad, setInitialLoad] = useState(true);
+  
+  // Ne plus vérifier automatiquement si l'utilisateur est connecté
+  // Laisser le composant parent gérer cela
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -11,12 +19,18 @@ export default function LoginWithEmail({ onSuccess }: { onSuccess: () => void })
     onCompleted: (data) => {
       if (data.login.token) {
         localStorage.setItem("token", data.login.token);
+        localStorage.setItem("user", JSON.stringify(data.login.user));
         onSuccess();
+        // Rediriger vers /formation après connexion
+        router.push('/formation');
       } else {
         setError(data.login.error || "Erreur inconnue");
       }
     },
-    onError: (err) => setError(err.message),
+    onError: (err) => {
+      console.error('Login error:', err);
+      setError('Erreur lors de la connexion. Veuillez réessayer.');
+    },
   });
 
   const handleSubmit = (e: React.FormEvent) => {

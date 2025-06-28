@@ -1,6 +1,7 @@
 import Link from "next/link";
+import ProtectedRoute from "@/components/auth/ProtectedRoute";
 
-export default function AdminPage() {
+function AdminContent() {
   return (
     <div className="container mx-auto py-10 px-4 max-w-3xl">
       <h1 className="text-3xl font-bold mb-8 text-slate-100 border-b-2 border-slate-300 pb-2">Administration</h1>
@@ -18,5 +19,13 @@ export default function AdminPage() {
         </p>
       </div>
     </div>
+  );
+}
+
+export default function AdminPage() {
+  return (
+    <ProtectedRoute requiredRole="admin">
+      <AdminContent />
+    </ProtectedRoute>
   );
 }

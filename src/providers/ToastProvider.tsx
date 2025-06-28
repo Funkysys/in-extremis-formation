@@ -1,5 +1,5 @@
 "use client";
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, { createContext, useContext, useState, useCallback, ReactNode } from "react";
 
 interface Toast {
   id: number;
@@ -22,11 +22,11 @@ export function useToast() {
 export function ToastProvider({ children }: { children: ReactNode }) {
   const [toasts, setToasts] = useState<Toast[]>([]);
 
-  const showToast = (message: string, type: "success" | "error" | "info" = "info") => {
+  const showToast = useCallback((message: string, type: "success" | "error" | "info" = "info") => {
     const id = Date.now() + Math.random();
     setToasts(ts => [...ts, { id, message, type }]);
     setTimeout(() => setToasts(ts => ts.filter(t => t.id !== id)), 3500);
-  };
+  }, []); // Aucune dépendance car la fonction ne dépend d'aucune valeur extérieure
 
   return (
     <ToastContext.Provider value={{ showToast }}>

@@ -1,34 +1,13 @@
-"use client";
-import { ApolloProvider, InMemoryCache, ApolloClient, createHttpLink } from "@apollo/client";
-import { setContext } from "@apollo/client/link/context";
+'use client';
 
-const getToken = () => {
-  if (typeof window !== "undefined") {
-    return localStorage.getItem("token");
-  }
-  return null;
+import { ApolloProvider } from '@apollo/client';
+import client from '@/lib/apollo';
+
+export const ApolloProviders = ({ children }: { children: React.ReactNode }) => {
+  return <ApolloProvider client={client}>{children}</ApolloProvider>;
 };
 
-const httpLink = createHttpLink({
-  uri: process.env.NEXT_PUBLIC_API_URL + "/graphql",
-});
-
-const authLink = setContext((_, { headers }) => {
-  
-  const token = getToken();
-  return {
-    headers: {
-      ...headers,
-      authorization: token ? `Bearer ${token}` : "",
-    },
-  };
-});
-
-const client = new ApolloClient({
-  link: authLink.concat(httpLink),
-  cache: new InMemoryCache(),
-});
-
+// Pour la compatibilité avec le code existant
 export default function CustomApolloProvider({ children }: { children: React.ReactNode }) {
-  return <ApolloProvider client={client}>{children}</ApolloProvider>;
+  return <ApolloProviders>{children}</ApolloProviders>;
 }

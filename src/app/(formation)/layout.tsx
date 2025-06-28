@@ -1,12 +1,12 @@
 import Header from "@/components/formationUi/Header";
-import ToasterProvider from "@/providers/ToasterProvider";
+import { ToastProvider } from "@/providers/ToastProvider";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <main className="bg-sky-900 min-h-screen">
-      <ToasterProvider>
+      <ToastProvider>
         {children}
-      </ToasterProvider>
+      </ToastProvider>
     </main>
   );
 }

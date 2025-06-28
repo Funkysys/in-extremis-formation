@@ -1,15 +1,20 @@
 "use client";
-import temp_formation_data from "@/data/temp_formation";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useQuery } from "@apollo/client";
+import { COURSES_QUERY } from "@/graphql/queries/course-queries";
+import { Course } from "@/types/course";
 
 const FormationMenu = () => {
-  const [formation, setFormation] = useState<string>("");
-  const [formationList, setFormationList] = useState(temp_formation_data);
   const [open, setOpen] = useState<boolean>(false);
   const [selectedFormation, setSelectedFormation] = useState<string>("");
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
-  console.log(formation, setFormation, formationList, setFormationList, open, setOpen, selectedFormation, setSelectedFormation, isScrolled, setIsScrolled);
+  
+  const { data, loading, error } = useQuery(COURSES_QUERY, {
+    variables: { publishedOnly: true },
+  });
+
+  const formations = data?.courses || [];
   
 
   useEffect(() => {
@@ -60,20 +65,26 @@ const FormationMenu = () => {
                 Fermer le menu
               </label>
             </div>
-            {formationList.map((formation) => (
-              <li key={formation.id}>
-                <Link
-                  href="#"
-                  className="text-slate-900 hover:bg-slate-300 border-b-2 border-slate-400"
-                  onClick={() => {
-                    setSelectedFormation(formation.title);
-                    setOpen(!open);
-                  }}
-                >
-                  {formation.title}
-                </Link>
-              </li>
-            ))}
+            {loading ? (
+              <div>Chargement des formations...</div>
+            ) : error ? (
+              <div>Erreur lors du chargement des formations</div>
+            ) : (
+              formations.map((formation: Course) => (
+                <li key={formation.id}>
+                  <Link
+                    href={`#${formation.id}`}
+                    className="text-slate-900 hover:bg-slate-300 border-b-2 border-slate-400"
+                    onClick={() => {
+                      setSelectedFormation(formation.title);
+                      setOpen(false);
+                    }}
+                  >
+                    {formation.title}
+                  </Link>
+                </li>
+              ))
+            )}
           </ul>
         </div>
       </div>

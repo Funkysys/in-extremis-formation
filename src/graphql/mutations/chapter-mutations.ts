@@ -3,8 +3,8 @@ import { gql } from "@apollo/client";
 // Mutations chapter
 
 export const CREATE_CHAPTER_MUTATION = gql`
-  mutation($courseId: UUID!, $title: String!, $description: String, $order: Int, $imageId: UUID) {
-    create_chapter(courseId: $courseId, title: $title, description: $description, order: $order, imageId: $imageId) {
+  mutation($courseId: UUID!, $title: String!, $description: String, $order: Int, $imageId: UUID, $videoId: UUID) {
+    create_chapter(courseId: $courseId, title: $title, description: $description, order: $order, imageId: $imageId, videoId: $videoId) {
       id
       title
       description

@@ -5,7 +5,7 @@ import { useQuery, useMutation } from "@apollo/client";
 import { GET_CART_QUERY } from "@/graphql/queries/cart-queries";
 import { ADD_TO_CART_MUTATION, REMOVE_FROM_CART_MUTATION, CLEAR_CART_MUTATION } from "@/graphql/mutations/cart-mutations";
 import { CartItem } from "@/types";
-import { useToaster } from "@/providers/ToasterProvider";
+import { useToast } from "@/providers/ToastProvider";
 
 interface CartProps {
   onClose: () => void;
@@ -24,7 +24,7 @@ export default function Cart({ onClose }: CartProps) {
   const [addToCart, { loading: addingToCart }] = useMutation(ADD_TO_CART_MUTATION);
   const [removeFromCart, { loading: removingFromCart }] = useMutation(REMOVE_FROM_CART_MUTATION);
   const [clearCartMutation, { loading: clearingCart }] = useMutation(CLEAR_CART_MUTATION);
-  const { addToast } = useToaster();
+  const { showToast } = useToast();
 
   if (error) {
     console.log(error);
@@ -39,9 +39,9 @@ export default function Cart({ onClose }: CartProps) {
     try {
       await addToCart({ variables: { courseId } });
       await refetch();
-      addToast("Le cours a été ajouté au panier", "success");
+      showToast("Le cours a été ajouté au panier", "success");
     } catch (err) {
-      addToast("Erreur lors de l'ajout au panier", "error");
+      showToast("Erreur lors de l'ajout au panier", "error");
     }
   };
 
@@ -49,9 +49,9 @@ export default function Cart({ onClose }: CartProps) {
     try {
       await removeFromCart({ variables: { cartItemId } });
       await refetch();
-      addToast("Le cours a été retiré du panier", "success");
+      showToast("Le cours a été retiré du panier", "success");
     } catch (err) {
-      addToast("Erreur lors de la suppression du panier", "error");
+      showToast("Erreur lors de la suppression du panier", "error");
     }
   };
 
@@ -59,9 +59,9 @@ export default function Cart({ onClose }: CartProps) {
     try {
       await clearCartMutation({ variables: { cartId: data.cart.id } });
       await refetch();
-      addToast("Panier vidé", "success");
+      showToast("Panier vidé", "success");
     } catch (err) {
-      addToast("Erreur lors du vidage du panier", "error");
+      showToast("Erreur lors du vidage du panier", "error");
     }
   };
 

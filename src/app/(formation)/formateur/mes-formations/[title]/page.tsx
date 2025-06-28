@@ -1,67 +1,122 @@
 "use client";
 import { useParams } from "next/navigation";
-import { useQuery } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
 import { COURSE_BY_TITLE_QUERY } from "@/graphql/queries/course-queries";
-import Link from "next/link";
-import React, { useState, useRef, useEffect } from "react";
-import EditCourseInfoModal from "@/components/formateur/EditCourseInfoModal";
-import AddVideoModal from "@/components/formateur/AddVideoModal";
-import VideoChaptersModal from "@/components/formateur/VideoChaptersModal";
-import { DELETE_BUNNY_VIDEO_MUTATION } from "@/graphql/mutations/video-mutations";
-import { useToast } from "@/providers/ToastProvider";
-import { useMutation } from "@apollo/client";
 import { UPDATE_COURSE_MUTATION } from "@/graphql/mutations/course-mutations";
+import Link from "next/link";
+import React, { useState, useRef, useEffect, useCallback } from "react";
+import EditCourseInfoModal from "@/components/formateur/EditCourseInfoModal";
+import VideoChaptersModal from "@/components/formateur/VideoChaptersModal";
+import { VideoUploadZone } from "@/components/formateur/VideoUploadZone";
+import { useVideoUpload } from "@/hooks/useVideoUpload";
+
+interface Video {
+  id: string;
+  title: string;
+  url: string;
+  thumbnailUrl?: string;
+  duration: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface Course {
+  id: string;
+  title: string;
+  description: string;
+  price: number | null;
+  published: boolean;
+  created_at: string;
+  cover_image?: {
+    url: string;
+  };
+  chapters?: Array<{
+    id: string;
+    title: string;
+    description: string;
+    order: number;
+  }>;
+  videos?: Video[];
+}
 
 export default function EditCoursePage() {
   const { title } = useParams();
   const { data, loading, error, refetch } = useQuery(COURSE_BY_TITLE_QUERY, {
     variables: { title },
+    skip: !title,
   });
-  const course = data?.courseByTitle;
-
+  
+  const course = data?.courseByTitle as Course | undefined;
   const [modalOpen, setModalOpen] = useState(false);
-  const [addVideoOpen, setAddVideoOpen] = useState(false);
-  const [videos, setVideos] = useState<any[]>([]);
-  const lastVideoRef = useRef<HTMLLIElement | null>(null);
   const [chapterModalOpen, setChapterModalOpen] = useState(false);
-  const [selectedVideo, setSelectedVideo] = useState<any>(null);
-  const [updateCourse] = useMutation(UPDATE_COURSE_MUTATION);
-  const [deleteVideo, { loading: deletingVideo }] = useMutation(DELETE_BUNNY_VIDEO_MUTATION);
+  const [selectedVideo, setSelectedVideo] = useState<Video | null>(null);
   const [saving, setSaving] = useState(false);
-  const [saveError, setSaveError] = useState<string|null>(null);
-  const { showToast } = useToast();
+  const [saveError, setSaveError] = useState<string | null>(null);
+  const lastVideoRef = useRef<HTMLLIElement | null>(null);
+  const [updateCourse] = useMutation(UPDATE_COURSE_MUTATION);
+  
+  // Utilisation du hook personnalisé pour l'upload de vidéos
+  const { upload, isUploading, uploadProgress } = useVideoUpload({
+    onSuccess: (video) => {
+      // Faire défiler vers la nouvelle vidéo après l'upload
+      setTimeout(() => {
+        lastVideoRef.current?.scrollIntoView({ 
+          behavior: "smooth", 
+          block: "center" 
+        });
+      }, 200);
+      
+      // Rafraîchir les données du cours
+      refetch();
+    },
+    onError: (error) => {
+      console.error("Erreur lors de l'upload:", error);
+    },
+    maxSizeMB: 100, // 100MB max
+  });
 
-  const handleVideoAdded = (video: any) => {
-    setVideos(v => [...v, video]);
-    setTimeout(() => {
-      lastVideoRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
-    }, 200);
-    refetch(); // Pour rafraîchir la liste réelle si besoin
-  };
-
-  const handleSaveCourse = async (updated: any) => {
+  // Liste des vidéos (depuis le cours ou l'état local)
+  const videos = course?.videos || [];
+  
+  // Gestion de la suppression d'une vidéo
+  const handleDeleteVideo = useCallback(async (videoId: string) => {
+    if (!window.confirm('Êtes-vous sûr de vouloir supprimer cette vidéo ?')) {
+      return;
+    }
+    
+    try {
+      // TODO: Implémenter la suppression via mutation GraphQL
+      // await deleteVideoMutation({ variables: { id: videoId } });
+      await refetch();
+    } catch (error) {
+      console.error('Erreur lors de la suppression de la vidéo:', error);
+    }
+  }, [refetch]);
+  
+  // Gestion de la sauvegarde des modifications du cours
+  const handleSaveCourse = useCallback(async (updated: Partial<Course>) => {
+    if (!course) return;
+    
     setSaving(true);
     setSaveError(null);
+    
     try {
-      // TODO: gérer l'upload d'image si coverImage est un fichier
       await updateCourse({
         variables: {
           id: course.id,
-          title: updated.title,
-          description: updated.description,
-          price: updated.price,
-          published: updated.published,
-          // cover_image_id: ...
+          ...updated,
         },
       });
+      
       setModalOpen(false);
-      refetch();
+      await refetch();
     } catch (e: any) {
-      setSaveError(e.message);
+      console.error('Erreur lors de la mise à jour du cours:', e);
+      setSaveError(e.message || 'Une erreur est survenue');
     } finally {
       setSaving(false);
     }
-  };
+  }, [course, refetch, updateCourse]);
 
   if (loading) return <div className="p-8">Chargement...</div>;
   if (error) return <div className="p-8 text-red-500">Erreur : {error.message}</div>;
@@ -119,51 +174,136 @@ export default function EditCoursePage() {
         )}
       </div>
       <hr className="my-6" />
-      <div>
-        <div className="flex items-center justify-between mb-2">
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold">Vidéos</h2>
-          <button className="btn btn-success btn-sm" onClick={() => setAddVideoOpen(true)}>Ajouter une vidéo</button>
         </div>
-        <AddVideoModal isOpen={addVideoOpen} onClose={() => setAddVideoOpen(false)} onVideoAdded={handleVideoAdded} />
-        {(course.videos?.length || videos.length) ? (
-          <ul className="space-y-2">
-            {[...(course.videos || []), ...videos].map((v: any, idx, arr) => (
-              <li
-                key={v.guid || v.id}
-                ref={idx === arr.length - 1 ? lastVideoRef : null}
-                className="p-2 sm:p-3 bg-sky-50 rounded flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-0 transition-all duration-300 ease-in-out hover:shadow-lg hover:scale-[1.01] opacity-100"
+        
+        {/* Zone de dépôt de vidéo */}
+        <div className="mb-8">
+          <h3 className="text-lg font-medium text-gray-900 mb-4">Contenu vidéo</h3>
+          <VideoUploadZone
+            onUpload={upload}
+            isUploading={isUploading}
+            uploadProgress={uploadProgress}
+            maxSizeMB={100}
+            className="bg-gray-50 p-6 rounded-lg border border-gray-200"
+          />
+        </div>
+        
+        <div className="mt-8">
+          <h3 className="text-lg font-medium text-gray-900 mb-4">Vidéos du cours</h3>
+          
+          {videos.length === 0 ? (
+            <div className="text-center py-12 border-2 border-dashed border-gray-200 rounded-lg bg-gray-50">
+              <svg
+                className="mx-auto h-12 w-12 text-gray-400"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
               >
-                <div className="flex-1 min-w-0">
-                  <b className="block truncate text-base sm:text-lg">{v.title}</b> <span className="text-xs text-slate-500">(durée : {v.duration || v.length || "-"})</span><br />
-                  <span className="block text-xs sm:text-sm truncate">{v.description}</span>
-                </div>
-                <div className="flex gap-1 sm:gap-2 flex-wrap">
-                  <button className="btn btn-xs btn-info">Modifier</button>
-                  <button className="btn btn-xs btn-warning" onClick={() => { setSelectedVideo(v); setChapterModalOpen(true); }}>Chapitrer</button>
-                  <button className="btn btn-xs btn-error" disabled={deletingVideo} onClick={async () => {
-                    if (!window.confirm("Confirmer la suppression de cette vidéo ?")) return;
-                    try {
-                      await deleteVideo({ variables: { guid: v.guid || v.id } });
-                      refetch();
-                      showToast("Vidéo supprimée avec succès", "success");
-                    } catch (e) {
-                      showToast("Erreur lors de la suppression de la vidéo", "error");
-                    }
-                  }}>{deletingVideo ? "..." : "Supprimer"}</button>
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1}
+                  d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z"
+                />
+              </svg>
+              <h4 className="mt-2 text-sm font-medium text-gray-700">Aucune vidéo</h4>
+              <p className="mt-1 text-sm text-gray-500">
+                Commencez par ajouter votre première vidéo
+              </p>
+            </div>
+          ) : (
+            <ul className="space-y-4">
+              {videos.map((video, index) => (
+                <li 
+                  key={video.id} 
+                  ref={index === videos.length - 1 ? lastVideoRef : null}
+                  className="bg-white rounded-lg shadow overflow-hidden border border-gray-200 hover:shadow-md transition-shadow duration-200"
+                >
+                  <div className="p-4">
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1 min-w-0">
+                        <h3 className="text-sm font-medium text-gray-900 truncate">
+                          {video.title}
+                        </h3>
+                        <div className="mt-1 flex items-center text-sm text-gray-500">
+                          <span>
+                            Ajouté le {new Date(video.createdAt).toLocaleDateString()}
+                          </span>
+                          {video.duration && (
+                            <>
+                              <span className="mx-2">•</span>
+                              <span>
+                                {Math.floor(video.duration / 60)}:{
+                                  (video.duration % 60).toString().padStart(2, '0')
+                                }
+                              </span>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                      <div className="ml-4 flex-shrink-0 flex space-x-2">
+                        <button
+                          onClick={() => {
+                            setSelectedVideo(video);
+                            setChapterModalOpen(true);
+                          }}
+                          className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        >
+                          Gérer les chapitres
+                        </button>
+                        <button
+                          onClick={() => handleDeleteVideo(video.id)}
+                          className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                        >
+                          Supprimer
+                        </button>
+                      </div>
+                    </div>
+                    
+                    {video.thumbnailUrl && (
+                      <div className="mt-3">
+                        <div className="relative pt-[56.25%] bg-gray-100 rounded overflow-hidden">
+                          <img
+                            src={video.thumbnailUrl}
+                            alt={`Miniature de ${video.title}`}
+                            className="absolute inset-0 w-full h-full object-cover"
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  
+                  {video.thumbnailUrl && (
+                    <div className="mt-3">
+                      <div className="relative pt-[56.25%] bg-gray-100 rounded overflow-hidden">
+                        <img
+                          src={video.thumbnailUrl}
+                          alt={`Miniature de ${video.title}`}
+                          className="absolute inset-0 w-full h-full object-cover"
+                        />
+                      </div>
+                    </div>
+                  )}
                 </div>
               </li>
             ))}
-
           </ul>
-        ) : (
-          <div className="text-slate-500">Aucune vidéo pour ce cours.</div>
         )}
       </div>
-      <VideoChaptersModal
-        video={selectedVideo}
-        isOpen={chapterModalOpen}
-        onClose={() => setChapterModalOpen(false)}
-      />
+      {selectedVideo && (
+        <VideoChaptersModal
+          video={selectedVideo}
+          isOpen={chapterModalOpen}
+          onClose={() => setChapterModalOpen(false)}
+        />
+      )}
+                    </button>
+                  </div>
     </div>
   );
-}
+};
+
+export default EditCoursePage;

@@ -1,14 +1,37 @@
 import { gql } from "@apollo/client";
 
 export const COURSES_QUERY = gql`
-  query($publishedOnly: Boolean) {
+  query Courses($publishedOnly: Boolean) {
     courses(publishedOnly: $publishedOnly) {
       id
       title
       description
+      price
       isPublished
       createdAt
       updatedAt
+      image {
+        url
+        altText
+      }
+      chapters {
+        id
+        title
+        description
+        order
+        videos {
+          id
+          title
+          description
+          url
+          duration
+          order
+          thumbnail {
+            url
+            altText
+          }
+        }
+      }
     }
   }
 `;
@@ -50,7 +73,28 @@ export const MY_COURSES_QUERY = gql`
       isPublished
       createdAt
       updatedAt
-      # Ajoute ici d'autres champs si besoin
+      image {
+        url
+        altText
+      }
+      chapters {
+        id
+        title
+        description
+        order
+        videos {
+          id
+          title
+          description
+          url
+          duration
+          order
+          thumbnail {
+            url
+            altText
+          }
+        }
+      }
     }
   }
 `;

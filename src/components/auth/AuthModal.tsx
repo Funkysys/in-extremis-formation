@@ -81,10 +81,10 @@ export default function AuthModal({ open, onClose, onSuccess }: { open: boolean;
         </div>
         <div className="w-full flex-1">
           {mode === "login" && tab === "email" && <LoginWithEmail onSuccess={onSuccess} />}
-          {mode === "login" && tab === "oauth" && <LoginWithOAuth />}
+          {mode === "login" && tab === "oauth" && <LoginWithOAuth onSuccess={onSuccess} />}
           {mode === "login" && tab === "magic" && <LoginWithMagicLink onSuccess={onSuccess} />}
           {mode === "register" && tab === "email" && <RegisterWithEmail onSuccess={onSuccess} />}
-          {mode === "register" && tab === "oauth" && <RegisterWithOAuth />}
+          {mode === "register" && tab === "oauth" && <RegisterWithOAuth onSuccess={onSuccess} />}
           {mode === "register" && tab === "magic" && <RegisterWithMagicLink onSuccess={onSuccess} />}
         </div>
       </div>

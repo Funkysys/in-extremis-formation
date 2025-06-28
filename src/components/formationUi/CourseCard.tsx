@@ -1,15 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 
-
+import { Course } from "@/types/course";
 
 interface CourseCardProps {
-  formation: {
-    id: string;
-    title: string;
-    description: string;
-    imageUrl?: string;
-  };
+  formation: Course;
   isOwner?: boolean;
 }
 
@@ -23,26 +18,52 @@ const CourseCard = ({ formation, isOwner }: CourseCardProps) => {
   }
   return (
     <div className="card bg-sky-100 lg:min-h-[40vh] shadow-sm">
-      <figure className="card h-72 md:h-80 lg:h-96 xl:h-full w-full overflow-hidden">
-        {formation.imageUrl ? (
-          <Image src={formation.imageUrl} alt={formation.title} fill />
+      <figure className="card h-72 md:h-80 lg:h-96 xl:h-full w-full overflow-hidden relative">
+        {formation.image?.url ? (
+          <Image 
+            src={formation.image.url} 
+            alt={formation.image.altText || formation.title} 
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            priority
+          />
+        ) : formation.coverImage?.url ? (
+          <Image 
+            src={formation.coverImage.url} 
+            alt={formation.coverImage.altText || formation.title} 
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            priority
+          />
         ) : (
-          <div className="flex items-center justify-center w-full h-full bg-slate-200 text-slate-500">
-            Pas d'image
+          <div className="flex items-center justify-center w-full h-full bg-gradient-to-br from-slate-800 to-slate-600 text-slate-300">
+            <div className="text-center p-4">
+              <div className="text-4xl mb-2">🎬</div>
+              <p className="text-sm">Aucune miniature disponible</p>
+            </div>
           </div>
         )}
-        <Link href={`/formation/${formation.title}`}>
-          <button className="btn absolute right-2 bottom-2 text-slate-800 bg-yellow-300 hover:bg-yellow-400 border-none">Voir +</button>
-        </Link>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent">
+          <Link href={`/formation/${formation.id}`} className="absolute right-2 bottom-2">
+            <button className="btn text-slate-800 bg-yellow-300 hover:bg-yellow-400 border-none">
+              Voir +
+            </button>
+          </Link>
+        </div>
       </figure>
       <div className="h-full w-full flex p-2">
         <div className="h-full w-[68%] flex flex-col  p-4 ">
-          <h2 className="card-title text-slate-800 ">{formation.title}</h2>
-          <p className="text-sm text-slate-600">
-            {formation.description.length > 100
-              ? `${formation.description.slice(0, 100)}...`
-              : formation.description}
+          <h2 className="card-title text-slate-800 line-clamp-1">{formation.title}</h2>
+          <p className="text-sm text-slate-600 line-clamp-2">
+            {formation.description || 'Aucune description disponible'}
           </p>
+          {formation.price !== undefined && formation.price > 0 && (
+            <div className="mt-2">
+              <span className="text-lg font-bold text-slate-800">{formation.price.toFixed(2)} €</span>
+            </div>
+          )}
         </div>
         <div className="card-actions h-full w-[32%] flex flex-col items-end justify-end ">
           <button className="btn w-full text-slate-800 bg-yellow-300 hover:bg-yellow-400 border-none">+ liste de souhait</button>
