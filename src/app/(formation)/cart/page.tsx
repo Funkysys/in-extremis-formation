@@ -1,28 +1,38 @@
-import { useState, useEffect } from "react";
-import { useQuery, useMutation } from "@apollo/client";
-import {
-  GET_CART_QUERY,
-} from "@/graphql/queries/cart-queries";
+"use client";
+// import { useState, useEffect } from "react";
 import {
   ADD_TO_CART_MUTATION,
   REMOVE_FROM_CART_MUTATION,
 } from "@/graphql/mutations/cart-mutations";
+import { GET_CART_QUERY } from "@/graphql/queries/cart-queries";
+import { useMutation, useQuery } from "@apollo/client";
 import { motion } from "framer-motion";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useToaster } from "@/providers/ToasterProvider";
-import { CartItem } from "@/types";
+// import Image from "next/image";
 import CartItemComponent from "@/components/formationUi/CartItem";
+import { useToast } from "@/providers/ToastProvider";
+import { CartItem } from "@/types";
+import { useRouter } from "next/navigation";
 
 export default function CartPage() {
   const { data, error, loading, refetch } = useQuery(GET_CART_QUERY);
-  const [addToCart, { loading: addingToCart }] = useMutation(ADD_TO_CART_MUTATION);
-  const [removeFromCart, { loading: removingFromCart }] = useMutation(REMOVE_FROM_CART_MUTATION);
+  const [addToCart, { loading: addingToCart }] =
+    useMutation(ADD_TO_CART_MUTATION);
+  const [removeFromCart, { loading: removingFromCart }] = useMutation(
+    REMOVE_FROM_CART_MUTATION
+  );
   const router = useRouter();
-  const { addToast } = useToaster();
+  const { showToast } = useToast();
 
-  if (loading) return <div className="text-center py-10 text-lg">Chargement du panier...</div>;
-  if (error) return <div className="text-center py-10 text-red-600">Erreur lors du chargement du panier</div>;
+  if (loading)
+    return (
+      <div className="text-center py-10 text-lg">Chargement du panier...</div>
+    );
+  if (error)
+    return (
+      <div className="text-center py-10 text-red-600">
+        Erreur lors du chargement du panier
+      </div>
+    );
 
   const cartItems: CartItem[] = data?.cart?.items || [];
 
@@ -30,9 +40,10 @@ export default function CartPage() {
     try {
       await addToCart({ variables: { courseId } });
       await refetch();
-      addToast("Le cours a été ajouté au panier avec succès", "success");
+      showToast("Le cours a été ajouté au panier avec succès", "success");
     } catch (error) {
-      addToast("Une erreur est survenue lors de l'ajout au panier", "error");
+      showToast("Une erreur est survenue lors de l'ajout au panier", "error");
+      console.error("Erreur lors de l'ajout au panier:", error);
     }
   };
 
@@ -40,9 +51,13 @@ export default function CartPage() {
     try {
       await removeFromCart({ variables: { courseId } });
       await refetch();
-      addToast("Le cours a été retiré du panier avec succès", "success");
+      showToast("Le cours a été retiré du panier avec succès", "success");
     } catch (error) {
-      addToast("Une erreur est survenue lors de la suppression du panier", "error");
+      showToast(
+        "Une erreur est survenue lors de la suppression du panier",
+        "error"
+      );
+      console.error("Erreur lors de l'ajout au panier:", error);
     }
   };
 
