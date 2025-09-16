@@ -50,7 +50,7 @@ export default function ProfilFormateurPage() {
     if (user) setFullName(user.fullName || "");
     if (trainer) {
       setDescription(trainer.description || "");
-      setSelectedTopics(trainer.topics?.map((t: any) => t.id) || []);
+      setSelectedTopics(trainer.topics?.map((t: { id: string }) => t.id) || []);
     }
   }, [user, trainer]);
 
@@ -96,7 +96,7 @@ export default function ProfilFormateurPage() {
       localStorage.removeItem("token");
       setShowConfirm(false);
       router.replace("/");
-    } catch (error) {
+    } catch {
       showToast("Erreur lors de la suppression du compte", "error");
       setShowConfirm(false);
     }
@@ -144,7 +144,7 @@ export default function ProfilFormateurPage() {
             {"Mots-clés pour te retrouver"}
           </label>
           <div className="flex flex-wrap gap-3">
-            {allTopics.map((topic: any) => (
+            {allTopics.map((topic: { id: string; name: string }) => (
               <label
                 key={topic.id}
                 className={`px-3 py-1 rounded-full border cursor-pointer flex items-center gap-2 ${

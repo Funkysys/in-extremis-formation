@@ -80,22 +80,19 @@ function EditCoursePage() {
   const videos = course?.videos || [];
 
   // Gestion de la suppression d'une vidéo
-  const handleDeleteVideo = useCallback(
-    async (videoId: string) => {
-      if (!window.confirm("Êtes-vous sûr de vouloir supprimer cette vidéo ?")) {
-        return;
-      }
+  const handleDeleteVideo = useCallback(async () => {
+    if (!window.confirm("Êtes-vous sûr de vouloir supprimer cette vidéo ?")) {
+      return;
+    }
 
-      try {
-        // TODO: Implémenter la suppression via mutation GraphQL
-        // await deleteVideoMutation({ variables: { id: videoId } });
-        await refetch();
-      } catch (error) {
-        console.error("Erreur lors de la suppression de la vidéo:", error);
-      }
-    },
-    [refetch]
-  );
+    try {
+      // TODO: Implémenter la suppression via mutation GraphQL
+      // await deleteVideoMutation();
+      await refetch();
+    } catch (error) {
+      console.error("Erreur lors de la suppression de la vidéo:", error);
+    }
+  }, [refetch]);
 
   // Gestion de la sauvegarde des modifications du cours
   const handleSaveCourse = useCallback(
@@ -115,9 +112,13 @@ function EditCoursePage() {
 
         setModalOpen(false);
         await refetch();
-      } catch (e: any) {
-        console.error("Erreur lors de la mise à jour du cours:", e);
-        setSaveError(e.message || "Une erreur est survenue");
+      } catch (e: unknown) {
+        if (e instanceof Error) {
+          console.error("Erreur lors de la mise à jour du cours:", e);
+          setSaveError(e.message || "Une erreur est survenue");
+        } else {
+          setSaveError("Une erreur est survenue");
+        }
       } finally {
         setSaving(false);
       }
@@ -189,25 +190,32 @@ function EditCoursePage() {
         </div>
         {course.chapters?.length ? (
           <ul className="space-y-2">
-            {course.chapters.map((ch: any) => (
-              <li
-                key={ch.id}
-                className="p-3 bg-sky-50 rounded flex justify-between items-center"
-              >
-                <div>
-                  <b>{ch.title}</b>{" "}
-                  <span className="text-xs text-slate-500">
-                    (ordre : {ch.order})
-                  </span>
-                  <br />
-                  <span>{ch.description}</span>
-                </div>
-                <div className="flex gap-2">
-                  <button className="btn btn-xs btn-info">Modifier</button>
-                  <button className="btn btn-xs btn-error">Supprimer</button>
-                </div>
-              </li>
-            ))}
+            {course.chapters.map(
+              (ch: {
+                id: string;
+                title: string;
+                description: string;
+                order: number;
+              }) => (
+                <li
+                  key={ch.id}
+                  className="p-3 bg-sky-50 rounded flex justify-between items-center"
+                >
+                  <div>
+                    <b>{ch.title}</b>{" "}
+                    <span className="text-xs text-slate-500">
+                      (ordre : {ch.order})
+                    </span>
+                    <br />
+                    <span>{ch.description}</span>
+                  </div>
+                  <div className="flex gap-2">
+                    <button className="btn btn-xs btn-info">Modifier</button>
+                    <button className="btn btn-xs btn-error">Supprimer</button>
+                  </div>
+                </li>
+              )
+            )}
           </ul>
         ) : (
           <div className="text-slate-500">Aucun chapitre pour ce cours.</div>
@@ -303,7 +311,7 @@ function EditCoursePage() {
                           Gérer les chapitres
                         </button>
                         <button
-                          onClick={() => handleDeleteVideo(video.id)}
+                          onClick={handleDeleteVideo}
                           className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                         >
                           Supprimer
