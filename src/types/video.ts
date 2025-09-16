@@ -1,3 +1,22 @@
+export interface Video {
+  id: string;
+  title: string;
+  url: string;
+  thumbnailUrl?: string;
+  duration?: number;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface UploadedVideo {
+  id: string;
+  title: string;
+  url: string;
+  thumbnailUrl?: string;
+  duration?: number;
+  createdAt?: string;
+  updatedAt?: string;
+}
 export interface VideoMetadata {
   id: string;
   title: string;

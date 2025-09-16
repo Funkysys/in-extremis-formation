@@ -1,13 +1,14 @@
-import { ApolloClient, InMemoryCache, createHttpLink, ApolloLink } from '@apollo/client';
-import { setContext } from '@apollo/client/link/context';
+import { ApolloClient, InMemoryCache, createHttpLink } from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
 
 // Configuration pour gérer les types scalaires personnalisés
 const typePolicies = {
   Query: {
     fields: {
       videoMarkers: {
-        keyArgs: ['videoId'],
-        merge(existing: any[] = [], incoming: any[]) {
+        keyArgs: ["videoId"],
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        merge(_: unknown[] = [], incoming: unknown[]) {
           return incoming;
         },
       },
@@ -17,24 +18,24 @@ const typePolicies = {
 
 // Créer un lien HTTP standard
 const httpLink = createHttpLink({
-  uri: process.env.NEXT_PUBLIC_API_URL + '/graphql',
-  credentials: 'include',
+  uri: process.env.NEXT_PUBLIC_API_URL + "/graphql",
+  credentials: "include",
 });
 
 // Middleware pour ajouter le token d'authentification
 const authLink = setContext((_, { headers }) => {
   // Récupérer le token du localStorage uniquement côté client
-  let token = '';
-  if (typeof window !== 'undefined') {
-    token = localStorage.getItem('token') || '';
+  let token = "";
+  if (typeof window !== "undefined") {
+    token = localStorage.getItem("token") || "";
   }
 
   // Retourner les headers avec le token d'authentification
   return {
     headers: {
       ...headers,
-      authorization: token ? `Bearer ${token}` : '',
-      'apollo-require-preflight': 'true',
+      authorization: token ? `Bearer ${token}` : "",
+      "apollo-require-preflight": "true",
     },
   };
 });
@@ -48,13 +49,13 @@ export const client = new ApolloClient({
   cache: new InMemoryCache({
     typePolicies,
     possibleTypes: {
-      UUID: ['String'],
+      UUID: ["String"],
     },
   }),
-  ssrMode: typeof window === 'undefined',
+  ssrMode: typeof window === "undefined",
   defaultOptions: {
     watchQuery: {
-      fetchPolicy: 'cache-first',
+      fetchPolicy: "cache-first",
     },
   },
 });

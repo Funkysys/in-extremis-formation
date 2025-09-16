@@ -12,7 +12,7 @@ export async function testUploadMultipart({
   // Vérification que le titre n'est pas vide
   if (!title || title.trim() === "") {
     return {
-      errors: [{ message: "Le titre de la vidéo ne peut pas être vide" }]
+      errors: [{ message: "Le titre de la vidéo ne peut pas être vide" }],
     };
   }
 
@@ -35,7 +35,7 @@ export async function testUploadMultipart({
   });
 
   console.log("Test upload operations:", operations);
-  
+
   const map = JSON.stringify({ "0": ["variables.file"] });
 
   const formData = new FormData();
@@ -44,7 +44,7 @@ export async function testUploadMultipart({
   formData.append("0", file);
 
   console.log("Sending test upload to:", endpoint);
-  
+
   const res = await fetch(endpoint, {
     method: "POST",
     headers: {
@@ -54,15 +54,18 @@ export async function testUploadMultipart({
   });
 
   console.log("Test upload response status:", res.status);
-  
+
   const responseText = await res.text();
   console.log("Test upload response text:", responseText);
-  
+
   let result;
   try {
     result = JSON.parse(responseText);
-  } catch (e) {
-    throw new Error("Erreur lors du test d'upload : la réponse du serveur n'est pas au format JSON. Réponse brute : " + responseText);
+  } catch {
+    throw new Error(
+      "Erreur lors du test d'upload : la réponse du serveur n'est pas au format JSON. Réponse brute : " +
+        responseText
+    );
   }
   return result;
 }

@@ -70,8 +70,8 @@ function EditCoursePage() {
       // Rafraîchir les données du cours
       refetch();
     },
-    onError: (error) => {
-      console.error("Erreur lors de l'upload:", error);
+    onError: () => {
+      console.error("Erreur lors de l'upload:");
     },
     maxSizeMB: 100, // 100MB max
   });
