@@ -1,12 +1,13 @@
 import Footer from "@/components/global/Footer";
+import ThemeSwitch from "@/components/global/ThemeSwitch";
+import CustomApolloProvider from "@/providers/ApolloProvider";
+import { AuthProvider } from "@/providers/AuthProvider";
 import { ToastProvider } from "@/providers/ToastProvider";
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Roboto } from "next/font/google";
 import { Suspense } from "react";
 import "./globals.css";
 import Loading from "./loading";
-import CustomApolloProvider from "@/providers/ApolloProvider";
-import { AuthProvider } from "@/providers/AuthProvider";
 
 const roboto = Roboto({
   variable: "--font-roboto",
@@ -104,7 +105,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   return (
     <html lang="fr">
       <body
@@ -114,6 +114,7 @@ export default function RootLayout({
           <AuthProvider>
             <Suspense fallback={<Loading />}>
               <ToastProvider>
+                <ThemeSwitch />
                 {children}
                 <Footer />
               </ToastProvider>

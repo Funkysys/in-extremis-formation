@@ -7,6 +7,7 @@ const Card = ({ id, title, description, imageUrl, link, mail }: CardType) => {
     <article
       key={id}
       className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 h-[80vh] lg:h-[70vh] flex flex-col"
+      style={{ background: "var(--color-background-tertiary)" }}
     >
       {/* Image de la carte */}
       {imageUrl && (
@@ -24,9 +25,14 @@ const Card = ({ id, title, description, imageUrl, link, mail }: CardType) => {
       {/* Contenu de la carte */}
       <div className="flex flex-col flex-grow justify-between items-start">
         <header>
-          <h3 className="text-xl font-bold mb-4 text-slate-800">{title}</h3>
+          <h3
+            className="text-xl font-bold mb-4"
+            style={{ color: "var(--color-foreground)" }}
+          >
+            {title}
+          </h3>
         </header>
-        <p className="text-gray-700">{description}</p>
+        <p style={{ color: "var(--color-foreground)" }}>{description}</p>
         <footer className="mt-4 w-full">
           {mail && (
             <Link

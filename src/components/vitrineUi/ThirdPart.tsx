@@ -1,14 +1,23 @@
 import { cards } from "@/data/outils";
 import Image from "next/image";
 import Link from "next/link";
-import { CardType } from "../../types";
+import { CardType } from "../../types/cards";
 import LinksCard from "./LinksCard";
 
 const ThirdPart: React.FC = () => {
   return (
-    <section className="w-[100vw] min-h-[100vh] bg-sky-600 flex flex-col justify-center items-center">
+    <section
+      className="w-[100vw] min-h-[100vh] flex flex-col justify-center items-center"
+      style={{
+        background: "var(--color-background-tertiary)",
+        color: "var(--color-foreground)",
+      }}
+    >
       <header>
-        <h2 className="text-xl md:text-3xl text-white text-center mb-6 mt-6 font-roboto">
+        <h2
+          className="text-xl md:text-3xl text-center mb-6 mt-6 font-roboto"
+          style={{ color: "var(--color-foreground)" }}
+        >
           Avant de partir, découvrez aussi notre catalogue de <br />
           conférence sur les thèmes de musique et société sur In Extremis
           Society
@@ -22,6 +31,7 @@ const ThirdPart: React.FC = () => {
             alt="In Extremis Society - Conférences sur la musique et la société"
             layout="fill"
             className="object-cover rounded-lg"
+            style={{ background: "var(--color-background-tertiary)" }}
           />
         </Link>
       </figure>
@@ -30,14 +40,22 @@ const ThirdPart: React.FC = () => {
         href="https://www.in-extremis-conferences.eu/"
         target="_blank"
         rel="noopener noreferrer"
-        className="text-yellow-500 hover:text-sky-900 hover:bg-yellow-500 bg-sky-900 hover:text-yello-700 text-xl mt-4 px-4 py-2 border-4 border-yellow-500 rounded"
+        className="text-xl mt-4 px-4 py-2 border-4 rounded"
+        style={{
+          color: "var(--color-primary)",
+          background: "var(--color-background-secondary)",
+          borderColor: "var(--color-primary)",
+        }}
         aria-label="En savoir plus sur In Extremis Society"
       >
         En savoir plus
       </Link>
 
       <section className="w-full mt-10">
-        <h2 className="text-3xl text-white text-center mb-6 font-roboto">
+        <h2
+          className="text-3xl text-center mb-6 font-roboto"
+          style={{ color: "var(--color-foreground)" }}
+        >
           Ainsi que nos différents outils
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-col-6 gap-4 py-10 lg:p-10">

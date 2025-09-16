@@ -1,0 +1,31 @@
+/* Classes globales pour le thème light/dark avec Tailwind */
+.theme-light {
+  --color-background: #fbfdff;
+  --color-background-secondary: #f4faff;
+  --color-background-tertiary: #e6f4fe;
+  --color-foreground: #1f2d5c;
+  --color-primary: #113264;
+  --color-secondary: #f4faff;
+  --color-button-bg: #2870bd;
+  --color-button-hover-bg: #0d2847;
+  --color-button-text: #141726;
+  --color-button-hover-text: #c2e6ff;
+  --color-border: #acd8fc;
+}
+.theme-dark {
+  --color-background: #0d1520;
+  --color-background-secondary: #111927;
+  --color-background-tertiary: #0d2847;
+  --color-foreground: #c2e6ff;
+  --color-primary: #70b8ff;
+  --color-secondary: #141726;
+  --color-button-bg: #2870bd;
+  --color-button-hover-bg: #0d2847;
+  --color-button-text: #141726;
+  --color-button-hover-text: #c2e6ff;
+  --color-border: #334155;
+}
+
+body {
+  transition: background 0.3s, color 0.3s;
+}
