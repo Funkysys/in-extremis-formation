@@ -1,17 +1,12 @@
-import React, { useRef, useCallback, useState } from 'react';
-import { VideoChapter } from './types/create-course.types';
-import { CourseVideoUpload, VideoPlayerMethods } from './CourseVideoUpload';
-import { MediaCMSVideoUploader, VideoMetadata } from './MediaCMSVideoUploader';
-import { CourseChapters } from './CourseChapters';
-import { useToast } from '@/providers/ToastProvider';
+// import supprimé : useToast
+// import supprimé : useToast
+import React, { useCallback, useRef, useState } from "react";
+import { CourseChapters } from "./CourseChapters";
+import CourseVideoUpload, { VideoPlayerMethods } from "./CourseVideoUpload";
+// import supprimé : MediaCMSVideoUploader, VideoMetadata
+import { VideoChapter } from "./types/create-course.types";
 
-interface VideoUploadResult {
-  id: string;
-  title: string;
-  url: string;
-  thumbnailUrl?: string;
-  duration: number;
-}
+// interface VideoUploadResult supprimée
 
 interface CourseVideoSectionProps {
   videoFile: File | null;
@@ -23,9 +18,7 @@ interface CourseVideoSectionProps {
   onUpdateChapter: (id: string, title: string) => void;
   onDeleteChapter: (id: string) => void;
   className?: string;
-  sectionRef?: React.RefObject<{
-    startVideoUpload: () => Promise<VideoUploadResult | undefined>;
-  } | null>;
+  // sectionRef supprimé
 }
 export const CourseVideoSection: React.FC<CourseVideoSectionProps> = ({
   videoFile,
@@ -33,84 +26,57 @@ export const CourseVideoSection: React.FC<CourseVideoSectionProps> = ({
   currentTime,
   onTimeUpdate,
   chapters,
-  onAddChapter,
+  // onAddChapter,
   onUpdateChapter,
   onDeleteChapter,
-  className = '',
-  sectionRef
+  className = "",
+  // sectionRef supprimé
 }) => {
   const videoRef = useRef<VideoPlayerMethods | null>(null);
   const [videoTime, setVideoTime] = useState(0);
-  const { showToast } = useToast();
-  const uploaderRef = useRef<{ startUpload: () => Promise<VideoMetadata | undefined> }>(null);
-  React.useEffect(() => {
-    if (sectionRef && 'current' in sectionRef) {
-      sectionRef.current = {
-        startVideoUpload: async () => {
-          console.log('CourseVideoSection: starting video upload');
-          
-          if (!uploaderRef.current) {
-            console.log('CourseVideoSection: uploaderRef not available');
-            return undefined;
-          }
-          
-          try {
-            return await uploaderRef.current.startUpload();
-          } catch (error) {
-            console.error('Upload error:', error);
-            throw error;
-          }
-        }
-      };
-    }
-  }, [sectionRef]);
-  
+  // showToast supprimé
+  // Effet sectionRef supprimé (uploaderRef inutilisé)
 
-  const handleTimeUpdate = useCallback((time: number) => {
-    setVideoTime(time);
-    onTimeUpdate(time);
-  }, [onTimeUpdate]);
-  
+  const handleTimeUpdate = useCallback(
+    (time: number) => {
+      setVideoTime(time);
+      onTimeUpdate(time);
+    },
+    [onTimeUpdate]
+  );
 
-  const handleVideoUploaded = useCallback(() => {
-    if (videoFile) {
-      showToast("Video ready for chapter editing", "success");
-    }
-  }, [videoFile, showToast]);
-  
+  // handleVideoUploaded supprimé (onVideoUploaded inutilisé)
 
-  const getVideoTime = useCallback(() => {
-    try {
-      const videoElement = document.querySelector('video');
-      return videoElement?.currentTime || videoTime;
-    } catch (e) {
-      return videoTime;
-    }
-  }, [videoTime]);
+  // const getVideoTime = useCallback(() => {
+  //   try {
+  //     const videoElement = document.querySelector("video");
+  //     return videoElement?.currentTime || videoTime;
+  //   } catch {
+  //     return videoTime;
+  //   }
+  // }, [videoTime]);
 
+  // const handleAddChapter = useCallback((title: string) => {
+  //   const currentTime = getVideoTime();
+  //   onAddChapter(title, currentTime);
+  //   showToast(`Chapter added at ${formatTime(currentTime)}`, "success");
+  // }, [onAddChapter, getVideoTime, showToast]);
 
-  const handleAddChapter = useCallback((title: string) => {
-    const currentTime = getVideoTime();
-    onAddChapter(title, currentTime);
-    showToast(`Chapter added at ${formatTime(currentTime)}`, "success");
-  }, [onAddChapter, getVideoTime, showToast]);
-
-
-  const handleChapterClick = useCallback((timestamp: number) => {
-    try {
-      const videoElement = document.querySelector('video');
-      if (videoElement) {
-        videoElement.currentTime = timestamp;
-        videoElement.play().catch(() => {
-          showToast("Unable to play video", "error");
-        });
-      }
-      setVideoTime(timestamp);
-      onTimeUpdate(timestamp);
-    } catch (error) {
-      showToast("Unable to access video", "error");
-    }
-  }, [onTimeUpdate, showToast, setVideoTime]);
+  // const handleChapterClick = useCallback((timestamp: number) => {
+  //   try {
+  //     const videoElement = document.querySelector('video');
+  //     if (videoElement) {
+  //       videoElement.currentTime = timestamp;
+  //       videoElement.play().catch(() => {
+  //         showToast("Unable to play video", "error");
+  //       });
+  //     }
+  //     setVideoTime(timestamp);
+  //     onTimeUpdate(timestamp);
+  //   } catch (error) {
+  //     showToast("Unable to access video", "error");
+  //   }
+  // }, [onTimeUpdate, showToast, setVideoTime]);
 
   return (
     <div className={`space-y-6 ${className}`}>
@@ -118,24 +84,16 @@ export const CourseVideoSection: React.FC<CourseVideoSectionProps> = ({
         ref={videoRef}
         videoFile={videoFile}
         onVideoChange={onVideoChange}
-        onVideoUploaded={handleVideoUploaded}
         onTimeUpdate={handleTimeUpdate}
         currentTime={currentTime}
-        uploaderRef={uploaderRef}
       />
-      
 
-      <MediaCMSVideoUploader
-        ref={uploaderRef}
-        videoFile={videoFile}
-        onUploadComplete={() => {}}
-        className="hidden"
-      />
-      
+      {/* MediaCMSVideoUploader supprimé */}
+
       <CourseChapters
         chapters={chapters}
         currentTime={videoTime}
-        onChapterClick={handleChapterClick}
+        // onChapterClick={handleChapterClick}
         onUpdateChapter={onUpdateChapter}
         onDeleteChapter={onDeleteChapter}
       />
@@ -143,9 +101,8 @@ export const CourseVideoSection: React.FC<CourseVideoSectionProps> = ({
   );
 };
 
-
-const formatTime = (seconds: number): string => {
-  const minutes = Math.floor(seconds / 60);
-  const remainingSeconds = Math.floor(seconds % 60);
-  return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
-};
+// const formatTime = (seconds: number): string => {
+//   const minutes = Math.floor(seconds / 60);
+//   const remainingSeconds = Math.floor(seconds % 60);
+//   return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
+// };

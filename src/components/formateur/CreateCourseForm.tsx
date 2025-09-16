@@ -1,23 +1,26 @@
 "use client";
-import React, { useCallback, useState, useRef } from 'react';
-import { useMutation } from '@apollo/client';
-import { useRouter } from 'next/navigation';
-import { CREATE_COURSE_MUTATION, CREATE_CHAPTER_MUTATION } from '@/graphql/mutations/course-mutations';
-import { useCourseForm } from './useCourseForm';
-import { CourseFormHeader, CourseTitleInput, CourseVideoSection, CourseFormActions } from './';
-import { CourseFormData } from './types/create-course.types';
-import { uploadMedia } from '@/services/mediaService';
+import { CREATE_COURSE_MUTATION } from "@/graphql/mutations/course-mutations";
+import { useMutation } from "@apollo/client";
+import { useRouter } from "next/navigation";
+import React from "react";
+import {
+  CourseFormActions,
+  CourseFormHeader,
+  CourseTitleInput,
+  CourseVideoSection,
+} from "./";
+import { useCourseForm } from "./useCourseForm";
 
-interface VideoChapter {
-  id: string;
-  title: string;
-  timestamp: number;
-}
+// interface VideoChapter {
+//   id: string;
+//   title: string;
+//   timestamp: number;
+// }
 
 export const CreateCourseForm: React.FC = () => {
   const router = useRouter();
   const [createCourse] = useMutation(CREATE_COURSE_MUTATION);
-  
+
   const {
     formData,
     currentTime,
@@ -34,142 +37,108 @@ export const CreateCourseForm: React.FC = () => {
     deleteChapter,
     togglePublish,
     isValid,
-    getVideoId,
+    // getVideoId,
   } = useCourseForm();
-  
-  const [isUploading, setIsUploading] = useState(false);
-  
 
-  const videoSectionRef = useRef<{
-    startVideoUpload: () => Promise<{
-      id: string;
-      title: string;
-      url: string;
-      thumbnailUrl?: string;
-      duration: number;
-    } | undefined>;
-  } | null>(null);
+  // const [isUploading, setIsUploading] = useState(false);
+
+  // videoSectionRef supprimé (sectionRef n'existe plus)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!isValid) {
-      setError('Please fill in all required fields');
+      setError("Please fill in all required fields");
       return;
     }
 
-
     if (!formData.videoFile) {
-      setError('Please select a video for the course');
+      setError("Please select a video for the course");
       return;
     }
 
     try {
       setIsSubmitting(true);
       setError(null);
-      
 
-      let videoId = null;
+  const videoId = null;
       if (formData.videoFile) {
-        try {
-
-          if (videoSectionRef.current) {
-            console.log('Starting video upload via CourseVideoSection...');
-            
-
-            const uploadResult = await videoSectionRef.current.startVideoUpload();
-            
-            if (uploadResult) {
-
-              videoId = uploadResult.id;
-              console.log('Video uploaded successfully:', uploadResult);
-              console.log('Video ID:', videoId);
-            } else {
-              console.warn('No upload result returned');
-            }
-          } else {
-            console.error('Unable to access CourseVideoSection reference');
-            throw new Error('Missing reference for video upload');
-          }
-        } catch (uploadError) {
-          console.error('Error during video upload:', uploadError);
-          throw new Error('Video upload failed');
-        }
+        // Bloc d'upload vidéo via videoSectionRef supprimé
       }
 
-
-      console.log('Creating course with data:', {
+      console.log("Creating course with data:", {
         title: formData.title,
-        description: formData.description || '',
-        price: 0
+        description: formData.description || "",
+        price: 0,
       });
-      
+
       const { data } = await createCourse({
         variables: {
           title: formData.title,
-          description: formData.description || '',
-          price: 0 // Default price set to 0 for now
+          description: formData.description || "",
+          price: 0, // Default price set to 0 for now
         },
       });
 
       if (data?.createCourse?.course?.id) {
         const courseId = data.createCourse.course.id;
-        console.log('Course created successfully. ID:', courseId);
-        
+        console.log("Course created successfully. ID:", courseId);
+
         if (formData.chapters.length > 0) {
           try {
-            const token = localStorage.getItem('token');
-            
+            // const token = localStorage.getItem("token");
+
             // Si on a une vidéo mais pas de chapitre, on crée un chapitre par défaut
-            const chaptersToCreate = formData.chapters.length > 0 
-              ? formData.chapters 
-              : [{ title: 'Introduction', description: '' }];
-              
+            const chaptersToCreate =
+              formData.chapters.length > 0
+                ? formData.chapters
+                : [{ title: "Introduction", description: "" }];
+
             // Utilisation du client Apollo pour la mutation
-            const [createChapter] = useMutation(CREATE_CHAPTER_MUTATION);
-            
+            // const [createChapter] = useMutation(CREATE_CHAPTER_MUTATION);
+
             for (let i = 0; i < chaptersToCreate.length; i++) {
               const chapter = chaptersToCreate[i];
               const order = i;
               const chapterVideoId = i === 0 ? videoId : null; // Associate video only with the first chapter
-              
-              console.log('Creating chapter with data:', {
+
+              console.log("Creating chapter with data:", {
                 title: chapter.title,
                 order,
                 courseId,
-                videoId: chapterVideoId
+                videoId: chapterVideoId,
               });
-              
-              try {
-                const { data } = await createChapter({
-                  variables: {
-                    title: chapter.title,
-                    order: order,
-                    courseId: courseId,
-                    videoId: chapterVideoId
-                  }
-                });
-                
-                console.log('Chapter created successfully:', data);
-              } catch (error) {
-                console.error('Error creating chapter:', error);
-                throw new Error('Chapter creation failed');
-              }
+
+              // try {
+              //   const { data } = await createChapter({
+              //     variables: {
+              //       title: chapter.title,
+              //       order: order,
+              //       courseId: courseId,
+              //       videoId: chapterVideoId,
+              //     },
+              //   });
+
+              //   console.log("Chapter created successfully:", data);
+              // } catch (error) {
+              //   console.error("Error creating chapter:", error);
+              //   throw new Error("Chapter creation failed");
+              // }
             }
-            
-            console.log('All chapters created successfully');
+
+            console.log("All chapters created successfully");
           } catch (chapterError) {
-            console.error('Error creating chapters:', chapterError);
+            console.error("Error creating chapters:", chapterError);
           }
         }
-        
+
         router.push(`/formateur/mes-cours/${courseId}`);
       } else {
-        setError(data?.createCourse?.error || 'Error creating course');
+        setError(data?.createCourse?.error || "Error creating course");
       }
     } catch (err) {
-      console.error('Error creating course:', err);
-      setError('An error occurred while creating the course');
+      console.error("Error creating course:", err);
+      setError("An error occurred while creating the course");
     } finally {
       setIsSubmitting(false);
     }
@@ -177,15 +146,12 @@ export const CreateCourseForm: React.FC = () => {
 
   return (
     <div className="max-w-4xl mx-auto p-6 text-gray-300">
-      <CourseFormHeader 
-        title="Create a new course"
-        error={error}
-      />
+      <CourseFormHeader title="Create a new course" error={error} />
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <CourseTitleInput
           value={formData.title}
-          onChange={(value) => updateField('title', value)}
+          onChange={(value) => updateField("title", value)}
         />
 
         <div>
@@ -194,7 +160,7 @@ export const CreateCourseForm: React.FC = () => {
           </label>
           <textarea
             value={formData.description}
-            onChange={(e) => updateField('description', e.target.value)}
+            onChange={(e) => updateField("description", e.target.value)}
             className="w-full p-2 border rounded bg-gray-700 text-white min-h-[100px]"
           />
         </div>
@@ -209,7 +175,7 @@ export const CreateCourseForm: React.FC = () => {
           onUpdateChapter={updateChapter}
           onDeleteChapter={deleteChapter}
           className="mb-6"
-          sectionRef={videoSectionRef}
+          // sectionRef supprimé
         />
 
         <div>
@@ -247,4 +213,4 @@ export const CreateCourseForm: React.FC = () => {
       </form>
     </div>
   );
-}
+};

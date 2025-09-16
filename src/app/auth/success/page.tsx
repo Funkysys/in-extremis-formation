@@ -1,49 +1,54 @@
 "use client";
-import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
+
+type UserProfile = { fullName?: string; email?: string };
 
 export default function AuthSuccessPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  type UserProfile = { fullName?: string; email?: string };
   const [profile, setProfile] = useState<UserProfile | null>(null);
+
+  const fetchProfile = useCallback(
+    async (token: string) => {
+      try {
+        const apiUrl =
+          process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+        const res = await fetch(`${apiUrl}/users/me`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (!res.ok)
+          throw new Error("Impossible de récupérer le profil utilisateur.");
+        const data = await res.json();
+        setProfile(data as UserProfile);
+        setLoading(false);
+        setTimeout(() => router.replace("/"), 1500);
+      } catch (e: unknown) {
+        if (e instanceof Error) {
+          setError(e.message || "Erreur lors de la récupération du profil.");
+        } else {
+          setError("Erreur lors de la récupération du profil.");
+        }
+        setLoading(false);
+        setTimeout(() => router.replace("/login?error=profile"), 2500);
+      }
+    },
+    [router]
+  );
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const token = params.get("token");
     if (token) {
       localStorage.setItem("token", token);
-      // Fetch le profil utilisateur
       fetchProfile(token);
     } else {
       setError("Token manquant. Connexion impossible.");
       setLoading(false);
       setTimeout(() => router.replace("/login?error=oauth"), 2000);
     }
-  }, [router]);
-
-  const fetchProfile = async (token: string) => {
-    try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-      const res = await fetch(`${apiUrl}/users/me`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (!res.ok) throw new Error("Impossible de récupérer le profil utilisateur.");
-      const data = await res.json();
-      setProfile(data as UserProfile);
-      setLoading(false);
-      setTimeout(() => router.replace("/"), 1500);
-    } catch (e: unknown) {
-      if (e instanceof Error) {
-        setError(e.message || "Erreur lors de la récupération du profil.");
-      } else {
-        setError("Erreur lors de la récupération du profil.");
-      }
-      setLoading(false);
-      setTimeout(() => router.replace("/login?error=profile"), 2500);
-    }
-  };
+  }, [router, fetchProfile]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
@@ -60,7 +65,9 @@ export default function AuthSuccessPage() {
       )}
       {profile && !loading && (
         <div className="text-success text-center">
-          <p>Bienvenue, {profile.fullName || profile.email || "utilisateur"} !</p>
+          <p>
+            Bienvenue, {profile.fullName || profile.email || "utilisateur"} !
+          </p>
         </div>
       )}
     </div>

@@ -2,24 +2,28 @@
 import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { SiDiscord } from "react-icons/si";
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useSearchParams } from "next/navigation";
 
 interface RegisterWithOAuthProps {
   onSuccess: () => void;
 }
 
-export default function RegisterWithOAuth({ onSuccess }: RegisterWithOAuthProps) {
+export default function RegisterWithOAuth({}: RegisterWithOAuthProps) {
   const [error, setError] = useState("");
-  const router = useRouter();
   const searchParams = useSearchParams();
-  const redirectUrl = searchParams.get('redirect') || '/';
+  const redirectUrl = searchParams.get("redirect") || "/";
 
   const handleOAuth = (provider: "google" | "discord") => {
     setError("");
     // Redirige vers l'endpoint backend OAuth (FastAPI)
-    const backendUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-    const redirectUri = `${window.location.origin}/auth/callback?redirect=${encodeURIComponent(redirectUrl)}`;
-    window.location.href = `${backendUrl}/auth/${provider}/register?redirect_uri=${encodeURIComponent(redirectUri)}`;
+    const backendUrl =
+      process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+    const redirectUri = `${
+      window.location.origin
+    }/auth/callback?redirect=${encodeURIComponent(redirectUrl)}`;
+    window.location.href = `${backendUrl}/auth/${provider}/register?redirect_uri=${encodeURIComponent(
+      redirectUri
+    )}`;
   };
 
   return (

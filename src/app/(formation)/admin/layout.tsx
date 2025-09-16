@@ -1,11 +1,16 @@
 import Sidebar from "@/components/admin/Sidebar";
-import Header from "@/components/formationUi/Header";
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+export default function AdminLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <div className="min-h-screen flex flex-col">
       <div className="w-full p-6 border-b border-slate-200 flex justify-between pl-20">
-        <h1 className="text-4xl font-roboto text-slate-100">{"Bienvenue sur l'espace Admin"}</h1>
+        <h1 className="text-4xl font-roboto text-slate-100">
+          {"Bienvenue sur l'espace Admin"}
+        </h1>
       </div>
       <div className="flex flex-1 min-h-0">
         <Sidebar />

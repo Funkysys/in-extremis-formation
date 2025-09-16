@@ -3,7 +3,11 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { useQuery, useMutation } from "@apollo/client";
 import { GET_CART_QUERY } from "@/graphql/queries/cart-queries";
-import { ADD_TO_CART_MUTATION, REMOVE_FROM_CART_MUTATION, CLEAR_CART_MUTATION } from "@/graphql/mutations/cart-mutations";
+import {
+  ADD_TO_CART_MUTATION,
+  REMOVE_FROM_CART_MUTATION,
+  CLEAR_CART_MUTATION,
+} from "@/graphql/mutations/cart-mutations";
 import { CartItem } from "@/types";
 import { useToast } from "@/providers/ToastProvider";
 
@@ -21,26 +25,32 @@ export default function Cart({ onClose }: CartProps) {
     variables: { userId },
     skip: !userId,
   });
-  const [addToCart, { loading: addingToCart }] = useMutation(ADD_TO_CART_MUTATION);
-  const [removeFromCart, { loading: removingFromCart }] = useMutation(REMOVE_FROM_CART_MUTATION);
-  const [clearCartMutation, { loading: clearingCart }] = useMutation(CLEAR_CART_MUTATION);
+  const [addToCart, { loading: addingToCart }] =
+    useMutation(ADD_TO_CART_MUTATION);
+  const [removeFromCart, { loading: removingFromCart }] = useMutation(
+    REMOVE_FROM_CART_MUTATION
+  );
+  const [clearCartMutation, { loading: clearingCart }] =
+    useMutation(CLEAR_CART_MUTATION);
   const { showToast } = useToast();
 
   if (error) {
     console.log(error);
-    
   }
 
   const cartItems: CartItem[] = data?.cartByUser?.cartItems || [];
 
-  const totalPrice = cartItems.reduce((total, item) => total + (item.price || 0) * item.quantity, 0);
+  const totalPrice = cartItems.reduce(
+    (total, item) => total + (item.price || 0) * item.quantity,
+    0
+  );
 
   const handleAddToCart = async (courseId: string) => {
     try {
       await addToCart({ variables: { courseId } });
       await refetch();
       showToast("Le cours a été ajouté au panier", "success");
-    } catch (err) {
+    } catch {
       showToast("Erreur lors de l'ajout au panier", "error");
     }
   };
@@ -50,7 +60,7 @@ export default function Cart({ onClose }: CartProps) {
       await removeFromCart({ variables: { cartItemId } });
       await refetch();
       showToast("Le cours a été retiré du panier", "success");
-    } catch (err) {
+    } catch {
       showToast("Erreur lors de la suppression du panier", "error");
     }
   };
@@ -60,7 +70,7 @@ export default function Cart({ onClose }: CartProps) {
       await clearCartMutation({ variables: { cartId: data.cart.id } });
       await refetch();
       showToast("Panier vidé", "success");
-    } catch (err) {
+    } catch {
       showToast("Erreur lors du vidage du panier", "error");
     }
   };
@@ -81,7 +91,9 @@ export default function Cart({ onClose }: CartProps) {
       >
         Fermer le panier
       </button>
-      <h2 className="text-lg font-bold text-slate-900 border-b-2 border-slate-400">Mon Panier</h2>
+      <h2 className="text-lg font-bold text-slate-900 border-b-2 border-slate-400">
+        Mon Panier
+      </h2>
       {loading ? (
         <p className="text-slate-600">Chargement...</p>
       ) : error ? (
@@ -104,13 +116,17 @@ export default function Cart({ onClose }: CartProps) {
                     className="w-16 h-16 object-cover mr-4"
                   />
                 ) : (
-                  <div className="w-16 h-16 bg-slate-300 mr-4 flex items-center justify-center text-slate-500">?</div>
+                  <div className="w-16 h-16 bg-slate-300 mr-4 flex items-center justify-center text-slate-500">
+                    ?
+                  </div>
                 )}
                 <div>
                   <h3 className="text-md font-semibold text-slate-800">
                     {item.title || item.course_id}
                   </h3>
-                  <p className="text-sm text-slate-600">{`Prix: ${item.price !== undefined ? item.price + ' €' : '?'}`}</p>
+                  <p className="text-sm text-slate-600">{`Prix: ${
+                    item.price !== undefined ? item.price + " €" : "?"
+                  }`}</p>
                   <p className="text-sm text-slate-600">{`Quantité: ${item.quantity}`}</p>
                 </div>
               </div>
@@ -124,10 +140,18 @@ export default function Cart({ onClose }: CartProps) {
                   +
                 </button>
                 <button
-                  onClick={() => item.quantity > 1 ? handleRemoveFromCart(item.id) : undefined}
+                  onClick={() =>
+                    item.quantity > 1
+                      ? handleRemoveFromCart(item.id)
+                      : undefined
+                  }
                   className="btn btn-xs bg-yellow-300 hover:bg-yellow-400"
                   disabled={removingFromCart || item.quantity <= 1}
-                  title={item.quantity <= 1 ? "Impossible de descendre sous 1" : "Retirer 1"}
+                  title={
+                    item.quantity <= 1
+                      ? "Impossible de descendre sous 1"
+                      : "Retirer 1"
+                  }
                 >
                   -
                 </button>

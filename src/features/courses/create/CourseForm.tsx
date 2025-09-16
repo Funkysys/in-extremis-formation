@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { useApolloClient } from '@apollo/client';
+import { useApolloClient, ApolloClient, NormalizedCacheObject } from '@apollo/client';
 import { useRouter } from 'next/navigation';
 import { useCourseForm } from './useCourseForm';
 import { VideoSection, VideoSectionRef } from './VideoSection';
@@ -27,7 +27,7 @@ export function CourseForm() {
   } = useCourseForm();
 
   const router = useRouter();
-  const apolloClient = useApolloClient();
+  const apolloClient = useApolloClient() as ApolloClient<NormalizedCacheObject>;
   const videoSectionRef = useRef<VideoSectionRef>(null);
 
   const handleChapterClick = (timestamp: number) => {

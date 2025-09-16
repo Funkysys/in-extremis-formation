@@ -2,7 +2,7 @@
 export * from './CourseVideoSection';
 export * from './CourseVideoUpload';
 export * from './CourseChapters';
-export * from './MediaCMSVideoUploader';
+// export supprimé : MediaCMSVideoUploader
 export * from './CourseFormActions';
 export * from './CourseFormHeader';
 export * from './CourseTitleInput';

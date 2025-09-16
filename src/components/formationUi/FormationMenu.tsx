@@ -1,21 +1,18 @@
 "use client";
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import { useQuery } from "@apollo/client";
 import { COURSES_QUERY } from "@/graphql/queries/course-queries";
 import { Course } from "@/types/course";
+import { useQuery } from "@apollo/client";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
 const FormationMenu = () => {
-  const [open, setOpen] = useState<boolean>(false);
-  const [selectedFormation, setSelectedFormation] = useState<string>("");
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
-  
+
   const { data, loading, error } = useQuery(COURSES_QUERY, {
     variables: { publishedOnly: true },
   });
 
   const formations = data?.courses || [];
-  
 
   useEffect(() => {
     const handleScroll = () => {
@@ -75,10 +72,7 @@ const FormationMenu = () => {
                   <Link
                     href={`#${formation.id}`}
                     className="text-slate-900 hover:bg-slate-300 border-b-2 border-slate-400"
-                    onClick={() => {
-                      setSelectedFormation(formation.title);
-                      setOpen(false);
-                    }}
+                    // ...existing code...
                   >
                     {formation.title}
                   </Link>

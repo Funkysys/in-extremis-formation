@@ -1,15 +1,21 @@
+interface Filters {
+  category: string;
+  level: string;
+  sort: string;
+}
+
 interface SearchAndFilterProps {
   searchTerm: string;
   onSearch: (term: string) => void;
-  onFilterChange: (filters: any) => void;
-  filters: {
-    category: string;
-    level: string;
-    sort: string;
-  };
+  onFilterChange: (filters: Partial<Filters>) => void;
+  filters: Filters;
 }
 
-const SearchAndFilter = ({ onSearch, onFilterChange, filters }: SearchAndFilterProps) => {
+const SearchAndFilter = ({
+  onSearch,
+  onFilterChange,
+  filters,
+}: SearchAndFilterProps) => {
   return (
     <div className="join text-slate-900 w-full flex justify-center items-center py-4 ">
       <div>
@@ -22,7 +28,7 @@ const SearchAndFilter = ({ onSearch, onFilterChange, filters }: SearchAndFilterP
         </div>
       </div>
       <div className="flex gap-2">
-        <select 
+        <select
           className="select join-item bg-slate-100 text-slate-900"
           value={filters.category}
           onChange={(e) => onFilterChange({ category: e.target.value })}
@@ -33,8 +39,8 @@ const SearchAndFilter = ({ onSearch, onFilterChange, filters }: SearchAndFilterP
           <option value="bass">Basse</option>
           <option value="drums">Batterie</option>
         </select>
-        
-        <select 
+
+        <select
           className="select join-item bg-slate-100 text-slate-900"
           value={filters.level}
           onChange={(e) => onFilterChange({ level: e.target.value })}
@@ -44,8 +50,8 @@ const SearchAndFilter = ({ onSearch, onFilterChange, filters }: SearchAndFilterP
           <option value="intermediate">Intermédiaire</option>
           <option value="advanced">Avancé</option>
         </select>
-        
-        <select 
+
+        <select
           className="select join-item bg-slate-100 text-slate-900"
           value={filters.sort}
           onChange={(e) => onFilterChange({ sort: e.target.value })}

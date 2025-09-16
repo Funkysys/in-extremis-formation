@@ -1,22 +1,24 @@
-'use client';
+"use client";
 
-import type { Course } from '@/types/course';
-import CourseCard from './CourseCard';
-import SearchAndFilter from './SearchAndFilter';
-import Pagination from './Pagination';
+import type { Course } from "@/types/course";
+import CourseCard from "./CourseCard";
+import Pagination from "./Pagination";
+import SearchAndFilter from "./SearchAndFilter";
+
+interface Filters {
+  category: string;
+  level: string;
+  sort: string;
+}
 
 interface CoursesListProps {
   courses: Course[];
   loading: boolean;
-  error: any;
+  error: Error | { message?: string } | null;
   searchTerm: string;
   onSearch: (term: string) => void;
-  filters: {
-    category: string;
-    level: string;
-    sort: string;
-  };
-  onFilterChange: (filters: any) => void;
+  filters: Filters;
+  onFilterChange: (filters: Partial<Filters>) => void;
   pagination: {
     currentPage: number;
     totalPages: number;
@@ -39,7 +41,7 @@ export default function CoursesList({
   return (
     <div className="w-full">
       <div className="mb-8">
-        <SearchAndFilter 
+        <SearchAndFilter
           searchTerm={searchTerm}
           onSearch={onSearch}
           filters={filters}
@@ -58,8 +60,12 @@ export default function CoursesList({
         </div>
       ) : courses.length === 0 ? (
         <div className="text-center py-12">
-          <h2 className="text-xl font-semibold text-slate-300">Aucune formation trouvée</h2>
-          <p className="text-slate-400 mt-2">Essayez de modifier vos critères de recherche.</p>
+          <h2 className="text-xl font-semibold text-slate-300">
+            Aucune formation trouvée
+          </h2>
+          <p className="text-slate-400 mt-2">
+            Essayez de modifier vos critères de recherche.
+          </p>
         </div>
       ) : (
         <>
@@ -73,13 +79,23 @@ export default function CoursesList({
 
           {pagination.totalPages > 1 && (
             <div className="mt-8">
-              <Pagination 
+              <Pagination
                 currentPage={pagination.currentPage}
                 totalPages={pagination.totalPages}
                 onPageChange={pagination.onPageChange}
               />
               <div className="mt-4 text-center text-sm text-slate-400">
-                Affichage de {Math.min((pagination.currentPage - 1) * pagination.itemsPerPage + 1, pagination.totalItems)} à {Math.min(pagination.currentPage * pagination.itemsPerPage, pagination.totalItems)} sur {pagination.totalItems} formations
+                Affichage de{" "}
+                {Math.min(
+                  (pagination.currentPage - 1) * pagination.itemsPerPage + 1,
+                  pagination.totalItems
+                )}{" "}
+                à{" "}
+                {Math.min(
+                  pagination.currentPage * pagination.itemsPerPage,
+                  pagination.totalItems
+                )}{" "}
+                sur {pagination.totalItems} formations
               </div>
             </div>
           )}

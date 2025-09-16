@@ -1,45 +1,49 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from "next/navigation";
+import { useCallback, useEffect } from "react";
 
 export default function AuthCallbackPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const token = searchParams.get('token');
-  const redirect = searchParams.get('redirect') || '/';
+  const token = searchParams.get("token");
+  const redirect = searchParams.get("redirect") || "/";
+
+  const fetchUserInfo = useCallback(
+    async (token: string) => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/users/me`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if (!response.ok) throw new Error("Failed to fetch user info");
+        const userData = await response.json();
+        localStorage.setItem("user", JSON.stringify(userData));
+        window.location.href = redirect;
+      } catch (error) {
+        console.error("Error fetching user info:", error);
+        router.push(
+          `/login?error=auth&redirect=${encodeURIComponent(redirect)}`
+        );
+      }
+    },
+    [redirect, router]
+  );
 
   useEffect(() => {
     if (token) {
-      localStorage.setItem('token', token);
-      // Récupérer les infos utilisateur
+      localStorage.setItem("token", token);
       fetchUserInfo(token);
     } else {
-      // Rediriger vers la page de connexion en cas d'erreur
-      router.push(`/login?error=oauth&redirect=${encodeURIComponent(redirect)}`);
+      router.push(
+        `/login?error=oauth&redirect=${encodeURIComponent(redirect)}`
+      );
     }
-  }, [token, redirect, router]);
-
-  const fetchUserInfo = async (token: string) => {
-    try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/me`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-      
-      if (!response.ok) throw new Error('Failed to fetch user info');
-      
-      const userData = await response.json();
-      localStorage.setItem('user', JSON.stringify(userData));
-      
-      // Rediriger vers la page demandée
-      window.location.href = redirect;
-    } catch (error) {
-      console.error('Error fetching user info:', error);
-      router.push(`/login?error=auth&redirect=${encodeURIComponent(redirect)}`);
-    }
-  };
+  }, [token, redirect, router, fetchUserInfo]);
 
   return (
     <div className="flex items-center justify-center min-h-screen">

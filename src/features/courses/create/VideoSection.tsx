@@ -1,7 +1,7 @@
-import React, { useRef, forwardRef, useImperativeHandle } from 'react';
-import { VideoPlayer, VideoPlayerRef } from './VideoPlayer';
-import { VideoUploader, VideoUploaderRef } from './VideoUploader';
-import { VideoMetadata } from '../types';
+import React, { forwardRef, useImperativeHandle, useRef } from "react";
+import { VideoMetadata } from "../types";
+import { VideoPlayer, VideoPlayerRef } from "./VideoPlayer";
+import VideoUploader, { VideoUploaderRef } from "./VideoUploader";
 
 interface VideoSectionProps {
   videoFile: File | null;
@@ -17,28 +17,35 @@ export interface VideoSectionRef {
 }
 
 export const VideoSection = forwardRef<VideoSectionRef, VideoSectionProps>(
-  ({ videoFile, onVideoChange, currentTime, onTimeUpdate, className = '' }, ref) => {
+  (
+    { videoFile, onVideoChange, currentTime, onTimeUpdate, className = "" },
+    ref
+  ) => {
     const playerRef = useRef<VideoPlayerRef>(null);
     const uploaderRef = useRef<VideoUploaderRef>(null);
 
-    useImperativeHandle(ref, () => ({
-      uploadVideo: async () => {
-        if (!uploaderRef.current) {
-          console.error('Uploader reference not available');
-          return undefined;
-        }
-        
-        try {
-          return await uploaderRef.current.upload();
-        } catch (error) {
-          console.error('Video upload error:', error);
-          throw error;
-        }
-      },
-      getCurrentTime: () => {
-        return playerRef.current?.getCurrentTime() || 0;
-      }
-    }), []);
+    useImperativeHandle(
+      ref,
+      () => ({
+        uploadVideo: async () => {
+          if (!uploaderRef.current) {
+            console.error("Uploader reference not available");
+            return undefined;
+          }
+
+          try {
+            return await uploaderRef.current.upload();
+          } catch (error) {
+            console.error("Video upload error:", error);
+            throw error;
+          }
+        },
+        getCurrentTime: () => {
+          return playerRef.current?.getCurrentTime() || 0;
+        },
+      }),
+      []
+    );
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0] || null;
@@ -50,7 +57,7 @@ export const VideoSection = forwardRef<VideoSectionRef, VideoSectionProps>(
         <div className="flex justify-between items-center">
           <h3 className="text-lg font-medium">Course Video</h3>
           <label className="cursor-pointer bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-            {videoFile ? 'Change Video' : 'Select Video'}
+            {videoFile ? "Change Video" : "Select Video"}
             <input
               type="file"
               accept="video/*"
@@ -77,3 +84,4 @@ export const VideoSection = forwardRef<VideoSectionRef, VideoSectionProps>(
     );
   }
 );
+VideoSection.displayName = "VideoSection";

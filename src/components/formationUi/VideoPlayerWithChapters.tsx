@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef, useState } from 'react';
-import { VideoChapterEditor } from './VideoChapterEditor';
+import { useRef, useState } from "react";
+import { VideoChapterEditor } from "./VideoChapterEditor";
 
 type VideoPlayerWithChaptersProps = {
   videoUrl: string;
@@ -14,7 +14,7 @@ export function VideoPlayerWithChapters({
   videoUrl,
   videoId,
   duration,
-  className = '',
+  className = "",
 }: VideoPlayerWithChaptersProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [currentTime, setCurrentTime] = useState(0);
@@ -22,13 +22,6 @@ export function VideoPlayerWithChapters({
   const handleTimeUpdate = () => {
     if (videoRef.current) {
       setCurrentTime(videoRef.current.currentTime);
-    }
-  };
-
-  const handleSeek = (time: number) => {
-    if (videoRef.current) {
-      videoRef.current.currentTime = time;
-      videoRef.current.play();
     }
   };
 
@@ -45,7 +38,7 @@ export function VideoPlayerWithChapters({
             onTimeUpdate={handleTimeUpdate}
           />
         </div>
-        
+
         {/* Contrôles personnalisés */}
         <div className="mt-2">
           <div className="flex items-center gap-2">
@@ -72,10 +65,7 @@ export function VideoPlayerWithChapters({
 
       {/* Éditeur de chapitres */}
       <div className="lg:col-span-1">
-        <VideoChapterEditor 
-          videoId={videoId} 
-          videoDuration={duration} 
-        />
+        <VideoChapterEditor videoId={videoId} videoDuration={duration} />
       </div>
     </div>
   );
@@ -85,5 +75,5 @@ export function VideoPlayerWithChapters({
 function formatTime(seconds: number): string {
   const mins = Math.floor(seconds / 60);
   const secs = Math.floor(seconds % 60);
-  return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+  return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
 }

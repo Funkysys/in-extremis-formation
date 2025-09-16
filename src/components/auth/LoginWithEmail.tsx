@@ -1,15 +1,16 @@
 "use client";
-import { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useMutation } from "@apollo/client";
 import { LOGIN_MUTATION } from "@/graphql/mutations/user-mutations";
 
-export default function LoginWithEmail({ onSuccess }: { onSuccess: () => void }) {
+export default function LoginWithEmail({
+  onSuccess,
+}: {
+  onSuccess: () => void;
+}) {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const redirectUrl = searchParams.get('redirect') || '/';
-  const [initialLoad, setInitialLoad] = useState(true);
-  
+
   // Ne plus vérifier automatiquement si l'utilisateur est connecté
   // Laisser le composant parent gérer cela
   const [email, setEmail] = useState("");
@@ -22,14 +23,14 @@ export default function LoginWithEmail({ onSuccess }: { onSuccess: () => void })
         localStorage.setItem("user", JSON.stringify(data.login.user));
         onSuccess();
         // Rediriger vers /formation après connexion
-        router.push('/formation');
+        router.push("/formation");
       } else {
         setError(data.login.error || "Erreur inconnue");
       }
     },
     onError: (err) => {
-      console.error('Login error:', err);
-      setError('Erreur lors de la connexion. Veuillez réessayer.');
+      console.error("Login error:", err);
+      setError("Erreur lors de la connexion. Veuillez réessayer.");
     },
   });
 
@@ -40,7 +41,10 @@ export default function LoginWithEmail({ onSuccess }: { onSuccess: () => void })
   };
 
   return (
-    <form onSubmit={handleSubmit} className="form-control gap-2 w-full max-w-xs mx-auto">
+    <form
+      onSubmit={handleSubmit}
+      className="form-control gap-2 w-full max-w-xs mx-auto"
+    >
       <input
         type="email"
         placeholder="Email"

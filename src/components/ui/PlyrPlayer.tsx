@@ -1,12 +1,19 @@
-'use client';
+"use client";
 
-import { useEffect, useRef } from 'react';
-import 'plyr/dist/plyr.css';
+import "plyr/dist/plyr.css";
+import { useEffect, useRef } from "react";
+
+interface PlyrInstance {
+  destroy: () => void;
+  on: (event: string, callback: (...args: unknown[]) => void) => void;
+  source?: unknown;
+  currentTime?: number;
+}
 
 interface PlyrPlayerProps {
   source: string | File | null;
-  options?: any;
-  onReady?: (player: any) => void;
+  options?: Record<string, unknown>;
+  onReady?: (player: PlyrInstance) => void;
   onPlay?: () => void;
   onPause?: () => void;
   onEnded?: () => void;
@@ -22,10 +29,10 @@ export default function PlyrPlayer({
   onPause,
   onEnded,
   onTimeUpdate,
-  className = '',
+  className = "",
 }: PlyrPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const playerRef = useRef<any>(null);
+  const playerRef = useRef<PlyrInstance | null>(null);
   const sourceUrl = useRef<string | null>(null);
 
   // Initialisation du lecteur
@@ -42,43 +49,46 @@ export default function PlyrPlayer({
         }
 
         // Charger Plyr uniquement côté client
-        const Plyr = (await import('plyr')).default;
-        
+        const Plyr = (await import("plyr")).default;
+
         // Créer une nouvelle instance Plyr
         playerRef.current = new Plyr(videoRef.current, {
           controls: [
-            'play-large',
-            'play',
-            'progress',
-            'current-time',
-            'duration',
-            'mute',
-            'volume',
-            'captions',
-            'settings',
-            'pip',
-            'airplay',
-            'fullscreen',
+            "play-large",
+            "play",
+            "progress",
+            "current-time",
+            "duration",
+            "mute",
+            "volume",
+            "captions",
+            "settings",
+            "pip",
+            "airplay",
+            "fullscreen",
           ],
           ...options,
-        });
+        }) as PlyrInstance;
 
         // Gestion des événements
-        if (onPlay) playerRef.current.on('play', onPlay);
-        if (onPause) playerRef.current.on('pause', onPause);
-        if (onEnded) playerRef.current.on('ended', onEnded);
-        if (onTimeUpdate) {
-          playerRef.current.on('timeupdate', () => {
-            onTimeUpdate(playerRef.current.currentTime);
-          });
-        }
-
-        // Prêt
-        if (onReady) {
-          playerRef.current.on('ready', () => onReady(playerRef.current));
+        const plyrInstance = playerRef.current as PlyrInstance;
+        if (plyrInstance) {
+          if (onPlay) plyrInstance.on("play", onPlay);
+          if (onPause) plyrInstance.on("pause", onPause);
+          if (onEnded) plyrInstance.on("ended", onEnded);
+          if (onTimeUpdate) {
+            plyrInstance.on("timeupdate", () => {
+              if (plyrInstance.currentTime !== undefined) {
+                onTimeUpdate(Number(plyrInstance.currentTime));
+              }
+            });
+          }
+          if (onReady) {
+            plyrInstance.on("ready", () => onReady(plyrInstance));
+          }
         }
       } catch (error) {
-        console.error('Erreur lors de l\'initialisation de Plyr:', error);
+        console.error("Erreur lors de l'initialisation de Plyr:", error);
       }
     };
 
@@ -95,7 +105,7 @@ export default function PlyrPlayer({
         sourceUrl.current = null;
       }
     };
-  }, [options]);
+  }, [options, onPlay, onPause, onEnded, onTimeUpdate, onReady]);
 
   // Mise à jour de la source
   useEffect(() => {
@@ -110,15 +120,15 @@ export default function PlyrPlayer({
         }
 
         let src: string;
-        let type = 'video/mp4'; // Type par défaut
+        let type = "video/mp4"; // Type par défaut
 
-        if (typeof source === 'string') {
+        if (typeof source === "string") {
           src = source;
         } else {
           // Créer une URL pour le fichier
           src = URL.createObjectURL(source);
           sourceUrl.current = src;
-          type = source.type || 'video/mp4';
+          type = source.type || "video/mp4";
         }
 
         // Mettre à jour la source de la vidéo
@@ -129,7 +139,7 @@ export default function PlyrPlayer({
           // Si le lecteur est prêt, on le met à jour
           if (playerRef.current) {
             playerRef.current.source = {
-              type: 'video',
+              type: "video",
               sources: [
                 {
                   src,
@@ -140,7 +150,7 @@ export default function PlyrPlayer({
           }
         }
       } catch (error) {
-        console.error('Erreur lors de la mise à jour de la source:', error);
+        console.error("Erreur lors de la mise à jour de la source:", error);
       }
     };
 
@@ -149,13 +159,8 @@ export default function PlyrPlayer({
 
   return (
     <div className={`plyr-player ${className}`}>
-      <video
-        ref={videoRef}
-        playsInline
-        controls
-        className="w-full h-full"
-      >
-        {source && typeof source === 'string' && (
+      <video ref={videoRef} playsInline controls className="w-full h-full">
+        {source && typeof source === "string" && (
           <source src={source} type="video/mp4" />
         )}
         Votre navigateur ne prend pas en charge la lecture de vidéos.

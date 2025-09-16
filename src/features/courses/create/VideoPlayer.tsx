@@ -1,4 +1,10 @@
-import React, { useRef, useState, useEffect, forwardRef, useImperativeHandle } from 'react';
+import {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
 
 interface VideoPlayerProps {
   videoFile: File | null;
@@ -14,23 +20,22 @@ export interface VideoPlayerRef {
 }
 
 export const VideoPlayer = forwardRef<VideoPlayerRef, VideoPlayerProps>(
-  ({ videoFile, currentTime = 0, onTimeUpdate, onVideoLoaded, className = '' }, ref) => {
+  (
+    { videoFile, currentTime = 0, onTimeUpdate, onVideoLoaded, className = "" },
+    ref
+  ) => {
     const videoRef = useRef<HTMLVideoElement>(null);
     const [videoUrl, setVideoUrl] = useState<string | null>(null);
-    const [isLoaded, setIsLoaded] = useState(false);
 
     useEffect(() => {
       if (videoFile) {
         const url = URL.createObjectURL(videoFile);
         setVideoUrl(url);
-        setIsLoaded(false);
-        
         return () => {
           URL.revokeObjectURL(url);
         };
       } else {
         setVideoUrl(null);
-        setIsLoaded(false);
       }
     }, [videoFile]);
 
@@ -47,18 +52,21 @@ export const VideoPlayer = forwardRef<VideoPlayerRef, VideoPlayerProps>(
     };
 
     const handleVideoLoaded = () => {
-      setIsLoaded(true);
       onVideoLoaded?.();
     };
 
-    useImperativeHandle(ref, () => ({
-      getCurrentTime: () => videoRef.current?.currentTime || 0,
-      seekTo: (time: number) => {
-        if (videoRef.current) {
-          videoRef.current.currentTime = time;
-        }
-      }
-    }), []);
+    useImperativeHandle(
+      ref,
+      () => ({
+        getCurrentTime: () => videoRef.current?.currentTime || 0,
+        seekTo: (time: number) => {
+          if (videoRef.current) {
+            videoRef.current.currentTime = time;
+          }
+        },
+      }),
+      []
+    );
 
     return (
       <div className={className}>
@@ -80,3 +88,4 @@ export const VideoPlayer = forwardRef<VideoPlayerRef, VideoPlayerProps>(
     );
   }
 );
+VideoPlayer.displayName = "VideoPlayer";
