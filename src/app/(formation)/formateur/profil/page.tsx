@@ -1,14 +1,15 @@
 "use client";
-import { useEffect } from "react";
-import { useQuery, useMutation } from "@apollo/client";
-import { useState } from "react";
-import { USER_QUERY } from "@/graphql/queries/trainer-queries";
-import { ME_QUERY } from "@/graphql/queries/user-queries";
-import { GET_ALL_TOPICS } from "@/graphql/queries/topic-queries";
-import { GET_TRAINER } from "@/graphql/queries/trainer-queries";
-import { UPDATE_TRAINER, SET_TRAINER_TOPICS } from "@/graphql/mutations/trainer-mutations";
-import { useToaster } from "@/providers/ToasterProvider";
+import {
+  SET_TRAINER_TOPICS,
+  UPDATE_TRAINER,
+} from "@/graphql/mutations/trainer-mutations";
 import { UPDATE_USER_MUTATION } from "@/graphql/mutations/user-mutations";
+import { GET_ALL_TOPICS } from "@/graphql/queries/topic-queries";
+import { GET_TRAINER, USER_QUERY } from "@/graphql/queries/trainer-queries";
+import { ME_QUERY } from "@/graphql/queries/user-queries";
+import { useToast } from "@/providers/ToastProvider";
+import { useMutation, useQuery } from "@apollo/client";
+import { useEffect, useState } from "react";
 
 import { DELETE_USER_MUTATION } from "@/graphql/mutations/user-mutations";
 import { useRouter } from "next/navigation";
@@ -22,15 +23,24 @@ export default function ProfilFormateurPage() {
   const router = useRouter();
   const [deleteUser, { loading: deleting }] = useMutation(DELETE_USER_MUTATION);
 
-  const { addToast } = useToaster();
+  const { showToast } = useToast();
   const { data: meData, loading: meLoading } = useQuery(ME_QUERY);
   const userId = meData?.me?.id;
-  const { data: userData, loading: userLoading } = useQuery(USER_QUERY, { variables: { id: userId }, skip: !userId });
+  const { data: userData, loading: userLoading } = useQuery(USER_QUERY, {
+    variables: { id: userId },
+    skip: !userId,
+  });
   const { data: topicsData, loading: topicsLoading } = useQuery(GET_ALL_TOPICS);
-  const { data: trainerData, loading: trainerLoading, refetch } = useQuery(GET_TRAINER, { variables: { id: userId }, skip: !userId });
+  const {
+    data: trainerData,
+    loading: trainerLoading,
+    refetch,
+  } = useQuery(GET_TRAINER, { variables: { id: userId }, skip: !userId });
   const [updateTrainer, { loading: updating }] = useMutation(UPDATE_TRAINER);
-  const [setTrainerTopics, { loading: updatingTopics }] = useMutation(SET_TRAINER_TOPICS);
-  const [updateUser, { loading: updatingUser }] = useMutation(UPDATE_USER_MUTATION);
+  const [setTrainerTopics, { loading: updatingTopics }] =
+    useMutation(SET_TRAINER_TOPICS);
+  const [updateUser, { loading: updatingUser }] =
+    useMutation(UPDATE_USER_MUTATION);
 
   const user = userData?.user;
   const trainer = trainerData?.trainer;
@@ -53,68 +63,96 @@ export default function ProfilFormateurPage() {
     setSaving(true);
     try {
       if (user && fullName.trim() && fullName !== user.fullName) {
-        await updateUser({ variables: { userId: user.id, data: { fullName } } });
+        await updateUser({
+          variables: { userId: user.id, data: { fullName } },
+        });
       }
-      await updateTrainer({ variables: { trainerId: trainer.id, description } });
-      await setTrainerTopics({ variables: { trainerId: trainer.id, topicIds: selectedTopics } });
-      addToast("Profil mis à jour !", "success");
+      await updateTrainer({
+        variables: { trainerId: trainer.id, description },
+      });
+      await setTrainerTopics({
+        variables: { trainerId: trainer.id, topicIds: selectedTopics },
+      });
+      showToast("Profil mis à jour !", "success");
       refetch();
     } catch {
-      addToast("Erreur lors de la mise à jour", "error");
+      showToast("Erreur lors de la mise à jour", "error");
     }
     setSaving(false);
   };
 
   const handleTopicChange = (topicId: string) => {
     setSelectedTopics((prev) =>
-      prev.includes(topicId) ? prev.filter((id) => id !== topicId) : [...prev, topicId]
+      prev.includes(topicId)
+        ? prev.filter((id) => id !== topicId)
+        : [...prev, topicId]
     );
   };
 
   const handleDelete = async () => {
     try {
       await deleteUser();
-      addToast("Compte supprimé avec succès !", "success");
+      showToast("Compte supprimé avec succès !", "success");
       localStorage.removeItem("token");
       setShowConfirm(false);
       router.replace("/");
     } catch (error) {
-      addToast("Erreur lors de la suppression du compte", "error");
+      showToast("Erreur lors de la suppression du compte", "error");
       setShowConfirm(false);
     }
   };
 
   return (
     <div className="max-w-2xl mx-auto bg-white rounded-lg shadow p-8 mt-10">
-      <h1 className="text-2xl font-bold mb-6 text-slate-900">Mon profil formateur</h1>
+      <h1 className="text-2xl font-bold mb-6 text-slate-900">
+        Mon profil formateur
+      </h1>
       <form className="space-y-6" onSubmit={handleSave}>
         <div>
-          <label className="block text-slate-700 font-medium mb-1">Nom complet</label>
+          <label className="block text-slate-700 font-medium mb-1">
+            Nom complet
+          </label>
           <input
-  type="text"
-  value={fullName}
-  onChange={e => setFullName(e.target.value)}
-  className="input input-bordered w-full"
-/>
+            type="text"
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
+            className="input input-bordered w-full"
+          />
         </div>
         <div>
           <label className="block text-slate-700 font-medium mb-1">Email</label>
-          <input type="email" value={user.email} disabled className="input input-bordered w-full bg-slate-100" />
+          <input
+            type="email"
+            value={user.email}
+            disabled
+            className="input input-bordered w-full bg-slate-100"
+          />
         </div>
         <div>
-          <label className="block text-slate-700 font-medium mb-1">Description</label>
+          <label className="block text-slate-700 font-medium mb-1">
+            Description
+          </label>
           <textarea
             className="textarea textarea-bordered w-full min-h-[80px]"
             value={description}
-            onChange={e => setDescription(e.target.value)}
+            onChange={(e) => setDescription(e.target.value)}
             placeholder="Décris-toi en quelques mots..."
           />
         </div>
         <div>
-          <label className="block text-slate-700 font-medium mb-2">{'Mots-clés pour te retrouver'}</label>
+          <label className="block text-slate-700 font-medium mb-2">
+            {"Mots-clés pour te retrouver"}
+          </label>
           <div className="flex flex-wrap gap-3">
             {allTopics.map((topic: any) => (
-              <label key={topic.id} className={`px-3 py-1 rounded-full border cursor-pointer flex items-center gap-2 ${selectedTopics.includes(topic.id) ? 'bg-amber-700 text-white border-amber-700' : 'bg-white border-slate-300 text-slate-800'}`}>
+              <label
+                key={topic.id}
+                className={`px-3 py-1 rounded-full border cursor-pointer flex items-center gap-2 ${
+                  selectedTopics.includes(topic.id)
+                    ? "bg-amber-700 text-white border-amber-700"
+                    : "bg-white border-slate-300 text-slate-800"
+                }`}
+              >
                 <input
                   type="checkbox"
                   checked={selectedTopics.includes(topic.id)}
@@ -149,8 +187,13 @@ export default function ProfilFormateurPage() {
       {showConfirm && (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-40 text-slate-800">
           <div className="bg-white rounded-lg shadow-xl p-8 max-w-sm w-full">
-            <h2 className="text-xl font-bold mb-4 text-red-700">Confirmer la suppression</h2>
-            <p className="mb-6">Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est <span className="font-bold text-red-600">irréversible</span>.</p>
+            <h2 className="text-xl font-bold mb-4 text-red-700">
+              Confirmer la suppression
+            </h2>
+            <p className="mb-6">
+              Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est{" "}
+              <span className="font-bold text-red-600">irréversible</span>.
+            </p>
             <div className="flex justify-end gap-2">
               <button
                 className="btn btn-ghost"
