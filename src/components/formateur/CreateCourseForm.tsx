@@ -61,7 +61,7 @@ export const CreateCourseForm: React.FC = () => {
       setIsSubmitting(true);
       setError(null);
 
-  const videoId = null;
+      const videoId = null;
       if (formData.videoFile) {
         // Bloc d'upload vidéo via videoSectionRef supprimé
       }

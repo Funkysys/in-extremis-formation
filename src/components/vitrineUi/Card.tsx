@@ -6,8 +6,8 @@ const Card = ({ id, title, description, imageUrl, link, mail }: CardType) => {
   return (
     <article
       key={id}
-      className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 h-[80vh] lg:h-[70vh] flex flex-col"
-      style={{ background: "var(--color-background-tertiary)" }}
+      className="p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 h-[80vh] lg:h-[70vh] flex flex-col"
+      style={{ background: "#e6f4fe" }}
     >
       {/* Image de la carte */}
       {imageUrl && (
@@ -23,21 +23,27 @@ const Card = ({ id, title, description, imageUrl, link, mail }: CardType) => {
       )}
 
       {/* Contenu de la carte */}
-      <div className="flex flex-col flex-grow justify-between items-start">
+      <div className="flex flex-col items-start justify-between flex-grow">
         <header>
-          <h3
-            className="text-xl font-bold mb-4"
-            style={{ color: "var(--color-foreground)" }}
-          >
+          <h3 className="mb-4 text-xl font-bold" style={{ color: "#1f2d5c" }}>
             {title}
           </h3>
         </header>
-        <p style={{ color: "var(--color-foreground)" }}>{description}</p>
-        <footer className="mt-4 w-full">
+        <p style={{ color: "#1f2d5c" }}>{description}</p>
+        <footer className="w-full mt-4">
           {mail && (
             <Link
               href={`mailto:${mail}`}
-              className="bg-yellow-500 hover:bg-orange-500 text-white px-4 py-2 rounded-md inline-block"
+              className="inline-block px-4 py-2 text-white transition-colors duration-300 rounded-md"
+              style={{
+                backgroundColor: "#2A3B61",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = "#422D68";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = "#2A3B61";
+              }}
               aria-label={`Contacter ${title}`}
             >
               Nous contacter
@@ -49,7 +55,16 @@ const Card = ({ id, title, description, imageUrl, link, mail }: CardType) => {
               href={link}
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-blue-500 hover:bg-sky-900 text-white px-4 py-2 rounded-md inline-block"
+              className="inline-block px-4 py-2 text-white transition-colors duration-300 rounded-md"
+              style={{
+                backgroundColor: "#2A3B61",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = "#422D68";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = "#2A3B61";
+              }}
               aria-label={`Rejoindre ${title}`}
             >
               Nous rejoindre

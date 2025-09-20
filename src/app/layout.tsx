@@ -4,16 +4,16 @@ import CustomApolloProvider from "@/providers/ApolloProvider";
 import { AuthProvider } from "@/providers/AuthProvider";
 import { ToastProvider } from "@/providers/ToastProvider";
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono, Roboto } from "next/font/google";
+import { Geist, Geist_Mono, Montserrat } from "next/font/google";
 import { Suspense } from "react";
 import "./globals.css";
 import Loading from "./loading";
 
-const roboto = Roboto({
-  variable: "--font-roboto",
+const montserrat = Montserrat({
+  variable: "--font-montserrat",
   subsets: ["latin"],
   display: "swap",
-  weight: ["100", "300", "400", "500", "700", "900"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
 });
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -108,7 +108,7 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <body
-        className={`${roboto.variable} ${geistSans.variable} ${geistMono.variable} bg-background font-sans antialiased`}
+        className={`${montserrat.variable} ${geistSans.variable} ${geistMono.variable} bg-background antialiased`}
       >
         <CustomApolloProvider>
           <AuthProvider>

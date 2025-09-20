@@ -15,7 +15,7 @@ const ThirdPart: React.FC = () => {
     >
       <header>
         <h2
-          className="text-xl md:text-3xl text-center mb-6 mt-6 font-roboto"
+          className="mt-6 mb-6 text-xl text-center md:text-3xl font-Montserrat"
           style={{ color: "var(--color-foreground)" }}
         >
           Avant de partir, découvrez aussi notre catalogue de <br />
@@ -40,11 +40,16 @@ const ThirdPart: React.FC = () => {
         href="https://www.in-extremis-conferences.eu/"
         target="_blank"
         rel="noopener noreferrer"
-        className="text-xl mt-4 px-4 py-2 border-4 rounded"
+        className="px-4 py-2 mt-4 text-xl text-white transition-colors duration-300 rounded"
         style={{
-          color: "var(--color-primary)",
-          background: "var(--color-background-secondary)",
-          borderColor: "var(--color-primary)",
+          backgroundColor: "#422D68",
+          border: "2px solid var(--color-border)",
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.backgroundColor = "#2A3B61";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.backgroundColor = "#422D68";
         }}
         aria-label="En savoir plus sur In Extremis Society"
       >
@@ -53,12 +58,12 @@ const ThirdPart: React.FC = () => {
 
       <section className="w-full mt-10">
         <h2
-          className="text-3xl text-center mb-6 font-roboto"
+          className="mb-6 text-3xl text-center font-Montserrat"
           style={{ color: "var(--color-foreground)" }}
         >
           Ainsi que nos différents outils
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-col-6 gap-4 py-10 lg:p-10">
+        <div className="grid grid-cols-1 gap-4 py-10 md:grid-cols-2 lg:grid-cols-4 xl:grid-col-6 lg:p-10">
           {cards.map((card: CardType) => (
             <LinksCard
               id={card.id}

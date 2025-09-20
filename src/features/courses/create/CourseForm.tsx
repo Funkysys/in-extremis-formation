@@ -1,11 +1,15 @@
-import React, { useRef, useState } from 'react';
-import { useApolloClient, ApolloClient, NormalizedCacheObject } from '@apollo/client';
-import { useRouter } from 'next/navigation';
-import { useCourseForm } from './useCourseForm';
-import { VideoSection, VideoSectionRef } from './VideoSection';
-import { ChaptersList } from './ChaptersList';
-import { CourseService } from './courseService';
-import { ToastService } from '@/services/toastService';
+import { ToastService } from "@/services/toastService";
+import {
+  ApolloClient,
+  NormalizedCacheObject,
+  useApolloClient,
+} from "@apollo/client";
+import { useRouter } from "next/navigation";
+import React, { useRef, useState } from "react";
+import { ChaptersList } from "./ChaptersList";
+import { CourseService } from "./courseService";
+import { useCourseForm } from "./useCourseForm";
+import { VideoSection, VideoSectionRef } from "./VideoSection";
 
 export function CourseForm() {
   const {
@@ -23,7 +27,7 @@ export function CourseForm() {
     updateChapter,
     deleteChapter,
     setPublished,
-    isValid
+    isValid,
   } = useCourseForm();
 
   const router = useRouter();
@@ -40,60 +44,63 @@ export function CourseForm() {
     addChapter(title, timestamp);
   };
 
-  const [uploadStep, setUploadStep] = useState<string>('');
+  const [uploadStep, setUploadStep] = useState<string>("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!isValid) {
-      setError('Please fill all required fields');
-      ToastService.error('Please fill all required fields');
+      setError("Please fill all required fields");
+      ToastService.error("Please fill all required fields");
       return;
     }
 
     if (!formState.videoFile) {
-      setError('Please select a video for the course');
-      ToastService.error('Please select a video for the course');
+      setError("Please select a video for the course");
+      ToastService.error("Please select a video for the course");
       return;
     }
 
     try {
       setIsSubmitting(true);
       setError(null);
-      
+
       // Upload video
-      setUploadStep('Uploading video...');
-      ToastService.info('Starting video upload');
+      setUploadStep("Uploading video...");
+      ToastService.info("Starting video upload");
       let videoMetadata;
       if (videoSectionRef.current) {
         videoMetadata = await videoSectionRef.current.uploadVideo();
         if (!videoMetadata) {
-          throw new Error('Video upload failed');
+          throw new Error("Video upload failed");
         }
-        setUploadStep('Video uploaded successfully');
+        setUploadStep("Video uploaded successfully");
       } else {
-        throw new Error('Video section reference not available');
+        throw new Error("Video section reference not available");
       }
 
       // Create course and chapters
-      setUploadStep('Creating course...');
-      ToastService.info('Creating your course');
+      setUploadStep("Creating course...");
+      ToastService.info("Creating your course");
       const courseService = new CourseService(apolloClient);
       const result = await courseService.createCourse(formState, videoMetadata);
-      
-      setUploadStep('Course created successfully!');
-      ToastService.success('Course created successfully!');
-      
+
+      setUploadStep("Course created successfully!");
+      ToastService.success("Course created successfully!");
+
       // Redirect to course page
       setTimeout(() => {
         router.push(`/formateur/mes-formations/${result.courseId}`);
       }, 1500); // Short delay to show success message
     } catch (err) {
-      console.error('Error creating course:', err);
-      const errorMessage = err instanceof Error ? err.message : 'An error occurred while creating the course';
+      console.error("Error creating course:", err);
+      const errorMessage =
+        err instanceof Error
+          ? err.message
+          : "An error occurred while creating the course";
       setError(errorMessage);
       ToastService.error(errorMessage);
-      setUploadStep('');
+      setUploadStep("");
     } finally {
       setIsSubmitting(false);
     }
@@ -106,7 +113,7 @@ export function CourseForm() {
           {error}
         </div>
       )}
-      
+
       {uploadStep && (
         <div className="bg-blue-900/50 border border-blue-500 text-white p-4 rounded mb-6">
           <div className="flex items-center">
@@ -120,13 +127,11 @@ export function CourseForm() {
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <label className="block text-sm font-medium mb-1">
-            Course Title
-          </label>
+          <label className="block text-sm font-medium mb-1">Course Title</label>
           <input
             type="text"
             value={formState.title}
-            onChange={(e) => updateField('title', e.target.value)}
+            onChange={(e) => updateField("title", e.target.value)}
             className="w-full p-2 border rounded bg-gray-700 text-white"
             placeholder="Enter course title"
             required
@@ -139,7 +144,7 @@ export function CourseForm() {
           </label>
           <textarea
             value={formState.description}
-            onChange={(e) => updateField('description', e.target.value)}
+            onChange={(e) => updateField("description", e.target.value)}
             className="w-full p-2 border rounded bg-gray-700 text-white min-h-[100px]"
             placeholder="Enter course description"
           />
@@ -181,9 +186,7 @@ export function CourseForm() {
               />
             </label>
             {formState.coverImage && (
-              <span className="ml-3 text-sm">
-                {formState.coverImage.name}
-              </span>
+              <span className="ml-3 text-sm">{formState.coverImage.name}</span>
             )}
           </div>
         </div>
@@ -199,7 +202,7 @@ export function CourseForm() {
             />
             <label htmlFor="publish">Publish immediately</label>
           </div>
-          
+
           <div className="flex gap-4">
             <button
               type="button"
@@ -213,11 +216,11 @@ export function CourseForm() {
               disabled={isSubmitting || !isValid}
               className={`px-6 py-2 rounded text-white ${
                 isSubmitting || !isValid
-                  ? 'bg-blue-800 cursor-not-allowed'
-                  : 'bg-blue-600 hover:bg-blue-700'
+                  ? "bg-blue-800 cursor-not-allowed"
+                  : "bg-blue-600 hover:bg-blue-700"
               }`}
             >
-              {isSubmitting ? 'Creating...' : 'Create Course'}
+              {isSubmitting ? "Creating..." : "Create Course"}
             </button>
           </div>
         </div>
