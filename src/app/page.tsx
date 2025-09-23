@@ -49,7 +49,7 @@ export default function Home() {
 
   return (
     <main
-      className="overflow-y-scroll overflow-x-hidden"
+      className="overflow-x-hidden overflow-y-scroll"
       style={{ background: "var(--color-background)" }}
     >
       <div
@@ -63,7 +63,7 @@ export default function Home() {
           In Extremis Formation - Éducation musicale populaire en ligne
         </h1>
         <div
-          className="absolute inset-0 flex flex-col justify-center items-center"
+          className="absolute inset-0 flex flex-col items-center justify-center"
           style={{ color: "var(--color-foreground)" }}
         >
           <Image
@@ -83,7 +83,7 @@ export default function Home() {
             }}
           />
 
-          <p className="text-lg md:text-xl xl:text-2xl mt-2 text-center animate-fade-up animate-delay-500 sr-only">
+          <p className="mt-2 text-lg text-center sr-only md:text-xl xl:text-2xl animate-fade-up animate-delay-500">
             Pour apprendre la musique à votre rythme !
           </p>
         </div>
@@ -94,19 +94,17 @@ export default function Home() {
         style={{
           opacity: 1 - fadeOut,
           background: "var(--color-background-secondary)",
-          color: "var(--color-foreground)",
         }}
       >
         <h2
-          className="text-3xl mb-5 font-roboto border-b"
+          className="mb-5 text-4xl font-bold font-montserrat"
           style={{
             color: "var(--color-foreground)",
-            borderColor: "var(--color-border)",
           }}
         >
-          Nos Propositions :
+          Nos Propositions
         </h2>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:p-10">
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 md:p-10">
           {cards.map((card: CardType) => (
             <Card
               id={card.id}

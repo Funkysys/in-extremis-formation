@@ -29,7 +29,9 @@ const Card = ({ id, title, description, imageUrl, link, mail }: CardType) => {
             {title}
           </h3>
         </header>
-        <p style={{ color: "#1f2d5c" }}>{description}</p>
+        <p className="text-lg" style={{ color: "var(--color-background)" }}>
+          {description}
+        </p>
         <footer className="w-full mt-4">
           {mail && (
             <Link

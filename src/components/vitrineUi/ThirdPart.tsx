@@ -15,7 +15,7 @@ const ThirdPart: React.FC = () => {
     >
       <header>
         <h2
-          className="mt-6 mb-6 text-xl text-center md:text-3xl font-Montserrat"
+          className="mt-6 mb-6 text-xl italic text-center md:text-3xl font-Montserrat"
           style={{ color: "var(--color-foreground)" }}
         >
           Avant de partir, découvrez aussi notre catalogue de <br />
@@ -58,7 +58,7 @@ const ThirdPart: React.FC = () => {
 
       <section className="w-full mt-10">
         <h2
-          className="mb-6 text-3xl text-center font-Montserrat"
+          className="mb-6 text-3xl italic text-center font-Montserrat"
           style={{ color: "var(--color-foreground)" }}
         >
           Ainsi que nos différents outils
