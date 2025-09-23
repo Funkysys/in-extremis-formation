@@ -24,7 +24,7 @@ const ThirdPart: React.FC = () => {
         </h2>
       </header>
 
-      <figure className="relative w-[100vw] h-[20vh] xl:w-[70vw] xl:h-[30vh]">
+      <figure className="relative w-[80vw] h-[20vh] md:w-[60vw] md:h-[40vh]  lg:w-[50vw] lg:h-[40vh] xl:w-[30vw] xl:h-[30vh]">
         <Link href="https://www.in-extremis-conferences.eu/" target="_blank">
           <Image
             src={"/images/in-extremis-society.png"}
