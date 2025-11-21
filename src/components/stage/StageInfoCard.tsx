@@ -20,9 +20,7 @@ export function StageInfoCard({ icon, title, children }: StageInfoCardProps) {
       >
         {icon} {title}
       </h4>
-      <div style={{ color: "var(--color-foreground-stage)" }}>
-        {children}
-      </div>
+      <div style={{ color: "var(--color-foreground-stage)" }}>{children}</div>
     </div>
   );
 }

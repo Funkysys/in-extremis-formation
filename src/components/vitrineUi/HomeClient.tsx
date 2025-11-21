@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { CardType } from "../../types/cards";
+import ActusCarousel from "./ActusCarousel";
 import Card from "./Card";
 import ThirdPart from "./ThirdPart";
 
@@ -101,8 +102,11 @@ export default function HomeClient({ cards }: HomeClientProps) {
           background: "var(--color-background-secondary)",
         }}
       >
+        {/* Carrousel des actualités */}
+        <ActusCarousel />
+
         <h2
-          className="mb-5 text-4xl font-bold font-montserrat"
+          className="mb-5 mt-16 text-4xl font-bold font-montserrat"
           style={{
             color: "var(--color-foreground)",
           }}
@@ -123,6 +127,7 @@ export default function HomeClient({ cards }: HomeClientProps) {
           ))}
         </div>
       </section>
+
       <ThirdPart />
     </main>
   );

@@ -3,6 +3,9 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect } from "react";
 
+// Forcer le rendu dynamique pour les searchParams
+export const dynamic = "force-dynamic";
+
 export default function AuthCallbackPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
