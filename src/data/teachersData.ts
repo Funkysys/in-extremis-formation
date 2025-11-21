@@ -60,6 +60,10 @@ const team = [
     bio: " Guitariste, compositeur et producteur, Vincent aborde la pédagogie à la fois sous l’angle académique et autodidacte. Fort d’une solide expérience de professeur en conservatoire, sa vision de l’enseignement reste profondément ancrée dans l’idée d’accompagner l’élève à affirmer son identité musicale et artistique. Nourri par les nombreux projets auxquels il a participé et les différentes scènes qu’il a fréquentées (jazz, rock, métal, monde arabe et indien), il aide les musiciens à se forger une base technique nécessaire à atteindre le son qu’ils recherchent. Également producteur, il assiste les créateurs à développer leurs idées de composition et à les mettre en forme.",
     descrLinks: [
       {
+        title: "Site internet : Vincent Arnaud Music",
+        link: "vincentarnaudmusic.com",
+      },
+      {
         title: "Label: Spinosor Records - Vincent Arnaud",
         link: "https://www.spinosor-records.eu/home/artists/vincent-arnaud",
       },

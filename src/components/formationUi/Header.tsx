@@ -120,7 +120,6 @@ const Header = ({ title }: HeaderProps) => {
   }, [hasToken, data, loading, error]);
 
   if (!tokenChecked || (hasToken && loading && !data?.me)) {
-    console.log("Affichage du chargement...");
     return <div>Chargement...</div>;
   }
 

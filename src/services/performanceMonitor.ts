@@ -303,4 +303,16 @@ class PerformanceMonitorService {
   }
 }
 
-export const performanceMonitor = PerformanceMonitorService.getInstance();
+// Lazy initialization pour éviter les erreurs SSR
+export const performanceMonitor =
+  typeof window !== "undefined"
+    ? PerformanceMonitorService.getInstance()
+    : ({
+        startMeasure: () => () => {},
+        measureAsync: async <T>(name: string, fn: () => Promise<T>) => fn(),
+        getMetrics: () => [],
+        getAverageMetric: () => 0,
+        clearMetrics: () => {},
+        exportMetrics: () => "{}",
+        dispose: () => {},
+      } as unknown as PerformanceMonitorService);

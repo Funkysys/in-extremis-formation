@@ -4,10 +4,10 @@ interface StageHeroProps {
   title: string;
   subtitle: string;
   date: string;
-  location: string;
+  place: string;
 }
 
-export function StageHero({ title, subtitle, date, location }: StageHeroProps) {
+export function StageHero({ title, subtitle, date, place }: StageHeroProps) {
   return (
     <div
       className="w-[100vw] h-[100vh] flex flex-col justify-center items-center relative"
@@ -43,7 +43,7 @@ export function StageHero({ title, subtitle, date, location }: StageHeroProps) {
             className="mt-4 text-lg text-center animate-fade-up animate-delay-700"
             style={{ color: "var(--color-foreground-stage)" }}
           >
-            {date} • {location}
+            {date} • {place}
           </p>
         </div>
       </div>

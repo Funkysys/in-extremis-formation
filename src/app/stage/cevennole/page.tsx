@@ -1,164 +1,87 @@
-"use client";
-import { StageButton } from "@/components/stage/StageButton";
-import { StageHero } from "@/components/stage/StageHero";
-import { StageInfoCard } from "@/components/stage/StageInfoCard";
-import { StageModules } from "@/components/stage/StageModules";
-import { useFadeOutScroll } from "@/hooks/useFadeOutScroll";
+import CevennoleContent from "@/components/stage/CevennoleContent";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Stage Cévenol - Improvisation Musicale | In Extremis Formation",
+  description:
+    "Stage intensif d'improvisation musicale du 3 au 7 mars 2025 à Lasalle (Gard). 5 jours de création collective, techniques d'improvisation et performance finale. Tarif : 350-400€. Inscription ouverte.",
+  keywords:
+    "stage improvisation musicale, stage cévenol, stage musique gard, stage lasalle, stage mars 2025, improvisation collective, stage intensif improvisation, cours improvisation, formation musicale gard",
+  openGraph: {
+    title: "Stage Cévenol - Improvisation Musicale",
+    description:
+      "5 jours d'improvisation musicale intensive à Lasalle (Gard). Du 3 au 7 mars 2025. Création collective et performance finale.",
+    url: "https://www.inextremisformation.fr/stage/cevennole",
+    type: "website",
+    images: [
+      {
+        url: "https://www.inextremisformation.fr/images/logo_white.png",
+        width: 1200,
+        height: 630,
+        alt: "Stage Cévenol d'improvisation musicale",
+      },
+    ],
+  },
+};
 
 const CevennoleStagePage = () => {
-  const fadeOut = useFadeOutScroll();
-
   return (
-    <main
-      className="overflow-x-hidden overflow-y-scroll"
-      style={{ background: "var(--color-background-stage)" }}
-    >
-      <StageHero
-        title="STAGE CÉVENOL"
-        subtitle="Improvisation Musicale"
-        date="Du 3 au 7 mars"
-        location="Lasalle, Gard"
-      />
-
-      <div
-        className="w-[100vw] md:min-h-[100vh] pt-10 md:px-10 flex flex-col justify-center items-center opacity-0 transition-opacity duration-500 sticky top-0"
-        style={{
-          opacity: 1 - fadeOut,
-          background: "var(--color-background-secondary-stage)",
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "EducationEvent",
+            name: "Stage Cévenol - Improvisation Musicale",
+            description:
+              "Stage intensif d'improvisation musicale sur 5 jours avec techniques d'improvisation, travail en groupe et création collective",
+            startDate: "2025-03-03",
+            endDate: "2025-03-07",
+            eventStatus: "https://schema.org/EventScheduled",
+            eventAttendanceMode:
+              "https://schema.org/OfflineEventAttendanceMode",
+            location: {
+              "@type": "Place",
+              name: "La Cure",
+              address: {
+                "@type": "PostalAddress",
+                streetAddress: "15 rue henri mallol",
+                addressLocality: "Lasalle",
+                postalCode: "30460",
+                addressCountry: "FR",
+              },
+            },
+            organizer: {
+              "@type": "EducationalOrganization",
+              name: "In Extremis Formation",
+              url: "https://www.inextremisformation.fr",
+            },
+            offers: [
+              {
+                "@type": "Offer",
+                price: "400",
+                priceCurrency: "EUR",
+                availability: "https://schema.org/InStock",
+                description: "Tarif plein",
+              },
+              {
+                "@type": "Offer",
+                price: "350",
+                priceCurrency: "EUR",
+                availability: "https://schema.org/InStock",
+                description: "Tarif réduit adhérents",
+              },
+            ],
+            performer: {
+              "@type": "MusicGroup",
+              name: "Équipe In Extremis Formation",
+            },
+          }),
         }}
-      >
-        <section className="mb-32">
-          <StageModules />
-        </section>
-        <section
-          className="w-full px-4 py-16"
-          style={{ background: "var(--color-background-tertiary-stage)" }}
-        >
-          <div className="max-w-4xl mx-auto">
-            <h3
-              className="mb-12 text-4xl font-bold text-center font-montserrat"
-              style={{ color: "var(--color-foreground-stage)" }}
-            >
-              Informations Pratiques
-            </h3>
-
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-              <StageInfoCard icon="📅" title="Dates & Horaires">
-                <p>
-                  <strong>Du 3 au 7 mars 2025</strong>
-                  <br />
-                  Lundi au vendredi : 10h00 - 18h00
-                  <br />
-                  Pause déjeuner : 12h30 - 14h00
-                </p>
-              </StageInfoCard>
-
-              <StageInfoCard icon="📍" title="Lieu">
-                <p>
-                  <strong>Lasalle, Gard (30)</strong>
-                  <br />
-                  La Cure
-                  <br />
-                  15 rue henri mallol
-                  <br />
-                  30460 Lasalle
-                </p>
-              </StageInfoCard>
-
-              <StageInfoCard icon="🎵" title="Programme">
-                <ul>
-                  <li>• Techniques d&apos;improvisation</li>
-                  <li>• Travail en groupe</li>
-                  <li>• Création collective</li>
-                  <li>• Performance finale</li>
-                </ul>
-              </StageInfoCard>
-
-              <StageInfoCard icon="💰" title="Tarifs">
-                <p>
-                  <strong>Tarif plein :</strong> 400€
-                  <br />
-                  <strong>
-                    Tarif réduit (adhérents à {`l'association l'Art Scène`}) :
-                  </strong>{" "}
-                  350€
-                  <br />
-                  <em>Hébergement et repas non inclus</em>
-                </p>
-              </StageInfoCard>
-            </div>
-
-            <div
-              className="p-6 mt-10 rounded-lg"
-              style={{
-                background: "var(--color-background-secondary-stage)",
-              }}
-            >
-              <h4
-                className="mb-4 text-2xl font-bold"
-                style={{ color: "var(--color-primary-stage)" }}
-              >
-                Hébergement & Repas
-              </h4>
-              <p style={{ color: "var(--color-foreground-stage)" }}>
-                <strong>Repas :</strong> Une proposition de repas végétarien est
-                faite par le food truck {`"Judith"`} dans la salle associative
-                pour un moment de convivialité entre étudiants et Intervenants.
-                <br />
-                - 12€ assiette repas + déssert
-                <br />
-                - 15€ entrée + plat + dessert
-                <br />- possibilité {`d'apporter`} son propre repas
-                <br />
-                <strong>
-                  Hébergement : des options d&apos;hébergement en gîte ou en
-                  auberge sont disponibles à proximité.
-                </strong>
-                <br />
-                Merci de nous contacter pour plus d&apos;informations.
-              </p>
-            </div>
-
-            <div
-              className="p-8 mt-12 text-center rounded-lg"
-              style={{ background: "var(--color-background-secondary-stage)" }}
-            >
-              <h4
-                className="mb-4 text-2xl font-bold"
-                style={{ color: "var(--color-primary-stage)" }}
-              >
-                📝 Inscription
-              </h4>
-              <p
-                className="mb-6 text-lg"
-                style={{ color: "var(--color-foreground-stage)" }}
-              >
-                Les inscriptions sont ouvertes ! Ne tardez pas à réserver votre
-                place pour ce stage unique en son genre.
-              </p>
-
-              <div className="flex flex-col gap-4">
-                <StageButton href="/images/description_cev_2026.pdf" external>
-                  📄 Document descriptif du stage (PDF)
-                </StageButton>
-                <StageButton
-                  href="/images/formulaire_inscription_cev26.pdf"
-                  external
-                >
-                  ✉️ S&apos;inscrire au stage
-                </StageButton>
-                <StageButton
-                  href="/images/autorisation_image_cev_2026.pdf"
-                  external
-                >
-                  📋 Document de droit à l&apos;image
-                </StageButton>
-              </div>
-            </div>
-          </div>
-        </section>
-      </div>
-    </main>
+      />
+      <CevennoleContent />
+    </>
   );
 };
 

@@ -7,6 +7,9 @@ import { useMutation, useQuery } from "@apollo/client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
+// Forcer le rendu dynamique pour éviter l'erreur SSR "location is not defined"
+export const dynamic = "force-dynamic";
+
 export default function ProfilePage() {
   const { user, isAuthenticated, refetchUser } = useAuth();
   const router = useRouter();

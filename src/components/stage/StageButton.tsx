@@ -16,7 +16,7 @@ export function StageButton({
   const linkProps = external
     ? { target: "_blank" as const, rel: "noopener noreferrer" }
     : {};
-  console.log("StageButton rendered with href:", href);
+
   return (
     <Link
       href={href}
