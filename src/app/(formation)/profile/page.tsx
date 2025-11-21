@@ -249,7 +249,9 @@ export default function ProfilePage() {
             {currentUser?.roles && currentUser.roles.length > 0 && (
               <p>
                 <strong>Rôles:</strong>{" "}
-                {currentUser.roles.map((r) => r.name).join(", ")}
+                {currentUser.roles
+                  .map((r: { name: string }) => r.name)
+                  .join(", ")}
               </p>
             )}
           </div>
@@ -264,26 +266,35 @@ export default function ProfilePage() {
           <p className="text-gray-500">Aucun paiement pour le moment</p>
         ) : (
           <ul className="space-y-3">
-            {payments.map((payment: { id: string; description: string; amount: number; status: string; createdAt: string }) => (
-              <li key={payment.id} className="border-b pb-3">
-                <div className="flex justify-between">
-                  <span>
-                    <strong>{payment.description}</strong>
-                  </span>
-                  <span className="text-green-600 font-semibold">
-                    {payment.amount} €
-                  </span>
-                </div>
-                <div className="text-sm text-gray-500 mt-1">
-                  <span>Méthode: {payment.method}</span> •
-                  <span> Statut: {payment.status}</span> •
-                  <span>
-                    {" "}
-                    {new Date(payment.createdAt).toLocaleDateString()}
-                  </span>
-                </div>
-              </li>
-            ))}
+            {payments.map(
+              (payment: {
+                id: string;
+                description: string;
+                amount: number;
+                status: string;
+                createdAt: string;
+                method?: string;
+              }) => (
+                <li key={payment.id} className="border-b pb-3">
+                  <div className="flex justify-between">
+                    <span>
+                      <strong>{payment.description}</strong>
+                    </span>
+                    <span className="text-green-600 font-semibold">
+                      {payment.amount} €
+                    </span>
+                  </div>
+                  <div className="text-sm text-gray-500 mt-1">
+                    <span>Méthode: {payment.method}</span> •
+                    <span> Statut: {payment.status}</span> •
+                    <span>
+                      {" "}
+                      {new Date(payment.createdAt).toLocaleDateString()}
+                    </span>
+                  </div>
+                </li>
+              )
+            )}
           </ul>
         )}
       </div>

@@ -3,35 +3,29 @@
  */
 
 // Hooks
-export {
-  useCache,
-  useInstallPrompt,
-  useIsPWA,
-  useOnlineStatus,
-  usePWA,
-  usePushNotifications,
-  useServiceWorker,
-  useSlowConnection,
-} from "./hooks/usePWA";
+export { useCache } from "./hooks/useCache";
+export { useInstallPrompt } from "./hooks/useInstallPrompt";
+export { useOnlineStatus } from "./hooks/useOnlineStatus";
+export { usePushNotifications } from "./hooks/usePushNotifications";
+export { useServiceWorker } from "./hooks/useServiceWorker";
+// export { useIsPWA, usePWA, useSlowConnection } from "./hooks/usePWA"; // TODO: Créer ces hooks
 
 // Composants
-export {
-  InstallPrompt,
-  OfflineBanner,
-  PWAManager,
-  PWAStatus,
-  UpdateNotification,
-} from "./components/pwa/PWAComponents";
+export { InstallPrompt } from "./components/pwa/InstallPrompt";
+export { OfflineBanner } from "./components/pwa/OfflineBanner";
+export { PWAManager } from "./components/pwa/PWAManager";
+export { PWAStatus } from "./components/pwa/PWAStatus";
+export { UpdateNotification } from "./components/pwa/UpdateNotification";
 
 // Utilitaires
 export {
-  PWA_CONFIG,
   canInstallPWA,
   clearCache,
   formatCacheSize,
   getCacheSize,
   isAppInstalled,
   isOnline,
+  PWA_CONFIG,
   registerBackgroundSync,
   registerServiceWorker,
   requestNotificationPermission,

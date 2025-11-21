@@ -1,17 +1,10 @@
 // Composant: ErrorDisplay - Affichage d'erreur
 
+import { ApolloError } from "@apollo/client";
 import Link from "next/link";
 
-interface GraphQLError {
-  message: string;
-}
-
 interface ErrorDisplayProps {
-  error: {
-    message?: string;
-    networkError?: { message: string };
-    graphQLErrors?: GraphQLError[];
-  };
+  error: ApolloError;
 }
 
 export const ErrorDisplay = ({ error }: ErrorDisplayProps) => {

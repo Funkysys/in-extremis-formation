@@ -10,19 +10,20 @@ import { usePlaylistDetail } from "@/hooks/usePlaylists";
 import { useAuth } from "@/providers/AuthProvider";
 import { useMutation } from "@apollo/client";
 import Link from "next/link";
-import { useState } from "react";
+import { use, useState } from "react";
 
 interface PlaylistDetailPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export default function PlaylistDetailPage({
   params,
 }: PlaylistDetailPageProps) {
+  const { id } = use(params);
   const { user } = useAuth();
-  const { playlist, loading } = usePlaylistDetail(params.id);
+  const { playlist, loading } = usePlaylistDetail(id);
   const [isEditing, setIsEditing] = useState(false);
 
   const [removeCourseFromPlaylist] = useMutation(
@@ -34,19 +35,15 @@ export default function PlaylistDetailPage({
 
   const handleReorder = async (courseIds: string[]) => {
     await reorderPlaylistCourses({
-      variables: { playlistId: params.id, courseIds },
-      refetchQueries: [
-        { query: GET_PLAYLIST_DETAIL_QUERY, variables: { id: params.id } },
-      ],
+      variables: { playlistId: id, courseIds },
+      refetchQueries: [{ query: GET_PLAYLIST_DETAIL_QUERY, variables: { id } }],
     });
   };
 
   const handleRemove = async (courseId: string) => {
     await removeCourseFromPlaylist({
-      variables: { playlistId: params.id, courseId },
-      refetchQueries: [
-        { query: GET_PLAYLIST_DETAIL_QUERY, variables: { id: params.id } },
-      ],
+      variables: { playlistId: id, courseId },
+      refetchQueries: [{ query: GET_PLAYLIST_DETAIL_QUERY, variables: { id } }],
     });
   };
 
@@ -160,7 +157,7 @@ export default function PlaylistDetailPage({
       {/* Courses list */}
       <PlaylistCoursesList
         courses={playlist.courses || []}
-        playlistId={params.id}
+        playlistId={id}
         onReorder={handleReorder}
         onRemove={handleRemove}
         isEditable={isOwner && isEditing}

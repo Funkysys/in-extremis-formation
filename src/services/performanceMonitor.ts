@@ -142,7 +142,11 @@ class PerformanceMonitorService {
             duration: lastEntry.startTime,
             type: "custom",
             metadata: {
-              element: (lastEntry as PerformanceEntry & { element?: { tagName?: string } }).element?.tagName,
+              element: (
+                lastEntry as PerformanceEntry & {
+                  element?: { tagName?: string };
+                }
+              ).element?.tagName,
               url: (lastEntry as PerformanceEntry & { url?: string }).url,
               score:
                 lastEntry.startTime < 2500
@@ -163,7 +167,10 @@ class PerformanceMonitorService {
       try {
         const fidObserver = new PerformanceObserver((list) => {
           for (const entry of list.getEntries()) {
-            const fidEntry = entry as PerformanceEntry & { processingStart?: number; name: string };
+            const fidEntry = entry as PerformanceEntry & {
+              processingStart?: number;
+              name: string;
+            };
             this.metrics.push({
               name: "FID (First Input Delay)",
               startTime: fidEntry.startTime,
@@ -173,11 +180,13 @@ class PerformanceMonitorService {
               metadata: {
                 eventType: fidEntry.name,
                 score:
-                  fidEntry.processingStart < 100
-                    ? "good"
-                    : fidEntry.processingStart < 300
-                    ? "needs-improvement"
-                    : "poor",
+                  typeof fidEntry.processingStart === "number"
+                    ? fidEntry.processingStart < 100
+                      ? "good"
+                      : fidEntry.processingStart < 300
+                      ? "needs-improvement"
+                      : "poor"
+                    : "unknown",
               },
             });
           }
@@ -193,7 +202,10 @@ class PerformanceMonitorService {
         let clsScore = 0;
         const clsObserver = new PerformanceObserver((list) => {
           for (const entry of list.getEntries()) {
-            const clsEntry = entry as PerformanceEntry & { hadRecentInput?: boolean; value?: number };
+            const clsEntry = entry as PerformanceEntry & {
+              hadRecentInput?: boolean;
+              value?: number;
+            };
             if (!clsEntry.hadRecentInput) {
               clsScore += clsEntry.value || 0;
             }
@@ -292,4 +304,3 @@ class PerformanceMonitorService {
 }
 
 export const performanceMonitor = PerformanceMonitorService.getInstance();
-

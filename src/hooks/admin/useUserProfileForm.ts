@@ -43,7 +43,8 @@ export const useUserProfileForm = (onDeleted?: () => void) => {
   };
 
   const tokenExpired = error?.graphQLErrors?.some(
-    (err: { extensions?: { code?: string } }) => err.extensions?.code === "TOKEN_EXPIRED"
+    (err: { extensions?: { code?: string } }) =>
+      err.extensions?.code === "TOKEN_EXPIRED"
   );
 
   const isNotAuthenticated = error?.graphQLErrors?.some(

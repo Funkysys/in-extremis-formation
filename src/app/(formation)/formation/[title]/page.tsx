@@ -1,16 +1,17 @@
 import { Metadata } from "next";
 
 interface FormationPageProps {
-  params: {
+  params: Promise<{
     title: string;
-  };
+  }>;
 }
 
 export async function generateMetadata({
   params,
 }: FormationPageProps): Promise<Metadata> {
+  const { title } = await params;
   // TODO: Récupérer les vraies données du cours depuis GraphQL
-  const courseTitle = decodeURIComponent(params.title);
+  const courseTitle = decodeURIComponent(title);
   const baseUrl =
     process.env.NEXT_PUBLIC_APP_URL || "https://www.inextremisformation.fr";
 
@@ -21,7 +22,7 @@ export async function generateMetadata({
       title: courseTitle,
       description: `Apprenez ${courseTitle} à votre rythme avec des cours personnalisés`,
       type: "video.other",
-      url: `${baseUrl}/formation/${params.title}`,
+      url: `${baseUrl}/formation/${title}`,
       images: [
         {
           url: `${baseUrl}/images/logo_white.png`, // TODO: Utiliser la miniature du cours
@@ -42,6 +43,7 @@ export async function generateMetadata({
   };
 }
 
-export default function FormationPage({ params }: FormationPageProps) {
-  return <div>Formation Page: {decodeURIComponent(params.title)}</div>;
+export default async function FormationPage({ params }: FormationPageProps) {
+  const { title } = await params;
+  return <div>Formation Page: {decodeURIComponent(title)}</div>;
 }

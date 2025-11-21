@@ -1,6 +1,6 @@
 "use client";
 import { usePerformanceTracking } from "@/hooks/usePerformanceTracking";
-import { usePrefetchOnHover } from "@/hooks/usePrefetch";
+// import { usePrefetchOnHover } from "@/hooks/usePrefetch"; // TODO: Réactiver avec query GraphQL
 import { useTheme } from "@/providers/ThemeProvider";
 import { CardType } from "@/types";
 import { getBlurDataURL } from "@/utils/imageOptimization";
@@ -25,12 +25,8 @@ const Card = ({
 
   const { isStageContext } = useTheme();
 
-  // Prefetch au hover - toujours appeler le hook (règles React Hooks)
-  const prefetchProps = usePrefetchOnHover({
-    query: {} as Record<string, unknown>,
-    variables: { id },
-    enabled: !!link, // Activer seulement si link existe
-  });
+  // Prefetch désactivé pour l'instant (pas de query GraphQL définie)
+  // TODO: Ajouter une query GraphQL pour précharger les données du cours
 
   return (
     <article
@@ -125,7 +121,6 @@ const Card = ({
               target="_blank"
               rel="noopener noreferrer"
               className="inline-block px-4 py-2 transition-colors duration-300 rounded-md"
-              {...prefetchProps}
               style={{
                 backgroundColor: isStageContext
                   ? "var(--color-button-bg-stage)"
