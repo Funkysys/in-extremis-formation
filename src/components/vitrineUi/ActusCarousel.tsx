@@ -75,7 +75,7 @@ export default function ActusCarousel() {
         </h2>
 
         <div
-          className="relative overflow-hidden rounded-xl shadow-2xl border-2 h-[80vh] flex flex-col"
+          className="relative overflow-hidden rounded-xl shadow-2xl border-2 h-auto min-h-[600px] md:h-[80vh] flex flex-col"
           style={{
             background: "var(--color-background)",
             borderColor: "var(--color-border)",
@@ -94,7 +94,7 @@ export default function ActusCarousel() {
                 <div className="flex flex-col w-full h-full md:flex-row">
                   {/* Image pleine hauteur à gauche */}
                   {actu.image && (
-                    <div className="w-full md:w-1/2 h-[60%] md:h-full flex-shrink-0">
+                    <div className="w-full md:w-1/2 h-1/2 md:h-full flex-shrink-0">
                       <div
                         className="w-full h-full"
                         style={{
@@ -114,7 +114,7 @@ export default function ActusCarousel() {
 
                   {/* Contenu à droite */}
                   <div
-                    className={`flex-1 flex flex-col justify-center p-6 md:p-16 ${
+                    className={`flex-1 flex flex-col justify-center p-6 md:p-16 h-1/2 md:h-auto ${
                       !actu.image ? "items-center text-center" : ""
                     }`}
                   >
@@ -180,7 +180,7 @@ export default function ActusCarousel() {
             <>
               <button
                 onClick={goToPrevious}
-                className="absolute p-3 transition-all duration-300 -translate-y-1/2 rounded-full shadow-lg left-4 top-1/2 hover:scale-110"
+                className="hidden md:block absolute p-3 transition-all duration-300 -translate-y-1/2 rounded-full shadow-lg left-4 top-1/2 hover:scale-110"
                 style={{
                   background: "var(--color-background-secondary)",
                   color: "var(--color-foreground)",
@@ -203,7 +203,7 @@ export default function ActusCarousel() {
               </button>
               <button
                 onClick={goToNext}
-                className="absolute p-3 transition-all duration-300 -translate-y-1/2 rounded-full shadow-lg right-4 top-1/2 hover:scale-110"
+                className="hidden md:block absolute p-3 transition-all duration-300 -translate-y-1/2 rounded-full shadow-lg right-4 top-1/2 hover:scale-110"
                 style={{
                   background: "var(--color-background-secondary)",
                   color: "var(--color-foreground)",
