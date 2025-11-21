@@ -1,0 +1,130 @@
+{
+  "common": {
+    "search": "Rechercher",
+    "filter": "Filtrer",
+    "sort": "Trier",
+    "clear": "Effacer",
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "success": "Succès",
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "create": "Créer",
+    "close": "Fermer",
+    "back": "Retour",
+    "next": "Suivant",
+    "previous": "Précédent",
+    "viewMore": "Voir plus",
+    "showLess": "Voir moins"
+  },
+  "nav": {
+    "home": "Accueil",
+    "courses": "Formations",
+    "myCourses": "Mes formations",
+    "favorites": "Favoris",
+    "playlists": "Playlists",
+    "profile": "Profil",
+    "cart": "Panier",
+    "logout": "Déconnexion",
+    "login": "Connexion"
+  },
+  "courses": {
+    "title": "Catalogue des formations",
+    "subtitle": "Découvrez nos formations professionnelles",
+    "searchPlaceholder": "Rechercher une formation (instrument, style, artiste...)",
+    "noResults": "Aucune formation trouvée",
+    "tryDifferentSearch": "Essayez avec d'autres mots-clés ou modifiez vos filtres",
+    "resultsCount": "{count} formation(s) trouvée(s)",
+    "resultsFor": "pour \"{query}\"",
+    "addToCart": "Ajouter au panier",
+    "addToWishlist": "Ajouter à la liste de souhaits",
+    "free": "Gratuit",
+    "price": "{price} €"
+  },
+  "filters": {
+    "title": "Filtres",
+    "reset": "Réinitialiser",
+    "sortBy": "Trier par",
+    "category": "Catégorie",
+    "level": "Niveau",
+    "price": "Prix",
+    "priceMin": "Min",
+    "priceMax": "Max",
+    "sortRelevance": "Pertinence",
+    "sortRecent": "Plus récents",
+    "sortPopular": "Populaires",
+    "sortPriceAsc": "Prix croissant",
+    "sortPriceDesc": "Prix décroissant"
+  },
+  "categories": {
+    "guitar": "Guitare",
+    "piano": "Piano",
+    "drums": "Batterie",
+    "bass": "Basse",
+    "singing": "Chant",
+    "theory": "Théorie"
+  },
+  "levels": {
+    "beginner": "Débutant",
+    "intermediate": "Intermédiaire",
+    "advanced": "Avancé"
+  },
+  "playlists": {
+    "title": "Mes Playlists",
+    "subtitle": "Organisez vos cours en playlists personnalisées",
+    "create": "Nouvelle playlist",
+    "createFirst": "Créer ma première playlist",
+    "noPlaylists": "Aucune playlist pour le moment",
+    "noCourses": "Cette playlist est vide",
+    "addCourses": "Ajoutez des cours pour commencer",
+    "createTitle": "Créer une playlist",
+    "editTitle": "Modifier la playlist",
+    "name": "Nom de la playlist",
+    "namePlaceholder": "Ma playlist de cours",
+    "description": "Description (optionnel)",
+    "descriptionPlaceholder": "Description de ma playlist...",
+    "makePublic": "Rendre la playlist publique",
+    "private": "Privée",
+    "public": "Publique",
+    "coursesCount": "{count} cours",
+    "addToPlaylist": "Ajouter à une playlist",
+    "removeFromPlaylist": "Retirer de la playlist",
+    "deleteConfirm": "Supprimer cette playlist ?",
+    "editMode": "Mode édition : Glissez-déposez les cours pour les réorganiser. Cliquez sur le ✕ pour retirer un cours.",
+    "finishEditing": "Terminer"
+  },
+  "likes": {
+    "addToFavorites": "Ajouter aux favoris",
+    "removeFromFavorites": "Retirer des favoris",
+    "myFavorites": "Mes Favoris",
+    "subtitle": "Les formations que vous avez aimées",
+    "noFavorites": "Aucun favori pour le moment",
+    "startLiking": "Commencez à aimer des formations pour les retrouver ici"
+  },
+  "share": {
+    "share": "Partager",
+    "copyLink": "Copier le lien",
+    "linkCopied": "Lien copié dans le presse-papier",
+    "shareError": "Erreur lors du partage"
+  },
+  "auth": {
+    "login": "Connexion",
+    "logout": "Déconnexion",
+    "register": "Inscription",
+    "loginRequired": "Connectez-vous pour continuer",
+    "loginToView": "Connectez-vous pour voir vos {item}"
+  },
+  "messages": {
+    "playlistCreated": "Playlist créée",
+    "playlistUpdated": "Playlist mise à jour",
+    "playlistDeleted": "Playlist supprimée",
+    "courseAdded": "Cours ajouté à la playlist",
+    "courseRemoved": "Cours retiré de la playlist",
+    "orderUpdated": "Ordre mis à jour",
+    "addedToFavorites": "Ajouté aux favoris",
+    "removedFromFavorites": "Retiré des favoris",
+    "error": "Une erreur est survenue"
+  }
+}

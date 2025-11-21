@@ -1,4 +1,4 @@
-import { cards } from "@/data/outils";
+import { cards } from "@/data/tools";
 import Image from "next/image";
 import Link from "next/link";
 import { CardType } from "../../types/cards";

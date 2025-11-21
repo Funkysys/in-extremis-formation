@@ -1,17 +1,28 @@
+import createMiddleware from "next-intl/middleware";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-// import { jwtDecode } from 'jwt-decode';
+import { locales } from "./i18n";
 
-// type UserRole = 'user' | 'formateur' | 'admin';
+// Créer le middleware i18n
+const intlMiddleware = createMiddleware({
+  locales,
+  defaultLocale: "fr",
+  localePrefix: "as-needed", // Ne pas préfixer la locale par défaut (fr)
+});
 
-// interface JwtPayload {
-//   role?: UserRole;
-//   [key: string]: any;
-// }
-
-// Middleware simplifié - La vérification complète se fera côté client
+// Middleware combiné
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  // Routes sans i18n (page d'accueil, stage, etc.)
+  const excludeFromI18n = ["/", "/stage", "/offline"];
+  if (
+    excludeFromI18n.some(
+      (route) => pathname === route || pathname.startsWith(route + "/")
+    )
+  ) {
+    return NextResponse.next();
+  }
 
   // Routes protégées
   const adminRoutes = ["/admin"];
@@ -22,20 +33,19 @@ export function middleware(request: NextRequest) {
     pathname.startsWith(route)
   );
 
-  // Si la route n'est pas protégée, on laisse passer
+  // Si la route n'est pas protégée, appliquer le middleware i18n
   if (!isAdminRoute && !isFormateurRoute) {
-    return NextResponse.next();
+    return intlMiddleware(request);
   }
 
-  // La vérification complète se fera côté client via le composant de protection de route
-  // On laisse passer la requête, et c'est le composant qui gérera la redirection si nécessaire
-  return NextResponse.next();
-
-  // Tout est bon, on laisse passer la requête
-  return NextResponse.next();
+  // Pour les routes protégées, appliquer d'abord i18n puis laisser passer
+  const response = intlMiddleware(request);
+  return response || NextResponse.next();
 }
 
 // Configuration du middleware pour s'exécuter sur les chemins spécifiés
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico|auth/).*)"],
+  matcher: [
+    "/((?!api|_next/static|_next/image|favicon.ico|auth|sw.js|manifest.json|images).*)",
+  ],
 };

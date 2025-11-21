@@ -5,4 +5,5 @@ export type CardType = {
   imageUrl: string;
   link?: string;
   mail?: string;
+  message?: string;
 };

@@ -21,9 +21,8 @@ const LinksCard = ({
           <Image
             src={imageUrl}
             alt={title}
-            layout="fill"
-            objectFit="contain"
-            className="rounded-lg"
+            fill
+            className="rounded-lg object-contain"
           />
         </div>
       )}

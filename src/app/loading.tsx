@@ -13,8 +13,8 @@ export default function Loading() {
             alt="In Extremis Formation - Éducation musicale populaire en ligne"
             width={1000}
             height={1000}
-            objectFit="cover"
-            className="rounded-lg animate-fade-up animate-once animate-duration-[1000ms] animate-ease-in-out"
+            className="rounded-lg animate-fade-up animate-once animate-duration-[1000ms] animate-ease-in-out object-cover"
+            priority
           />
 
           <p className="text-lg md:text-xl xl:text-2xl mt-2 text-center animate-fade-up animate-delay-500 sr-only">

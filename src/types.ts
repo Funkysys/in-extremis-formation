@@ -1,5 +1,4 @@
 export type CardType = {
-
   id: string;
 
   title: string;
@@ -12,12 +11,10 @@ export type CardType = {
 
   mail?: string;
 
+  message?: string;
 };
 
-
-
 export type VideoData = {
-
   id: number;
 
   title: string;
@@ -27,34 +24,21 @@ export type VideoData = {
   imageUrl: string;
 
   link: string;
-
 };
-
-
 
 export type CourseCardProps = {
-
   temp_video_data: VideoData[];
-
 };
 
-
-
-
 export interface Role {
-
   id: string;
 
   name: string;
 
   description: string;
-
 }
 
-
-
 export interface User {
-
   id: string;
 
   email: string;
@@ -62,7 +46,6 @@ export interface User {
   fullName: string;
 
   roles: Role[];
-
 }
 
 export type CartItem = {

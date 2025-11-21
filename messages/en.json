@@ -1,0 +1,130 @@
+{
+  "common": {
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "clear": "Clear",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "viewMore": "View more",
+    "showLess": "Show less"
+  },
+  "nav": {
+    "home": "Home",
+    "courses": "Courses",
+    "myCourses": "My Courses",
+    "favorites": "Favorites",
+    "playlists": "Playlists",
+    "profile": "Profile",
+    "cart": "Cart",
+    "logout": "Logout",
+    "login": "Login"
+  },
+  "courses": {
+    "title": "Course Catalog",
+    "subtitle": "Discover our professional courses",
+    "searchPlaceholder": "Search for a course (instrument, style, artist...)",
+    "noResults": "No courses found",
+    "tryDifferentSearch": "Try different keywords or adjust your filters",
+    "resultsCount": "{count} course(s) found",
+    "resultsFor": "for \"{query}\"",
+    "addToCart": "Add to cart",
+    "addToWishlist": "Add to wishlist",
+    "free": "Free",
+    "price": "€{price}"
+  },
+  "filters": {
+    "title": "Filters",
+    "reset": "Reset",
+    "sortBy": "Sort by",
+    "category": "Category",
+    "level": "Level",
+    "price": "Price",
+    "priceMin": "Min",
+    "priceMax": "Max",
+    "sortRelevance": "Relevance",
+    "sortRecent": "Most recent",
+    "sortPopular": "Popular",
+    "sortPriceAsc": "Price ascending",
+    "sortPriceDesc": "Price descending"
+  },
+  "categories": {
+    "guitar": "Guitar",
+    "piano": "Piano",
+    "drums": "Drums",
+    "bass": "Bass",
+    "singing": "Singing",
+    "theory": "Theory"
+  },
+  "levels": {
+    "beginner": "Beginner",
+    "intermediate": "Intermediate",
+    "advanced": "Advanced"
+  },
+  "playlists": {
+    "title": "My Playlists",
+    "subtitle": "Organize your courses into custom playlists",
+    "create": "New playlist",
+    "createFirst": "Create my first playlist",
+    "noPlaylists": "No playlists yet",
+    "noCourses": "This playlist is empty",
+    "addCourses": "Add courses to get started",
+    "createTitle": "Create a playlist",
+    "editTitle": "Edit playlist",
+    "name": "Playlist name",
+    "namePlaceholder": "My course playlist",
+    "description": "Description (optional)",
+    "descriptionPlaceholder": "My playlist description...",
+    "makePublic": "Make playlist public",
+    "private": "Private",
+    "public": "Public",
+    "coursesCount": "{count} courses",
+    "addToPlaylist": "Add to playlist",
+    "removeFromPlaylist": "Remove from playlist",
+    "deleteConfirm": "Delete this playlist?",
+    "editMode": "Edit mode: Drag and drop courses to reorder. Click ✕ to remove a course.",
+    "finishEditing": "Finish"
+  },
+  "likes": {
+    "addToFavorites": "Add to favorites",
+    "removeFromFavorites": "Remove from favorites",
+    "myFavorites": "My Favorites",
+    "subtitle": "Courses you liked",
+    "noFavorites": "No favorites yet",
+    "startLiking": "Start liking courses to find them here"
+  },
+  "share": {
+    "share": "Share",
+    "copyLink": "Copy link",
+    "linkCopied": "Link copied to clipboard",
+    "shareError": "Error sharing"
+  },
+  "auth": {
+    "login": "Login",
+    "logout": "Logout",
+    "register": "Sign up",
+    "loginRequired": "Login to continue",
+    "loginToView": "Login to view your {item}"
+  },
+  "messages": {
+    "playlistCreated": "Playlist created",
+    "playlistUpdated": "Playlist updated",
+    "playlistDeleted": "Playlist deleted",
+    "courseAdded": "Course added to playlist",
+    "courseRemoved": "Course removed from playlist",
+    "orderUpdated": "Order updated",
+    "addedToFavorites": "Added to favorites",
+    "removedFromFavorites": "Removed from favorites",
+    "error": "An error occurred"
+  }
+}

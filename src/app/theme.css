@@ -1,4 +1,3 @@
-/* Classes globales pour le thème light/dark avec Tailwind */
 .theme-light {
   --color-background: #fbfdff;
   --color-background-secondary: #f4faff;
@@ -24,6 +23,32 @@
   --color-button-text: #141726;
   --color-button-hover-text: #c2e6ff;
   --color-border: #334155;
+}
+.theme-dark-stage {
+  --color-background-stage: #16120c;
+  --color-background-secondary-stage: #1d180f;
+  --color-background-tertiary-stage: #2d2305;
+  --color-foreground-stage: #ffe0c2;
+  --color-primary-stage: #ffe7b3;
+  --color-secondary-stage: #14120b;
+  --color-button-bg-stage: #562800;
+  --color-button-hover-bg-stage: #ffc53d;
+  --color-button-text-stage: #ffe0c2;
+  --color-button-hover-text-stage: #17120e;
+  --color-border-stage: #5c3d05;
+}
+.theme-light-stage {
+  --color-background-stage: #fff9f3;
+  --color-background-secondary-stage: #fef7eb;
+  --color-background-tertiary-stage: #fce4c4;
+  --color-foreground-stage: #2d1b0a;
+  --color-primary-stage: #b8660a;
+  --color-secondary-stage: #f7ead6;
+  --color-button-bg-stage: #ffb25b;
+  --color-button-hover-bg-stage: #92400e;
+  --color-button-text-stage: #17120e;
+  --color-button-hover-text-stage: #fef3e2;
+  --color-border-stage: #e5b887;
 }
 
 body {

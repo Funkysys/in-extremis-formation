@@ -1,23 +1,41 @@
+"use client";
+
 import Sidebar from "@/components/admin/Sidebar";
+import { useAuth } from "@/providers/AuthProvider";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const { user, isLoading } = useAuth();
+  const router = useRouter();
+
+  // Vérifier si l'utilisateur est admin
+  useEffect(() => {
+    if (!isLoading && (!user || !user.isSuperuser)) {
+      router.push("/formation");
+    }
+  }, [user, isLoading, router]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-500 border-t-transparent" />
+      </div>
+    );
+  }
+
+  if (!user || !user.isSuperuser) {
+    return null;
+  }
+
   return (
-    <div className="min-h-screen flex flex-col">
-      <div className="w-full p-6 border-b border-slate-200 flex justify-between pl-20">
-        <h1 className="text-4xl font-roboto text-slate-100">
-          {"Bienvenue sur l'espace Admin"}
-        </h1>
-      </div>
-      <div className="flex flex-1 min-h-0">
-        <Sidebar />
-        <main className="flex-1 py-10 px-4 md:px-8 lg:px-12 w-0 min-w-0">
-          {children}
-        </main>
-      </div>
+    <div className="min-h-screen flex">
+      <Sidebar />
+      <main className="flex-1 bg-gray-50">{children}</main>
     </div>
   );
 }

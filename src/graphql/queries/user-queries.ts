@@ -1,8 +1,8 @@
-
 import { gql } from "@apollo/client";
 
+// Query pour récupérer le profil de l'utilisateur connecté
 export const ME_QUERY = gql`
-  query {
+  query Me {
     me {
       id
       email
@@ -34,9 +34,10 @@ export const ME_QUERY = gql`
   }
 `;
 
+// Query pour lister tous les utilisateurs (paginé)
 export const USERS_QUERY = gql`
-  query {
-    users {
+  query Users($limit: Int = 10, $offset: Int = 0) {
+    users(limit: $limit, offset: $offset) {
       id
       email
       fullName
@@ -50,6 +51,9 @@ export const USERS_QUERY = gql`
       isSuperuser
       createdAt
       updatedAt
+      roles {
+        name
+      }
       oauthAccounts {
         id
         provider
@@ -64,8 +68,9 @@ export const USERS_QUERY = gql`
   }
 `;
 
+// Query pour récupérer un utilisateur par ID
 export const USER_QUERY = gql`
-  query($id: UUID!) {
+  query User($id: Int!) {
     user(id: $id) {
       id
       email
@@ -80,6 +85,9 @@ export const USER_QUERY = gql`
       isSuperuser
       createdAt
       updatedAt
+      roles {
+        name
+      }
       oauthAccounts {
         id
         provider

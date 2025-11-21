@@ -75,12 +75,12 @@ export default function Home() {
             alt="In Extremis Formation - Éducation musicale populaire en ligne"
             width={1000}
             height={1000}
-            objectFit="cover"
-            className="rounded-lg animate-fade-up animate-once animate-duration-[1000ms] animate-ease-in-out border-2 border-gray-300 dark:border-gray-700"
+            className="rounded-lg animate-fade-up animate-once animate-duration-[1000ms] animate-ease-in-out border-2 border-gray-300 dark:border-gray-700 object-cover"
             style={{
               background: "var(--color-background-secondary)",
               color: "var(--color-foreground)",
             }}
+            priority
           />
 
           <p className="mt-2 text-lg text-center sr-only md:text-xl xl:text-2xl animate-fade-up animate-delay-500">

@@ -2,9 +2,47 @@
 
 import { gql } from "@apollo/client";
 
+// Connexion utilisateur
+export const LOGIN_MUTATION = gql`
+  mutation Login($input: LoginInput!) {
+    login(input: $input) {
+      user {
+        id
+        email
+        fullName
+        isOauth
+        isActive
+        isSuperuser
+        roles {
+          name
+        }
+      }
+      token
+    }
+  }
+`;
+
+// Inscription nouvel utilisateur
+export const REGISTER_MUTATION = gql`
+  mutation Register($input: RegisterInput!) {
+    register(input: $input) {
+      user {
+        id
+        email
+        fullName
+        isOauth
+        isActive
+        isSuperuser
+      }
+      token
+    }
+  }
+`;
+
+// Créer un nouvel utilisateur (admin)
 export const CREATE_USER_MUTATION = gql`
-  mutation($email: String!, $password: String!, $fullName: String!) {
-    createUser(email: $email, password: $password, fullName: $fullName) {
+  mutation CreateUser($input: UserInput!) {
+    createUser(input: $input) {
       user {
         id
         email
@@ -30,18 +68,35 @@ export const CREATE_USER_MUTATION = gql`
   }
 `;
 
-export const LOGIN_MUTATION = gql`
-  mutation($email: String!, $password: String!) {
-    login(email: $email, password: $password) {
-      token
+// Modifier son propre profil
+export const UPDATE_MY_PROFILE_MUTATION = gql`
+  mutation UpdateMyProfile($input: UserUpdateInput!) {
+    updateMyProfile(input: $input) {
+      user {
+        id
+        email
+        fullName
+        zipCode
+        phone
+        address
+        city
+        country
+        isOauth
+        isActive
+        isSuperuser
+        roles {
+          name
+        }
+      }
       error
     }
   }
 `;
 
+// Modifier un utilisateur (admin)
 export const UPDATE_USER_MUTATION = gql`
-  mutation($userId: UUID!, $data: UpdateUserInput!) {
-    updateUser(userId: $userId, data: $data) {
+  mutation UpdateUser($id: Int!, $input: UserUpdateInput!) {
+    updateUser(id: $id, input: $input) {
       user {
         id
         email
@@ -68,8 +123,29 @@ export const UPDATE_USER_MUTATION = gql`
   }
 `;
 
+// Supprimer son propre compte
+export const DELETE_MY_ACCOUNT_MUTATION = gql`
+  mutation DeleteMyAccount {
+    deleteMyAccount {
+      success
+      error
+    }
+  }
+`;
+
+// Supprimer un utilisateur (admin)
+export const DELETE_USER_MUTATION = gql`
+  mutation DeleteUser($userId: Int!) {
+    deleteUser(userId: $userId) {
+      success
+      error
+    }
+  }
+`;
+
+// Mise à jour des rôles utilisateur (conservé pour compatibilité)
 export const UPDATE_USER_ROLES_MUTATION = gql`
-  mutation($userId: UUID!, $roles: [String!]!) {
+  mutation UpdateUserRoles($userId: UUID!, $roles: [String!]!) {
     updateUserRoles(userId: $userId, roles: $roles) {
       user {
         id
@@ -97,8 +173,9 @@ export const UPDATE_USER_ROLES_MUTATION = gql`
   }
 `;
 
+// Magic Link (conservé pour compatibilité)
 export const REQUEST_MAGIC_LINK_MUTATION = gql`
-  mutation($email: String!) {
+  mutation RequestMagicLink($email: String!) {
     requestMagicLink(email: $email) {
       success
       error
@@ -107,18 +184,9 @@ export const REQUEST_MAGIC_LINK_MUTATION = gql`
 `;
 
 export const VERIFY_MAGIC_LINK_MUTATION = gql`
-  mutation($token: String!) {
+  mutation VerifyMagicLink($token: String!) {
     verifyMagicLink(token: $token) {
       token
-      error
-    }
-  }
-`;
-
-export const DELETE_USER_MUTATION = gql`
-  mutation {
-    deleteUser {
-      success
       error
     }
   }

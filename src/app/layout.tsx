@@ -32,11 +32,12 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.inextremisformation.vercel.app"),
+  metadataBase: new URL("https://www.inextremisformation.fr"),
   title: {
     default: "In Extremis Formation - Éducation musicale populaire en Ligne",
     template: "%s | In Extremis Formation",
   },
+  manifest: "/manifest.json",
   icons: {
     icon: "/images/logo_white.png",
     shortcut: "/images/logo_white.png",
@@ -52,7 +53,7 @@ export const metadata: Metadata = {
   authors: [
     {
       name: "Antoine Delbos",
-      url: "https://www.inextremisformation.vercel.app",
+      url: "https://www.inextremisformation.fr",
     },
   ],
   robots: {
@@ -73,7 +74,7 @@ export const metadata: Metadata = {
     description:
       "Apprenez la musique à votre rythme avec des cours personnalisés. Découvrez nos formations en guitare, piano, batterie et plus encore.",
     siteName: "In Extremis Formation",
-    url: "https://www.inextremisformation.vercel.app",
+    url: "https://www.inextremisformation.fr",
     images: [
       {
         url: "https://www.inextremisformation.com/images/logo_white.png",
@@ -93,7 +94,7 @@ export const metadata: Metadata = {
     ],
   },
   alternates: {
-    canonical: "https://www.inextremisformation.vercel.app",
+    canonical: "https://www.inextremisformation.fr",
   },
   verification: {
     google: "ajoutez_votre_code_de_verification_google",
@@ -121,6 +122,17 @@ export default function RootLayout({
             </Suspense>
           </AuthProvider>
         </CustomApolloProvider>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                  navigator.serviceWorker.register('/sw.js');
+                });
+              }
+            `,
+          }}
+        />
       </body>
     </html>
   );

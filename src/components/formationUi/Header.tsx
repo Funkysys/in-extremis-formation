@@ -1,10 +1,11 @@
 "use client";
-import { useState, useEffect } from "react";
-import HorizontalMenu from "./HorizontalMenu";
-import Login from "../auth/Login";
-import { useToast } from "@/providers/ToastProvider";
-import { useQuery, useApolloClient } from "@apollo/client";
 import { ME_QUERY } from "@/graphql/queries/user-queries";
+import { useToast } from "@/providers/ToastProvider";
+import { useApolloClient, useQuery } from "@apollo/client";
+import { useEffect, useState } from "react";
+import Login from "../auth/Login";
+import LanguageSwitcher from "../global/LanguageSwitcher";
+import HorizontalMenu from "./HorizontalMenu";
 
 interface HeaderProps {
   title?: string;
@@ -130,21 +131,24 @@ const Header = ({ title }: HeaderProps) => {
   const role = roles.find((r: string) => rolePriority.includes(r)) || null;
   console.log("Rôle sélectionné:", role);
   return (
-    <div className="w-full p-6 border-b border-slate-200 flex justify-between">
+    <div className="w-full p-6 border-b border-slate-200 flex justify-between items-center">
       <h1 className="text-4xl font-roboto text-slate-100">
         {title ?? "Découvrez toutes nos formations"}
       </h1>
-      {data?.me ? (
-        <HorizontalMenu role={role} />
-      ) : (
-        <Login
-          onSuccess={async () => {
-            showToast("Connexion réussie !", "success");
-            setHasToken(true);
-            await client.refetchQueries({ include: [ME_QUERY] });
-          }}
-        />
-      )}
+      <div className="flex items-center gap-4">
+        <LanguageSwitcher currentLocale="fr" />
+        {data?.me ? (
+          <HorizontalMenu role={role} />
+        ) : (
+          <Login
+            onSuccess={async () => {
+              showToast("Connexion réussie !", "success");
+              setHasToken(true);
+              await client.refetchQueries({ include: [ME_QUERY] });
+            }}
+          />
+        )}
+      </div>
     </div>
   );
 };

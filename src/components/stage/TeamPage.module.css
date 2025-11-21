@@ -1,0 +1,179 @@
+.TeamContainer {
+  position: relative;
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  text-align: center;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.cardContainer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  opacity: 0;
+  top: 500px;
+}
+
+.teacherCard {
+  position: relative;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--color-background-tertiary-stage);
+  color: var(--color-foreground-stage);
+  width: 70%;
+  margin: 30px 0;
+  border-radius: 10px;
+  padding: 20px 30px;
+  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--color-border-stage);
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.interContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.teamTitle {
+  position: relative;
+  right: 500px;
+  opacity: 0;
+  border-bottom: 2px solid var(--color-border-stage);
+  margin-top: 20px;
+  transition: opacity 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.photo {
+  width: 90%;
+  max-height: 40%;
+  margin: 20px 0;
+  border-radius: 15px;
+}
+
+.customImg {
+  object-fit: contain;
+  width: 100%;
+  position: relative !important;
+}
+
+.addDescr button {
+  font-weight: bold;
+  font-size: 12px;
+  display: block;
+  width: 50px;
+  height: 50px;
+  line-height: 45px;
+  border-radius: 50%;
+  border: none;
+  font-size: 2em;
+  background: var(--color-button-bg-stage);
+  color: var(--color-button-text-stage);
+  transition: background 0.3s ease, color 0.3s ease;
+  cursor: pointer;
+}
+
+.addDescr button:hover {
+  background: var(--color-button-hover-bg-stage);
+  color: var(--color-button-hover-text-stage);
+}
+
+.activeBtn button {
+  font-weight: bold;
+  font-size: 12px;
+  display: block;
+  width: 50px;
+  height: 50px;
+  line-height: 45px;
+  border-radius: 50%;
+  border: none;
+  font-size: 2em;
+  background: var(--color-button-hover-bg-stage);
+  color: var(--color-button-hover-text-stage);
+  transition: background 0.3s ease, color 0.3s ease;
+  cursor: pointer;
+}
+
+.description {
+  display: none;
+  opacity: 0;
+}
+
+.activeDescr {
+  display: block;
+  opacity: 1;
+}
+
+.links {
+  display: none;
+  opacity: 0;
+}
+.linkContent {
+  color: var(--color-primary-stage);
+  text-decoration: underline;
+  transition: color 0.3s ease;
+}
+
+.linkContent:hover {
+  color: var(--color-button-bg-stage);
+}
+
+.activeLinks {
+  display: block;
+  opacity: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+@media screen and (min-width: 1081px) {
+  .teamTitle {
+    font-size: 2.5em;
+  }
+}
+
+@media screen and (min-width: 1920px) {
+  .TeamContainer {
+    flex-direction: column;
+  }
+
+  .teamTitle {
+    font-size: 2.5em;
+  }
+
+  .cardContainer {
+    flex-direction: row;
+  }
+
+  .teacherCard {
+    height: 70vh;
+    width: 30%;
+  }
+
+  .addDescr {
+    display: none;
+  }
+
+  .description {
+    display: block;
+    opacity: 1;
+  }
+
+  .links {
+    display: block;
+    opacity: 1;
+    display: flex;
+    flex-direction: column;
+  }
+}

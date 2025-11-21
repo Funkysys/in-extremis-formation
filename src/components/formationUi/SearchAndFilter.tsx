@@ -1,3 +1,7 @@
+import { useDebouncedValue } from "@/hooks/useDebouncedValue";
+import { usePerformanceTracking } from "@/hooks/usePerformanceTracking";
+import { useEffect, useState } from "react";
+
 interface Filters {
   category: string;
   level: string;
@@ -16,6 +20,19 @@ const SearchAndFilter = ({
   onFilterChange,
   filters,
 }: SearchAndFilterProps) => {
+  usePerformanceTracking({
+    componentName: "SearchAndFilter",
+    trackRender: true,
+    warnThreshold: 16,
+  });
+
+  const [searchInput, setSearchInput] = useState("");
+  const debouncedSearch = useDebouncedValue(searchInput, 500);
+
+  // Appeler onSearch seulement après debounce
+  useEffect(() => {
+    onSearch(debouncedSearch);
+  }, [debouncedSearch, onSearch]);
   return (
     <div className="join text-slate-900 w-full flex justify-center items-center py-4 ">
       <div>
@@ -23,7 +40,11 @@ const SearchAndFilter = ({
           <input
             className="input join-item bg-slate-100 text-slate-900"
             placeholder="Rechercher"
-            onChange={(e) => onSearch(e.target.value)}
+            value={searchInput}
+            onChange={(e) => {
+              setSearchInput(e.target.value);
+              // onSearch sera appelé après 500ms de debounce
+            }}
           />
         </div>
       </div>
