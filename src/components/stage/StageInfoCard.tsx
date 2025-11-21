@@ -9,7 +9,7 @@ interface StageInfoCardProps {
 export function StageInfoCard({ icon, title, children }: StageInfoCardProps) {
   return (
     <div
-      className="p-6 rounded-lg"
+      className="p-6 rounded-lg shadow-md transition-transform duration-300 hover:scale-105"
       style={{
         background: "var(--color-background-secondary-stage)",
       }}
@@ -20,7 +20,9 @@ export function StageInfoCard({ icon, title, children }: StageInfoCardProps) {
       >
         {icon} {title}
       </h4>
-      <div style={{ color: "var(--color-foreground-stage)" }}>{children}</div>
+      <div style={{ color: "var(--color-foreground-stage)" }}>
+        {children}
+      </div>
     </div>
   );
 }
