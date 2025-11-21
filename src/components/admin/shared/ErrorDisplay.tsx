@@ -2,8 +2,16 @@
 
 import Link from "next/link";
 
+interface GraphQLError {
+  message: string;
+}
+
 interface ErrorDisplayProps {
-  error: any;
+  error: {
+    message?: string;
+    networkError?: { message: string };
+    graphQLErrors?: GraphQLError[];
+  };
 }
 
 export const ErrorDisplay = ({ error }: ErrorDisplayProps) => {
@@ -12,7 +20,7 @@ export const ErrorDisplay = ({ error }: ErrorDisplayProps) => {
   if (error.networkError) {
     errorMsg = `Erreur réseau : ${error.networkError.message}`;
   } else if (error.graphQLErrors && error.graphQLErrors.length > 0) {
-    errorMsg = error.graphQLErrors.map((e: any) => e.message).join(" | ");
+    errorMsg = error.graphQLErrors.map((e) => e.message).join(" | ");
   } else if (error.message) {
     errorMsg = error.message;
   }

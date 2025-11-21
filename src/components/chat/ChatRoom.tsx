@@ -14,7 +14,7 @@ interface ChatRoomProps {
 }
 
 export function ChatRoom({ roomId, roomName, className = "" }: ChatRoomProps) {
-  const { user, isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuth();
   const [inputMessage, setInputMessage] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);

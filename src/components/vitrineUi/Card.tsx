@@ -25,14 +25,12 @@ const Card = ({
 
   const { isStageContext } = useTheme();
 
-  // Prefetch au hover si link disponible
-  const prefetchProps = link
-    ? usePrefetchOnHover({
-        query: {} as any, // À adapter selon ta query
-        variables: { id },
-        enabled: false, // Désactiver si pas de query définie
-      })
-    : {};
+  // Prefetch au hover - toujours appeler le hook (règles React Hooks)
+  const prefetchProps = usePrefetchOnHover({
+    query: {} as Record<string, unknown>,
+    variables: { id },
+    enabled: !!link, // Activer seulement si link existe
+  });
 
   return (
     <article

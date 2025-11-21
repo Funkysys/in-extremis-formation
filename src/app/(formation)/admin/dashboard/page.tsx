@@ -15,7 +15,7 @@ import { calculateDashboardStats } from "@/lib/admin/utils";
 import { useQuery } from "@apollo/client";
 
 export default function AdminDashboard() {
-  const { user, isLoading, isAdmin } = useAdminAuth();
+  const { isLoading, isAdmin } = useAdminAuth();
 
   const { data: usersData, loading: usersLoading } = useQuery(USERS_QUERY, {
     variables: { limit: QUERY_LIMITS.default, offset: QUERY_LIMITS.offset },

@@ -21,8 +21,14 @@ export const usePaymentsData = () => {
     variables: { limit: QUERY_LIMITS.default, offset: QUERY_LIMITS.offset },
   });
 
-  const payments: AdminPayment[] = paymentsData?.list_payments || [];
-  const users: AdminUser[] = usersData?.users || [];
+  const payments: AdminPayment[] = useMemo(
+    () => paymentsData?.list_payments || [],
+    [paymentsData?.list_payments]
+  );
+  const users: AdminUser[] = useMemo(
+    () => usersData?.users || [],
+    [usersData?.users]
+  );
 
   const usersMap = useMemo(
     () => new Map<string, AdminUser>(users.map((u) => [u.id, u])),

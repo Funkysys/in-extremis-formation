@@ -6,7 +6,7 @@ interface PerformanceMetric {
   endTime?: number;
   duration?: number;
   type: "navigation" | "component" | "api" | "custom";
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 class PerformanceMonitorService {
@@ -42,7 +42,7 @@ class PerformanceMonitorService {
         });
         resourceObserver.observe({ entryTypes: ["resource"] });
         this.observers.set("resource", resourceObserver);
-      } catch (e) {
+      } catch {
         console.warn("Performance Observer not supported for resources");
       }
 
@@ -55,7 +55,7 @@ class PerformanceMonitorService {
         });
         longTaskObserver.observe({ entryTypes: ["longtask"] });
         this.observers.set("longtask", longTaskObserver);
-      } catch (e) {
+      } catch {
         console.warn("Performance Observer not supported for long tasks");
       }
     }
@@ -142,8 +142,8 @@ class PerformanceMonitorService {
             duration: lastEntry.startTime,
             type: "custom",
             metadata: {
-              element: (lastEntry as any).element?.tagName,
-              url: (lastEntry as any).url,
+              element: (lastEntry as PerformanceEntry & { element?: { tagName?: string } }).element?.tagName,
+              url: (lastEntry as PerformanceEntry & { url?: string }).url,
               score:
                 lastEntry.startTime < 2500
                   ? "good"
@@ -155,7 +155,7 @@ class PerformanceMonitorService {
         });
         lcpObserver.observe({ entryTypes: ["largest-contentful-paint"] });
         this.observers.set("lcp", lcpObserver);
-      } catch (e) {
+      } catch {
         console.warn("LCP observer not supported");
       }
 
@@ -163,12 +163,12 @@ class PerformanceMonitorService {
       try {
         const fidObserver = new PerformanceObserver((list) => {
           for (const entry of list.getEntries()) {
-            const fidEntry = entry as any;
+            const fidEntry = entry as PerformanceEntry & { processingStart?: number; name: string };
             this.metrics.push({
               name: "FID (First Input Delay)",
               startTime: fidEntry.startTime,
-              endTime: fidEntry.startTime + fidEntry.processingStart,
-              duration: fidEntry.processingStart - fidEntry.startTime,
+              endTime: fidEntry.startTime + (fidEntry.processingStart || 0),
+              duration: (fidEntry.processingStart || 0) - fidEntry.startTime,
               type: "custom",
               metadata: {
                 eventType: fidEntry.name,
@@ -184,7 +184,7 @@ class PerformanceMonitorService {
         });
         fidObserver.observe({ entryTypes: ["first-input"] });
         this.observers.set("fid", fidObserver);
-      } catch (e) {
+      } catch {
         console.warn("FID observer not supported");
       }
 
@@ -193,9 +193,9 @@ class PerformanceMonitorService {
         let clsScore = 0;
         const clsObserver = new PerformanceObserver((list) => {
           for (const entry of list.getEntries()) {
-            const clsEntry = entry as any;
+            const clsEntry = entry as PerformanceEntry & { hadRecentInput?: boolean; value?: number };
             if (!clsEntry.hadRecentInput) {
-              clsScore += clsEntry.value;
+              clsScore += clsEntry.value || 0;
             }
           }
 
@@ -218,7 +218,7 @@ class PerformanceMonitorService {
         });
         clsObserver.observe({ entryTypes: ["layout-shift"] });
         this.observers.set("cls", clsObserver);
-      } catch (e) {
+      } catch {
         console.warn("CLS observer not supported");
       }
     }
@@ -292,3 +292,4 @@ class PerformanceMonitorService {
 }
 
 export const performanceMonitor = PerformanceMonitorService.getInstance();
+

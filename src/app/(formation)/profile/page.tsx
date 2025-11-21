@@ -264,7 +264,7 @@ export default function ProfilePage() {
           <p className="text-gray-500">Aucun paiement pour le moment</p>
         ) : (
           <ul className="space-y-3">
-            {payments.map((payment: any) => (
+            {payments.map((payment: { id: string; description: string; amount: number; status: string; createdAt: string }) => (
               <li key={payment.id} className="border-b pb-3">
                 <div className="flex justify-between">
                   <span>

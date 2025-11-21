@@ -9,7 +9,7 @@ import {
   PaymentStatus,
 } from "@/services/paymentService";
 import { useMutation } from "@apollo/client";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation"; // À utiliser pour redirection
 import { useCallback, useState } from "react";
 
 interface UsePaymentReturn {
@@ -23,7 +23,7 @@ interface UsePaymentReturn {
 
 export function usePayment(): UsePaymentReturn {
   const { token } = useAuth();
-  const router = useRouter();
+  // const router = useRouter(); // À utiliser pour redirection après paiement
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [paymentResponse, setPaymentResponse] =

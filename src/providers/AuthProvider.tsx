@@ -81,7 +81,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           // Tenter de récupérer le profil utilisateur via GraphQL
           try {
             await fetchMe();
-          } catch (error) {
+          } catch {
             // Si l'erreur est liée au token, on utilise les données locales
             if (storedUser) {
               const parsedUser = JSON.parse(storedUser);
