@@ -94,7 +94,7 @@ export default function ActusCarousel() {
                 <div className="flex flex-col w-full h-full md:flex-row">
                   {/* Image pleine hauteur à gauche */}
                   {actu.image && (
-                    <div className="w-full md:w-1/2 h-1/2 md:h-full flex-shrink-0">
+                    <div className="flex-shrink-0 w-full md:w-1/2 h-1/2 md:h-full">
                       <div
                         className="w-full h-full"
                         style={{
@@ -180,7 +180,7 @@ export default function ActusCarousel() {
             <>
               <button
                 onClick={goToPrevious}
-                className="hidden md:block absolute p-3 transition-all duration-300 -translate-y-1/2 rounded-full shadow-lg left-4 top-1/2 hover:scale-110"
+                className="absolute hidden p-3 transition-all duration-300 -translate-y-1/2 rounded-full shadow-lg md:block left-4 top-1/2 hover:scale-110"
                 style={{
                   background: "var(--color-background-secondary)",
                   color: "var(--color-foreground)",
@@ -203,7 +203,7 @@ export default function ActusCarousel() {
               </button>
               <button
                 onClick={goToNext}
-                className="hidden md:block absolute p-3 transition-all duration-300 -translate-y-1/2 rounded-full shadow-lg right-4 top-1/2 hover:scale-110"
+                className="absolute hidden p-3 transition-all duration-300 -translate-y-1/2 rounded-full shadow-lg md:block right-4 top-1/2 hover:scale-110"
                 style={{
                   background: "var(--color-background-secondary)",
                   color: "var(--color-foreground)",
