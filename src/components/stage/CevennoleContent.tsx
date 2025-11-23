@@ -76,7 +76,7 @@ export default function CevennoleContent() {
 
               <StageInfoCard icon="💰" title="Tarifs">
                 <p>
-                  <strong>Tarif plein :</strong> 400€
+                  <strong>Tarif plein :</strong> 380€
                   <br />
                   <strong>
                     Tarif réduit (adhérents à {`l'association l'Art Scène`}) :
