@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Stage Cévenol - Improvisation Musicale | In Extremis Formation",
   description:
-    "Stage intensif d'improvisation musicale du 3 au 7 mars 2025 à Lasalle (Gard). 5 jours de création collective, techniques d'improvisation et performance finale. Tarif : 350-400€. Inscription ouverte.",
+    "Stage intensif d'improvisation musicale du 3 au 7 mars 2025 à Lasalle (Gard). 5 jours de création collective, techniques d'improvisation et performance finale. Tarif : 350-380€. Inscription ouverte.",
   keywords:
     "stage improvisation musicale, stage cévenol, stage musique gard, stage lasalle, stage mars 2025, improvisation collective, stage intensif improvisation, cours improvisation, formation musicale gard",
   openGraph: {
@@ -60,7 +60,7 @@ const CevennoleStagePage = () => {
             offers: [
               {
                 "@type": "Offer",
-                price: "400",
+                price: "380",
                 priceCurrency: "EUR",
                 availability: "https://schema.org/InStock",
                 description: "Tarif plein",
