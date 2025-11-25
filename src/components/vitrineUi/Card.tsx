@@ -45,7 +45,7 @@ const Card = ({
             alt={title}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            className="rounded-lg object-cover"
+            className="object-cover rounded-lg"
             placeholder="blur"
             blurDataURL={getBlurDataURL()}
             quality={75}
@@ -69,9 +69,7 @@ const Card = ({
         <p
           className="text-lg"
           style={{
-            color: isStageContext
-              ? "var(--color-foreground-stage)"
-              : "var(--color-background)",
+            color: isStageContext ? "var(--color-foreground-stage)" : "#1f2d5c",
           }}
         >
           {description}
