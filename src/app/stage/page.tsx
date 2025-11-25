@@ -1,3 +1,4 @@
+import { Breadcrumb } from "@/components/stage/Breadcrumb";
 import StageContent from "@/components/stage/StageContent";
 import StagePresentation from "@/components/stage/StagePresentation";
 import TeamPage from "@/components/stage/TeamPage";
@@ -49,6 +50,7 @@ const StagePage = () => {
           }),
         }}
       />
+      <Breadcrumb />
       <main
         className="overflow-x-hidden overflow-y-scroll"
         style={{ background: "var(--color-background-stage)" }}

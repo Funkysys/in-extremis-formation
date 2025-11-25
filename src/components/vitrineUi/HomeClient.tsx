@@ -96,17 +96,19 @@ export default function HomeClient({ cards }: HomeClientProps) {
       </header>
 
       <section
-        className="w-[100vw] md:min-h-[100vh] pt-10 md:px-10 flex flex-col justify-center items-center opacity-0 transition-opacity duration-500 sticky top-0"
+        className="w-[100vw] md:min-h-[100vh] py-10 md:px-10 flex flex-col justify-center items-center opacity-0 transition-opacity duration-500 border-b-2 border-gray-300 dark:border-gray-700 "
         style={{
           opacity: 1 - fadeOut,
-          background: "var(--color-background-secondary)",
+          background: "var(--color-background-tertiary)",
         }}
       >
         {/* Carrousel des actualités */}
         <ActusCarousel />
+      </section>
 
+      <section className="flex flex-col items-center justify-center w-full px-4 py-16 mx-auto border-b-2 border-gray-300 md:px-10 dark:border-gray-700 ">
         <h2
-          className="mb-5 mt-16 text-4xl font-bold font-montserrat"
+          className="mt-16 mb-5 text-4xl font-bold font-montserrat"
           style={{
             color: "var(--color-foreground)",
           }}

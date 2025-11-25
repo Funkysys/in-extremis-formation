@@ -1,5 +1,6 @@
 "use client";
 
+import { Breadcrumb } from "@/components/stage/Breadcrumb";
 import { StageButton } from "@/components/stage/StageButton";
 import { StageHero } from "@/components/stage/StageHero";
 import { StageInfoCard } from "@/components/stage/StageInfoCard";
@@ -14,6 +15,7 @@ export default function CevennoleContent() {
       className="overflow-x-hidden overflow-y-scroll"
       style={{ background: "var(--color-background-stage)" }}
     >
+      <Breadcrumb />
       <StageHero
         title="STAGE CÉVENOL"
         subtitle="Improvisation Musicale"
@@ -182,6 +184,49 @@ export default function CevennoleContent() {
                 <StageButton href="/images/autorisation_image_cev_2026.pdf">
                   📸 Document de droit à l&apos;image
                 </StageButton>
+              </div>
+
+              <div
+                className="p-6 mt-8 rounded-lg"
+                style={{
+                  background: "var(--color-background-secondary-stage)",
+                  borderLeft: "4px solid var(--color-primary-stage)",
+                }}
+              >
+                <h3
+                  className="mb-4 text-2xl font-bold font-montserrat"
+                  style={{ color: "var(--color-primary-stage)" }}
+                >
+                  📞 Contact
+                </h3>
+                <div className="space-y-3">
+                  <p
+                    className="flex items-center gap-3 text-lg"
+                    style={{ color: "var(--color-foreground-stage)" }}
+                  >
+                    <span className="text-2xl">📧</span>
+                    <a
+                      href="mailto:assoinextremis@gmail.com"
+                      className="hover:underline"
+                      style={{ color: "var(--color-primary-stage)" }}
+                    >
+                      assoinextremis@gmail.com
+                    </a>
+                  </p>
+                  <p
+                    className="flex items-center gap-3 text-lg"
+                    style={{ color: "var(--color-foreground-stage)" }}
+                  >
+                    <span className="text-2xl">📱</span>
+                    <a
+                      href="tel:+33746271477"
+                      className="hover:underline"
+                      style={{ color: "var(--color-primary-stage)" }}
+                    >
+                      07 46 27 14 77
+                    </a>
+                  </p>
+                </div>
               </div>
             </div>
           </div>

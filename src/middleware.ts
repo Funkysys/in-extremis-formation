@@ -15,7 +15,13 @@ export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Routes sans i18n (page d'accueil, stage, etc.)
-  const excludeFromI18n = ["/", "/stage", "/offline"];
+  const excludeFromI18n = [
+    "/",
+    "/stage",
+    "/offline",
+    "/mentions-legales",
+    "/politique-de-confidentialite",
+  ];
   if (
     excludeFromI18n.some(
       (route) => pathname === route || pathname.startsWith(route + "/")

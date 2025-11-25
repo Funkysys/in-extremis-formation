@@ -7,22 +7,22 @@ import LinksCard from "./LinksCard";
 const ThirdPart: React.FC = () => {
   return (
     <section
-      className="w-[100vw] min-h-[100vh] flex flex-col justify-center items-center"
+      className="w-[100vw] min-h-[100vh] flex flex-col justify-center items-center "
       style={{
         background: "var(--color-background-tertiary)",
         color: "var(--color-foreground)",
       }}
     >
-      <header>
+      <div>
         <h2
-          className="mt-6 mb-6 text-xl italic text-center md:text-3xl font-Montserrat"
+          className="mt-20 mb-6 text-xl italic text-center md:text-3xl font-Montserrat"
           style={{ color: "var(--color-foreground)" }}
         >
           Avant de partir, découvrez aussi notre catalogue de <br />
           conférence sur les thèmes de musique et société sur In Extremis
           Society
         </h2>
-      </header>
+      </div>
 
       <figure className="relative w-[80vw] h-[20vh] md:w-[60vw] md:h-[40vh]  lg:w-[50vw] lg:h-[40vh] xl:w-[30vw] xl:h-[30vh]">
         <Link href="https://www.in-extremis-conferences.eu/" target="_blank">
@@ -56,7 +56,7 @@ const ThirdPart: React.FC = () => {
         En savoir plus
       </Link>
 
-      <section className="w-full mt-10">
+      <div className="w-full mt-10 mb-20">
         <h2
           className="mb-6 text-3xl italic text-center font-Montserrat"
           style={{ color: "var(--color-foreground)" }}
@@ -76,7 +76,7 @@ const ThirdPart: React.FC = () => {
             />
           ))}
         </div>
-      </section>
+      </div>
     </section>
   );
 };
