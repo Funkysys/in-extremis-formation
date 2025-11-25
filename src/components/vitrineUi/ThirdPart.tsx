@@ -30,7 +30,7 @@ const ThirdPart: React.FC = () => {
             src={"/images/in-extremis-society.png"}
             alt="In Extremis Society - Conférences sur la musique et la société"
             layout="fill"
-            className="object-cover rounded-lg"
+            className="object-cover border-2 border-gray-300 rounded-lg hover:border-gray-500"
             style={{ background: "var(--color-background-tertiary)" }}
           />
         </Link>
@@ -40,7 +40,7 @@ const ThirdPart: React.FC = () => {
         href="https://www.in-extremis-conferences.eu/"
         target="_blank"
         rel="noopener noreferrer"
-        className="px-4 py-2 mt-4 text-xl text-white transition-colors duration-300 rounded"
+        className="px-4 py-2 mt-4 text-xl text-white transition-colors duration-300 rounded font-Montserrat"
         style={{
           backgroundColor: "#422D68",
           border: "2px solid var(--color-border)",
