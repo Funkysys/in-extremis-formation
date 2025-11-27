@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { useToaster } from "../formationUi/Toaster";
 import { useMutation } from "@apollo/client";
-import { CREATE_USER_MUTATION, LOGIN_MUTATION } from "@/graphql/mutations/user-mutations";
+import { REGISTER_MUTATION, LOGIN_MUTATION } from "@/graphql/mutations/user-mutations";
 
 export default function RegisterWithEmail({ onSuccess }: { onSuccess: () => void }) {
   const { addToast } = useToaster();
@@ -12,12 +12,13 @@ export default function RegisterWithEmail({ onSuccess }: { onSuccess: () => void
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [login] = useMutation(LOGIN_MUTATION);
-  const [register, { loading }] = useMutation(CREATE_USER_MUTATION, {
+  const [register, { loading }] = useMutation(REGISTER_MUTATION, {
     onCompleted: async (data) => {
       setError("");
-      if (data.createUser && data.createUser.user) {
+      if (data.register && data.register.user) {
         try {
-          const loginResult = await login({ variables: { email, password } });
+          const loginInput = { username: email, password };
+          const loginResult = await login({ variables: { input: loginInput } });
           const loginData = loginResult.data;
           if (loginData && loginData.login && loginData.login.token) {
             localStorage.setItem("token", loginData.login.token);
@@ -40,9 +41,9 @@ export default function RegisterWithEmail({ onSuccess }: { onSuccess: () => void
           setSuccess(false);
         }
       } else {
-        setError(data.createUser?.error || "Erreur lors de l'inscription");
+        setError(data.register?.error || "Erreur lors de l'inscription");
         setSuccess(false);
-        addToast(data.createUser?.error || "Erreur lors de l'inscription", "error");
+        addToast(data.register?.error || "Erreur lors de l'inscription", "error");
       }
     },
     onError: (err) => setError(err.message),
@@ -56,7 +57,8 @@ export default function RegisterWithEmail({ onSuccess }: { onSuccess: () => void
       setError("Le mot de passe doit contenir au moins un caractère spécial.");
       return;
     }
-    register({ variables: { email, password, fullName } });
+    const registerInput = { username: email, email, password };
+    register({ variables: { input: registerInput } });
   };
 
   return (

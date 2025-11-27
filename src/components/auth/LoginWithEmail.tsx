@@ -37,7 +37,8 @@ export default function LoginWithEmail({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-    login({ variables: { email, password } });
+    const loginInput = { username: email, password };
+    login({ variables: { input: loginInput } });
   };
 
   return (

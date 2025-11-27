@@ -21,6 +21,7 @@ export function middleware(request: NextRequest) {
     "/offline",
     "/mentions-legales",
     "/politique-de-confidentialite",
+    "/formation",
   ];
   if (
     excludeFromI18n.some(
