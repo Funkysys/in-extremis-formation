@@ -6,7 +6,7 @@ export const ME_QUERY = gql`
     me {
       id
       email
-      fullName
+      username
       zipCode
       phone
       address
@@ -40,7 +40,7 @@ export const USERS_QUERY = gql`
     users(limit: $limit, offset: $offset) {
       id
       email
-      fullName
+      username
       zipCode
       phone
       address
@@ -74,7 +74,7 @@ export const USER_QUERY = gql`
     user(id: $id) {
       id
       email
-      fullName
+      username
       zipCode
       phone
       address

@@ -5,7 +5,7 @@ export const USER_QUERY = gql`
     user(id: $id) {
       id
       email
-      fullName
+      username
       zipCode
       phone
       address
@@ -41,7 +41,7 @@ export const GET_ALL_TRAINERS = gql`
       user {
         id
         email
-        fullName
+        username
       }
       topics {
         id
@@ -63,7 +63,7 @@ export const GET_TRAINER = gql`
       user {
         id
         email
-        fullName
+        username
       }
       topics {
         id

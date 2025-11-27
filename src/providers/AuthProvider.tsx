@@ -7,7 +7,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 type User = {
   id: string;
   email: string;
-  fullName: string;
+  username: string;
   zipCode?: string;
   phone?: string;
   address?: string;
@@ -46,7 +46,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         const userData = {
           id: data.me.id,
           email: data.me.email,
-          fullName: data.me.fullName,
+          username: data.me.username,
           zipCode: data.me.zipCode,
           phone: data.me.phone,
           address: data.me.address,

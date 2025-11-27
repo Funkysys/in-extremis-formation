@@ -12,7 +12,7 @@ export const GET_ALL_TOPICS = gql`
         user {
           id
           email
-          fullName
+          username
         }
       }
       courses {

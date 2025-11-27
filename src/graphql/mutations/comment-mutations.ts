@@ -15,7 +15,7 @@ export const CREATE_COMMENT_MUTATION = gql`
       user {
         id
         email
-        fullName
+        username
         isOauth
         isActive
         isSuperuser
@@ -24,12 +24,12 @@ export const CREATE_COMMENT_MUTATION = gql`
         oauthAccounts {
           id
           provider
-          provider_account_id
-          access_token
-          refresh_token
-          expires_at
-          created_at
-          updated_at
+          providerAccountId
+          accessToken
+          refreshToken
+          expiresAt
+          createdAt
+          updatedAt
         }
       }
       replies {

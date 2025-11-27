@@ -18,8 +18,8 @@ export default function LoginWithEmail({
   const [error, setError] = useState("");
   const [login, { loading }] = useMutation(LOGIN_MUTATION, {
     onCompleted: (data) => {
-      if (data.login.token) {
-        localStorage.setItem("token", data.login.token);
+      if (data.login.accessToken) {
+        localStorage.setItem("token", data.login.accessToken);
         localStorage.setItem("user", JSON.stringify(data.login.user));
         onSuccess();
         // Rediriger vers /formation après connexion

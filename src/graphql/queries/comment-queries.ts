@@ -15,7 +15,7 @@ export const COURSE_COMMENTS_QUERY = gql`
       user {
         id
         email
-        fullName
+        username
         isOauth
         isActive
         isSuperuser
@@ -24,12 +24,12 @@ export const COURSE_COMMENTS_QUERY = gql`
         oauthAccounts {
           id
           provider
-          provider_account_id
-          access_token
-          refresh_token
-          expires_at
-          created_at
-          updated_at
+          providerAccountId
+          accessToken
+          refreshToken
+          expiresAt
+          createdAt
+          updatedAt
         }
       }
       replies {
@@ -43,7 +43,7 @@ export const COURSE_COMMENTS_QUERY = gql`
         user {
           id
           email
-          fullName
+          username
           isOauth
           isActive
           isSuperuser
@@ -52,12 +52,12 @@ export const COURSE_COMMENTS_QUERY = gql`
           oauthAccounts {
             id
             provider
-            provider_account_id
-            access_token
-            refresh_token
-            expires_at
-            created_at
-            updated_at
+            providerAccountId
+            accessToken
+            refreshToken
+            expiresAt
+            createdAt
+            updatedAt
           }
         }
         replies {
@@ -87,7 +87,7 @@ export const COMMENT_QUERY = gql`
       user {
         id
         email
-        fullName
+        username
         isOauth
         isActive
         isSuperuser
@@ -96,12 +96,12 @@ export const COMMENT_QUERY = gql`
         oauthAccounts {
           id
           provider
-          provider_account_id
-          access_token
-          refresh_token
-          expires_at
-          created_at
-          updated_at
+          providerAccountId
+          accessToken
+          refreshToken
+          expiresAt
+          createdAt
+          updatedAt
         }
       }
       replies {
@@ -116,3 +116,4 @@ export const COMMENT_QUERY = gql`
     }
   }
 `;
+

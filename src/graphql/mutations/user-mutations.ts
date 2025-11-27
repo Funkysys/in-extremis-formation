@@ -9,7 +9,7 @@ export const LOGIN_MUTATION = gql`
       user {
         id
         email
-        fullName
+        username
         isOauth
         isActive
         isSuperuser
@@ -17,7 +17,7 @@ export const LOGIN_MUTATION = gql`
           name
         }
       }
-      token
+      accessToken
     }
   }
 `;
@@ -29,12 +29,12 @@ export const REGISTER_MUTATION = gql`
       user {
         id
         email
-        fullName
+        username
         isOauth
         isActive
         isSuperuser
       }
-      token
+      accessToken
     }
   }
 `;
@@ -46,7 +46,7 @@ export const CREATE_USER_MUTATION = gql`
       user {
         id
         email
-        fullName
+        username
         isOauth
         isActive
         isSuperuser
@@ -75,7 +75,7 @@ export const UPDATE_MY_PROFILE_MUTATION = gql`
       user {
         id
         email
-        fullName
+        username
         zipCode
         phone
         address
@@ -100,7 +100,7 @@ export const UPDATE_USER_MUTATION = gql`
       user {
         id
         email
-        fullName
+        username
         isOauth
         isActive
         isSuperuser
@@ -150,7 +150,7 @@ export const UPDATE_USER_ROLES_MUTATION = gql`
       user {
         id
         email
-        fullName
+        username
         isOauth
         isActive
         isSuperuser

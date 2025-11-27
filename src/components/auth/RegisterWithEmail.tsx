@@ -20,8 +20,8 @@ export default function RegisterWithEmail({ onSuccess }: { onSuccess: () => void
           const loginInput = { username: email, password };
           const loginResult = await login({ variables: { input: loginInput } });
           const loginData = loginResult.data;
-          if (loginData && loginData.login && loginData.login.token) {
-            localStorage.setItem("token", loginData.login.token);
+          if (loginData && loginData.login && loginData.login.accessToken) {
+            localStorage.setItem("token", loginData.login.accessToken);
             setSuccess(true);
             addToast("Compte créé avec succès !", "success");
             onSuccess();
