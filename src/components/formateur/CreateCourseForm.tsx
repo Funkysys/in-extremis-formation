@@ -1,7 +1,4 @@
 "use client";
-import { CREATE_COURSE_MUTATION } from "@/graphql/mutations/course-mutations";
-import { useMutation } from "@apollo/client";
-import { useRouter } from "next/navigation";
 import React from "react";
 import {
   CourseFormActions,
@@ -9,18 +6,10 @@ import {
   CourseTitleInput,
   CourseVideoSection,
 } from "./";
+import { useCreateCourse } from "./CreateCourseForm/useCreateCourse";
 import { useCourseForm } from "./useCourseForm";
 
-// interface VideoChapter {
-//   id: string;
-//   title: string;
-//   timestamp: number;
-// }
-
 export const CreateCourseForm: React.FC = () => {
-  const router = useRouter();
-  const [createCourse] = useMutation(CREATE_COURSE_MUTATION);
-
   const {
     formData,
     currentTime,
@@ -37,118 +26,25 @@ export const CreateCourseForm: React.FC = () => {
     deleteChapter,
     togglePublish,
     isValid,
-    // getVideoId,
   } = useCourseForm();
 
-  // const [isUploading, setIsUploading] = useState(false);
+  const { handleSubmit } = useCreateCourse(
+    formData,
+    isValid,
+    setIsSubmitting,
+    setError
+  );
 
-  // videoSectionRef supprimé (sectionRef n'existe plus)
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!isValid) {
-      setError("Please fill in all required fields");
-      return;
-    }
-
-    if (!formData.videoFile) {
-      setError("Please select a video for the course");
-      return;
-    }
-
-    try {
-      setIsSubmitting(true);
-      setError(null);
-
-      const videoId = null;
-      if (formData.videoFile) {
-        // Bloc d'upload vidéo via videoSectionRef supprimé
-      }
-
-      console.log("Creating course with data:", {
-        title: formData.title,
-        description: formData.description || "",
-        price: 0,
-      });
-
-      const { data } = await createCourse({
-        variables: {
-          title: formData.title,
-          description: formData.description || "",
-          price: 0, // Default price set to 0 for now
-        },
-      });
-
-      if (data?.createCourse?.course?.id) {
-        const courseId = data.createCourse.course.id;
-        console.log("Course created successfully. ID:", courseId);
-
-        if (formData.chapters.length > 0) {
-          try {
-            // const token = localStorage.getItem("token");
-
-            // Si on a une vidéo mais pas de chapitre, on crée un chapitre par défaut
-            const chaptersToCreate =
-              formData.chapters.length > 0
-                ? formData.chapters
-                : [{ title: "Introduction", description: "" }];
-
-            // Utilisation du client Apollo pour la mutation
-            // const [createChapter] = useMutation(CREATE_CHAPTER_MUTATION);
-
-            for (let i = 0; i < chaptersToCreate.length; i++) {
-              const chapter = chaptersToCreate[i];
-              const order = i;
-              const chapterVideoId = i === 0 ? videoId : null; // Associate video only with the first chapter
-
-              console.log("Creating chapter with data:", {
-                title: chapter.title,
-                order,
-                courseId,
-                videoId: chapterVideoId,
-              });
-
-              // try {
-              //   const { data } = await createChapter({
-              //     variables: {
-              //       title: chapter.title,
-              //       order: order,
-              //       courseId: courseId,
-              //       videoId: chapterVideoId,
-              //     },
-              //   });
-
-              //   console.log("Chapter created successfully:", data);
-              // } catch (error) {
-              //   console.error("Error creating chapter:", error);
-              //   throw new Error("Chapter creation failed");
-              // }
-            }
-
-            console.log("All chapters created successfully");
-          } catch (chapterError) {
-            console.error("Error creating chapters:", chapterError);
-          }
-        }
-
-        router.push(`/formateur/mes-cours/${courseId}`);
-      } else {
-        setError(data?.createCourse?.error || "Error creating course");
-      }
-    } catch (err) {
-      console.error("Error creating course:", err);
-      setError("An error occurred while creating the course");
-    } finally {
-      setIsSubmitting(false);
-    }
+  const onSubmit = async (e: React.FormEvent) => {
+    const videoId = null;
+    await handleSubmit(e, videoId);
   };
 
   return (
     <div className="max-w-4xl mx-auto p-6 text-gray-300">
       <CourseFormHeader title="Create a new course" error={error} />
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={onSubmit} className="space-y-6">
         <CourseTitleInput
           value={formData.title}
           onChange={(value) => updateField("title", value)}

@@ -98,3 +98,4 @@ export const MY_COURSES_QUERY = gql`
     }
   }
 `;
+

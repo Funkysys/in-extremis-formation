@@ -14,6 +14,14 @@ const FormationMenu = () => {
 
   const formations = data?.courses || [];
 
+  // Debug
+  // useEffect(() => {
+  //   console.log("FormationMenu - Data:", data);
+  //   console.log("FormationMenu - Loading:", loading);
+  //   console.log("FormationMenu - Error:", error);
+  //   console.log("FormationMenu - Formations:", formations);
+  // }, [data, loading, error, formations]);
+
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 0) {
@@ -62,23 +70,48 @@ const FormationMenu = () => {
                 Fermer le menu
               </label>
             </div>
-            {loading ? (
-              <div>Chargement des formations...</div>
-            ) : error ? (
-              <div>Erreur lors du chargement des formations</div>
-            ) : (
-              formations.map((formation: Course) => (
-                <li key={formation.id}>
-                  <Link
-                    href={`#${formation.id}`}
-                    className="text-slate-900 hover:bg-slate-300 border-b-2 border-slate-400"
-                    // ...existing code...
-                  >
-                    {formation.title}
-                  </Link>
-                </li>
-              ))
-            )}
+
+            {/* Section Lives */}
+            <div className="mb-4">
+              <h3 className="px-4 py-2 text-lg font-bold text-slate-800">
+                🔴 Lives
+              </h3>
+              <li>
+                <Link
+                  href="/formation/live"
+                  className="text-slate-900 hover:bg-slate-300 border-b-2 border-slate-400"
+                >
+                  📹 Voir les lives
+                </Link>
+              </li>
+            </div>
+
+            {/* Section Formations */}
+            <div>
+              <h3 className="px-4 py-2 text-lg font-bold text-slate-800">
+                📚 Formations
+              </h3>
+              {loading ? (
+                <div className="px-4">Chargement des formations...</div>
+              ) : error ? (
+                <div className="px-4 text-red-600">Erreur: {error.message}</div>
+              ) : formations.length === 0 ? (
+                <div className="px-4 text-slate-600">
+                  Aucune formation disponible
+                </div>
+              ) : (
+                formations.map((formation: Course) => (
+                  <li key={formation.id}>
+                    <Link
+                      href={`/formation/${formation.id}`}
+                      className="text-slate-900 hover:bg-slate-300 border-b-2 border-slate-400"
+                    >
+                      {formation.title}
+                    </Link>
+                  </li>
+                ))
+              )}
+            </div>
           </ul>
         </div>
       </div>

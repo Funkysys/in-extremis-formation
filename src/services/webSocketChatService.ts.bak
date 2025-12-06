@@ -1,0 +1,330 @@
+// Service WebSocket pour le chat temps réel
+// Basé sur WEBSOCKET_API_REFERENCE.md
+//
+// ⚡ ROOMS ÉPHÉMÈRES :
+// - Les rooms se créent automatiquement lors de la première connexion
+// - Les rooms se suppriment automatiquement quand le dernier participant se déconnecte
+// - Pas besoin de créer les rooms à l'avance via GraphQL
+// - Idéal pour streams live et chats temporaires
+//
+// Endpoint: WS ws://localhost:8000/chat/ws/room/{room_id}?token=JWT_TOKEN
+
+export interface ChatMessage {
+  id?: string | number;
+  room_id?: string | number;
+  user_id?: string | number;
+  user_name?: string;
+  username?: string;
+  role?: string;
+  message?: string;
+  timestamp?: string;
+  createdAt?: string;
+  type:
+    | "room_joined"
+    | "chat_message"
+    | "user_joined"
+    | "user_left"
+    | "typing_start"
+    | "typing_stop"
+    | "moderation_action"
+    | "error";
+  // Pour room_joined
+  connection_count?: number;
+  // Pour moderation
+  action?: "ban" | "mute";
+  target_user_id?: number;
+  moderator_user_id?: number;
+  duration_minutes?: number;
+}
+
+export interface WebSocketConfig {
+  url: string;
+  roomId: string;
+  token?: string;
+  onMessage?: (message: ChatMessage) => void;
+  onConnect?: () => void;
+  onDisconnect?: () => void;
+  onError?: (error: Event) => void;
+  reconnectInterval?: number;
+  maxReconnectAttempts?: number;
+}
+
+export class WebSocketChatService {
+  private ws: WebSocket | null = null;
+  private config: WebSocketConfig;
+  private reconnectAttempts = 0;
+  private reconnectTimeout: NodeJS.Timeout | null = null;
+  private heartbeatInterval: NodeJS.Timeout | null = null;
+  private isIntentionallyClosed = false;
+
+  constructor(config: WebSocketConfig) {
+    this.config = {
+      reconnectInterval: 3000,
+      maxReconnectAttempts: 5,
+      ...config,
+    };
+  }
+
+  /**
+   * Établir la connexion WebSocket
+   *
+   * ⚡ Room éphémère :
+   * - Si la room n'existe pas, elle sera créée automatiquement
+   * - La room sera supprimée automatiquement quand vous serez le dernier à vous déconnecter
+   */
+  connect(): void {
+    if (this.ws?.readyState === WebSocket.OPEN) {
+      console.log("WebSocket already connected");
+      return;
+    }
+
+    this.isIntentionallyClosed = false;
+
+    // Construction de l'URL avec token si disponible
+    const wsUrl = this.config.token
+      ? `${this.config.url}?token=${this.config.token}`
+      : this.config.url;
+
+    console.log("🔌 Tentative de connexion WebSocket:");
+    console.log("   Room ID:", this.config.roomId);
+    console.log("   URL:", this.config.url);
+    console.log("   Token présent:", !!this.config.token);
+    console.log("   Token complet:", this.config.token);
+    console.log("   URL WebSocket complète:", wsUrl);
+    console.log("   ⚡ Room éphémère: sera auto-créée si inexistante");
+
+    try {
+      this.ws = new WebSocket(wsUrl);
+      this.setupEventListeners();
+    } catch (error) {
+      console.error("Failed to create WebSocket connection:", error);
+      this.handleReconnect();
+    }
+  }
+
+  /**
+   * Configuration des écouteurs d'événements WebSocket
+   */
+  private setupEventListeners(): void {
+    if (!this.ws) return;
+
+    this.ws.onopen = () => {
+      console.log(`WebSocket connected to room: ${this.config.roomId}`);
+      this.reconnectAttempts = 0;
+      this.config.onConnect?.();
+      this.startHeartbeat();
+    };
+
+    this.ws.onmessage = (event) => {
+      try {
+        const rawMessage = JSON.parse(event.data);
+        console.log("📨 Message WebSocket reçu:", rawMessage);
+
+        // Le backend envoie {type: "...", data: {...}}
+        const compatMessage: ChatMessage = {
+          type: rawMessage.type,
+          ...rawMessage.data,
+          room_id: rawMessage.data.room_id || this.config.roomId,
+        };
+
+        // Log spécifique selon le type
+        switch (rawMessage.type) {
+          case "room_joined":
+            console.log(
+              `🚪 Connecté à la room ${compatMessage.room_id}, participants: ${compatMessage.connection_count}`
+            );
+            break;
+          case "chat_message":
+            console.log(
+              `💬 ${compatMessage.username}: ${compatMessage.message}`
+            );
+            break;
+          case "user_joined":
+            console.log(`👋 ${compatMessage.username} a rejoint le chat`);
+            break;
+          case "user_left":
+            console.log(`👋 ${compatMessage.username} a quitté le chat`);
+            break;
+          case "error":
+            console.error("❌ Erreur WebSocket:", compatMessage.message);
+            break;
+        }
+
+        this.config.onMessage?.(compatMessage);
+      } catch (error) {
+        console.error("Failed to parse WebSocket message:", error);
+      }
+    };
+
+    this.ws.onerror = (error) => {
+      console.error("WebSocket error:", error);
+      this.config.onError?.(error);
+    };
+
+    this.ws.onclose = (event) => {
+      console.log("WebSocket disconnected:", event.code, event.reason);
+      this.stopHeartbeat();
+      this.config.onDisconnect?.();
+
+      if (!this.isIntentionallyClosed) {
+        this.handleReconnect();
+      }
+    };
+  }
+
+  /**
+   * Envoyer un message de chat
+   * Rate limit: 10 messages / 10 secondes
+   * Max: 1000 caractères
+   */
+  sendMessage(message: string): void {
+    if (this.ws?.readyState !== WebSocket.OPEN) {
+      console.error("WebSocket is not connected");
+      return;
+    }
+
+    // Validation côté client (le backend valide aussi)
+    if (!message || message.trim().length === 0) {
+      console.error("Message cannot be empty");
+      return;
+    }
+
+    if (message.length > 1000) {
+      console.error("Message too long (max 1000 characters)");
+      return;
+    }
+
+    const payload = {
+      type: "chat_message",
+      data: {
+        message: message.trim(),
+      },
+    };
+
+    this.ws.send(JSON.stringify(payload));
+  }
+
+  /**
+   * Envoyer un indicateur de frappe
+   */
+  sendTyping(isTyping: boolean): void {
+    if (this.ws?.readyState !== WebSocket.OPEN) return;
+
+    const payload = {
+      type: isTyping ? "typing_start" : "typing_stop",
+      data: {},
+    };
+
+    this.ws.send(JSON.stringify(payload));
+  }
+
+  /**
+   * Envoyer une action de modération (admin/moderator uniquement)
+   */
+  sendModerationAction(
+    action: "ban" | "mute",
+    targetUserId: number,
+    durationMinutes: number = 0
+  ): void {
+    if (this.ws?.readyState !== WebSocket.OPEN) {
+      console.error("WebSocket is not connected");
+      return;
+    }
+
+    const payload = {
+      type: "moderation_action",
+      data: {
+        action,
+        target_user_id: targetUserId,
+        duration_minutes: durationMinutes, // 0 = permanent
+      },
+    };
+
+    this.ws.send(JSON.stringify(payload));
+  }
+
+  /**
+   * Gestion de la reconnexion automatique
+   */
+  private handleReconnect(): void {
+    if (
+      this.reconnectAttempts >= (this.config.maxReconnectAttempts || 5) ||
+      this.isIntentionallyClosed
+    ) {
+      console.error("Max reconnection attempts reached");
+      return;
+    }
+
+    this.reconnectAttempts++;
+    console.log(
+      `Attempting to reconnect (${this.reconnectAttempts}/${this.config.maxReconnectAttempts})...`
+    );
+
+    this.reconnectTimeout = setTimeout(() => {
+      this.connect();
+    }, this.config.reconnectInterval);
+  }
+
+  /**
+   * Heartbeat pour maintenir la connexion active
+   * Note: Le backend gère déjà les heartbeats, mais on peut en envoyer si besoin
+   */
+  private startHeartbeat(): void {
+    // Le backend WebSocket gère déjà les heartbeats automatiquement
+    // On garde cette fonction au cas où, mais elle n'est plus critique
+    this.heartbeatInterval = setInterval(() => {
+      if (this.ws?.readyState === WebSocket.OPEN) {
+        // Ping simple - le backend ne nécessite pas de format spécial
+        this.ws.send(JSON.stringify({ type: "ping", data: {} }));
+      }
+    }, 30000); // Ping toutes les 30 secondes
+  }
+
+  /**
+   * Arrêter le heartbeat
+   */
+  private stopHeartbeat(): void {
+    if (this.heartbeatInterval) {
+      clearInterval(this.heartbeatInterval);
+      this.heartbeatInterval = null;
+    }
+  }
+
+  /**
+   * Fermer la connexion
+   *
+   * ⚡ Nettoyage automatique :
+   * Si vous êtes le dernier participant, la room sera supprimée automatiquement
+   */
+  disconnect(): void {
+    this.isIntentionallyClosed = true;
+
+    if (this.reconnectTimeout) {
+      clearTimeout(this.reconnectTimeout);
+      this.reconnectTimeout = null;
+    }
+
+    this.stopHeartbeat();
+
+    if (this.ws) {
+      console.log("🔌 Déconnexion de la room:", this.config.roomId);
+      console.log("   🗑️ Si dernier participant → room auto-supprimée");
+      this.ws.close(1000, "Client disconnect");
+      this.ws = null;
+    }
+  }
+
+  /**
+   * Vérifier l'état de la connexion
+   */
+  isConnected(): boolean {
+    return this.ws?.readyState === WebSocket.OPEN;
+  }
+
+  /**
+   * Obtenir l'état de la connexion
+   */
+  getReadyState(): number | null {
+    return this.ws?.readyState ?? null;
+  }
+}

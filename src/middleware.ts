@@ -22,6 +22,14 @@ export function middleware(request: NextRequest) {
     "/mentions-legales",
     "/politique-de-confidentialite",
     "/formation",
+    "/admin",
+    "/formateur",
+    "/cart",
+    "/chat",
+    "/live",
+    "/ma-formation",
+    "/payment",
+    "/profile",
   ];
   if (
     excludeFromI18n.some(

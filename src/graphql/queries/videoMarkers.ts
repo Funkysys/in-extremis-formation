@@ -27,3 +27,4 @@ export const GET_VIDEO_MARKER = gql`
     }
   }
 `;
+

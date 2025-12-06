@@ -60,3 +60,4 @@ export const UPDATE_COURSE_MUTATION = gql`
     }
   }
 `;
+

@@ -9,3 +9,4 @@ export const GENERATE_VIDEO_TOKEN = gql`
     }
   }
 `;
+

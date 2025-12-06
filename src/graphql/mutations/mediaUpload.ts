@@ -27,3 +27,4 @@ export const REGISTER_UPLOADED_VIDEO_MUTATION = gql`
     }
   }
 `;
+

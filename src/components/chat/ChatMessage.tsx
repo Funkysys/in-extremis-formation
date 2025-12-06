@@ -20,6 +20,24 @@ export function ChatMessageComponent({ message }: ChatMessageProps) {
     });
   };
 
+  // Messages système (user_joined, user_left)
+  if (message.type === "user_joined" || message.type === "user_left") {
+    return (
+      <div className="flex justify-center my-2">
+        <div className="text-xs text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
+          {message.type === "user_joined" ? "👋" : "👋"}{" "}
+          <span className="font-semibold">
+            {message.username || "Quelqu'un"}
+          </span>{" "}
+          {message.type === "user_joined"
+            ? "a rejoint le chat"
+            : "a quitté le chat"}
+        </div>
+      </div>
+    );
+  }
+
+  // Messages de chat normaux
   return (
     <div
       className={`flex ${isOwnMessage ? "justify-end" : "justify-start"} mb-4`}
@@ -32,19 +50,19 @@ export function ChatMessageComponent({ message }: ChatMessageProps) {
               : "bg-gray-200 text-gray-800"
           }`}
         >
-          {!isOwnMessage && message.user_name && (
+          {!isOwnMessage && (message.username || message.user_name) && (
             <div className="text-xs font-semibold mb-1 opacity-75">
-              {message.user_name}
+              {message.username || message.user_name}
             </div>
           )}
           <p className="text-sm break-words">{message.message}</p>
-          {message.createdAt && (
+          {(message.timestamp || message.createdAt) && (
             <div
               className={`text-xs mt-1 ${
                 isOwnMessage ? "text-blue-100" : "text-gray-500"
               }`}
             >
-              {formatTime(message.createdAt)}
+              {formatTime(message.timestamp || message.createdAt)}
             </div>
           )}
         </div>
@@ -52,13 +70,16 @@ export function ChatMessageComponent({ message }: ChatMessageProps) {
 
       {!isOwnMessage && (
         <div className="w-8 h-8 rounded-full bg-gray-400 flex items-center justify-center text-white text-xs font-bold mr-2 order-0">
-          {message.user_name?.charAt(0).toUpperCase() || "?"}
+          {(message.username || message.user_name)?.charAt(0).toUpperCase() ||
+            "?"}
         </div>
       )}
 
       {isOwnMessage && (
         <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs font-bold ml-2 order-3">
-          {user?.fullName?.charAt(0).toUpperCase() || "M"}
+          {user?.username?.charAt(0).toUpperCase() ||
+            user?.email?.charAt(0).toUpperCase() ||
+            "M"}
         </div>
       )}
     </div>

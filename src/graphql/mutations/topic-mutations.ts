@@ -25,3 +25,4 @@ export const DELETE_TOPIC = gql`
     deleteTopic(topicId: $topicId)
   }
 `;
+

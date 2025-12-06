@@ -1,0 +1,236 @@
+// Hook personnalisé pour utiliser le WebSocket chat
+// Gère la connexion, les messages, et l'état
+
+import { useAuth } from "@/providers/AuthProvider";
+import {
+  ChatMessage,
+  WebSocketChatService,
+} from "@/services/webSocketChatService";
+import { useCallback, useEffect, useRef, useState } from "react";
+
+interface UseWebSocketChatOptions {
+  roomId: string;
+  autoConnect?: boolean;
+  wsUrl?: string;
+}
+
+interface UseWebSocketChatReturn {
+  messages: ChatMessage[];
+  isConnected: boolean;
+  isConnecting: boolean;
+  error: string | null;
+  sendMessage: (message: string) => void;
+  sendTyping: (isTyping: boolean) => void;
+  connect: () => void;
+  disconnect: () => void;
+  clearMessages: () => void;
+  typingUsers: Set<string>;
+}
+
+export function useWebSocketChat({
+  roomId,
+  autoConnect = true,
+  wsUrl,
+}: UseWebSocketChatOptions): UseWebSocketChatReturn {
+  const { token } = useAuth();
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [isConnected, setIsConnected] = useState(false);
+  const [isConnecting, setIsConnecting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [typingUsers, setTypingUsers] = useState<Set<string>>(new Set());
+  const wsServiceRef = useRef<WebSocketChatService | null>(null);
+  const typingTimeoutRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
+
+  // Construction de l'URL WebSocket
+  const websocketUrl =
+    wsUrl ||
+    `${
+      process.env.NEXT_PUBLIC_WS_ENDPOINT || "ws://localhost:8000"
+    }/chat/ws/room/${roomId}`;
+
+  // Gestion de l'arrivée d'un nouveau message
+  const handleMessage = useCallback((message: ChatMessage) => {
+    const userId = String(message.user_id || "");
+
+    switch (message.type) {
+      case "room_joined":
+        console.log(`✅ Connecté à la room ${message.room_id}`);
+        // On pourrait mettre à jour un état pour afficher le nombre de participants
+        break;
+
+      case "chat_message":
+      case "user_joined":
+      case "user_left":
+        // Ajouter aux messages
+        console.log(`💬 Ajout du message au state:`, message);
+        setMessages((prev) => {
+          const newMessages = [...prev, message];
+          console.log(`📝 Nombre total de messages:`, newMessages.length);
+          return newMessages;
+        });
+        break;
+
+      case "typing_start":
+        if (userId) {
+          setTypingUsers((prev) => {
+            const next = new Set(prev);
+            next.add(userId);
+            return next;
+          });
+
+          // Retirer l'indicateur après 3 secondes
+          const existingTimeout = typingTimeoutRef.current.get(userId);
+          if (existingTimeout) clearTimeout(existingTimeout);
+
+          const timeout = setTimeout(() => {
+            setTypingUsers((prev) => {
+              const next = new Set(prev);
+              next.delete(userId);
+              return next;
+            });
+          }, 3000);
+
+          typingTimeoutRef.current.set(userId, timeout);
+        }
+        break;
+
+      case "typing_stop":
+        if (userId) {
+          setTypingUsers((prev) => {
+            const next = new Set(prev);
+            next.delete(userId);
+            return next;
+          });
+
+          const existingTimeout = typingTimeoutRef.current.get(userId);
+          if (existingTimeout) {
+            clearTimeout(existingTimeout);
+            typingTimeoutRef.current.delete(userId);
+          }
+        }
+        break;
+
+      case "moderation_action":
+        console.log("⚠️ Action de modération:", message);
+        setMessages((prev) => [...prev, message]);
+        break;
+
+      case "error":
+        console.error("❌ Erreur WebSocket:", message.message);
+        setError(message.message || "Erreur inconnue");
+        break;
+
+      default:
+        console.warn("Type de message inconnu:", message.type);
+    }
+  }, []);
+
+  // Connexion au WebSocket
+  const connect = useCallback(() => {
+    if (wsServiceRef.current?.isConnected()) {
+      console.log("WebSocket already connected");
+      return;
+    }
+
+    setIsConnecting(true);
+    setError(null);
+
+    wsServiceRef.current = new WebSocketChatService({
+      url: websocketUrl,
+      roomId,
+      token: token || undefined,
+      onMessage: handleMessage,
+      onConnect: () => {
+        setIsConnected(true);
+        setIsConnecting(false);
+        setError(null);
+      },
+      onDisconnect: () => {
+        setIsConnected(false);
+        setIsConnecting(false);
+      },
+      onError: (error) => {
+        setError("Erreur de connexion WebSocket");
+        setIsConnecting(false);
+        console.error("WebSocket error:", error);
+      },
+      reconnectInterval: 3000,
+      maxReconnectAttempts: 5,
+    });
+
+    wsServiceRef.current.connect();
+  }, [websocketUrl, roomId, token, handleMessage]);
+
+  // Déconnexion du WebSocket
+  const disconnect = useCallback(() => {
+    wsServiceRef.current?.disconnect();
+    wsServiceRef.current = null;
+    setIsConnected(false);
+    setIsConnecting(false);
+  }, []);
+
+  // Envoyer un message
+  const sendMessage = useCallback((message: string) => {
+    if (!wsServiceRef.current?.isConnected()) {
+      setError("Non connecté au chat");
+      return;
+    }
+
+    wsServiceRef.current.sendMessage(message);
+  }, []);
+
+  // Envoyer un indicateur de frappe
+  const sendTyping = useCallback((isTyping: boolean) => {
+    if (!wsServiceRef.current?.isConnected()) return;
+    wsServiceRef.current.sendTyping(isTyping);
+  }, []);
+
+  // Vider les messages
+  const clearMessages = useCallback(() => {
+    setMessages([]);
+  }, []);
+
+  // Connexion automatique au montage
+  useEffect(() => {
+    if (autoConnect && token) {
+      console.log(
+        "🔌 Tentative de connexion WebSocket avec token:",
+        token?.substring(0, 20) + "..."
+      );
+      connect();
+    } else {
+      console.log(
+        "❌ Pas de connexion WebSocket - autoConnect:",
+        autoConnect,
+        "token:",
+        !!token
+      );
+    }
+
+    return () => {
+      disconnect();
+    };
+  }, [autoConnect, token, connect, disconnect]);
+
+  // Nettoyage des timeouts de typing
+  useEffect(() => {
+    const timeouts = typingTimeoutRef.current;
+    return () => {
+      timeouts.forEach((timeout) => clearTimeout(timeout));
+      timeouts.clear();
+    };
+  }, []);
+
+  return {
+    messages,
+    isConnected,
+    isConnecting,
+    error,
+    sendMessage,
+    sendTyping,
+    connect,
+    disconnect,
+    clearMessages,
+    typingUsers,
+  };
+}

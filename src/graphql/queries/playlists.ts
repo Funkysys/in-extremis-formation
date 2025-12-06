@@ -78,3 +78,4 @@ export const CHECK_COURSE_IN_PLAYLISTS_QUERY = gql`
     }
   }
 `;
+

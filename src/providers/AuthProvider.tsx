@@ -8,16 +8,9 @@ type User = {
   id: string;
   email: string;
   username: string;
-  zipCode?: string;
-  phone?: string;
-  address?: string;
-  city?: string;
-  country?: string;
-  isOauth: boolean;
   isActive: boolean;
-  isSuperuser: boolean;
   is_premium?: boolean;
-  roles?: { name: string }[];
+  role?: string;
   createdAt: string;
   updatedAt: string;
 };
@@ -34,10 +27,56 @@ type AuthContextType = {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+// Fonction pour vérifier si le token JWT est expiré
+function isTokenExpired(token: string): boolean {
+  try {
+    const payload = JSON.parse(atob(token.split(".")[1]));
+    const exp = payload.exp * 1000; // Convertir en millisecondes
+    return Date.now() >= exp;
+  } catch {
+    console.log("JWT expired");
+
+    return true; // Si on ne peut pas parser, considérer comme expiré
+  }
+}
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState<string | null>(null);
+  console.log("🔄 AuthProvider RENDER");
+
+  // Initialiser avec les valeurs du localStorage pour éviter le flash de déconnexion
+  const [user, setUser] = useState<User | null>(() => {
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem("user");
+      console.log(
+        "📦 Init user from localStorage:",
+        stored ? "trouvé" : "absent"
+      );
+      return stored ? JSON.parse(stored) : null;
+    }
+    return null;
+  });
+  const [token, setToken] = useState<string | null>(() => {
+    if (typeof window !== "undefined") {
+      const tok = localStorage.getItem("token");
+      console.log(
+        "📦 Init token from localStorage:",
+        tok ? tok.substring(0, 20) + "..." : "absent"
+      );
+      return tok;
+    }
+    return null;
+  });
   const [isLoading, setIsLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    if (typeof window !== "undefined") {
+      const hasToken = !!localStorage.getItem("token");
+      const hasUser = !!localStorage.getItem("user");
+      const auth = hasToken && hasUser;
+      console.log("🔐 Init isAuthenticated:", auth, { hasToken, hasUser });
+      return auth;
+    }
+    return false;
+  });
 
   const [fetchMe] = useLazyQuery(ME_QUERY, {
     fetchPolicy: "network-only",
@@ -47,15 +86,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           id: data.me.id,
           email: data.me.email,
           username: data.me.username,
-          zipCode: data.me.zipCode,
-          phone: data.me.phone,
-          address: data.me.address,
-          city: data.me.city,
-          country: data.me.country,
-          isOauth: data.me.isOauth,
           isActive: data.me.isActive,
-          isSuperuser: data.me.isSuperuser,
-          roles: data.me.roles,
+          role: data.me.role,
           createdAt: data.me.createdAt,
           updatedAt: data.me.updatedAt,
         };
@@ -76,19 +108,41 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         const storedUser = localStorage.getItem("user");
 
         if (storedToken) {
-          setToken(storedToken);
+          // Vérifier si le token est expiré
+          if (isTokenExpired(storedToken)) {
+            console.log("🔑 Token expiré, déconnexion");
+            localStorage.removeItem("user");
+            localStorage.removeItem("token");
+            setToken(null);
+            setUser(null);
+            setIsAuthenticated(false);
+            setIsLoading(false);
+            return;
+          }
 
-          // Tenter de récupérer le profil utilisateur via GraphQL
-          try {
-            await fetchMe();
-          } catch {
-            // Si l'erreur est liée au token, on utilise les données locales
-            if (storedUser) {
+          console.log("🔑 Token valide trouvé dans localStorage");
+          setToken(storedToken);
+          setIsAuthenticated(true);
+
+          // Charger l'utilisateur depuis localStorage immédiatement
+          if (storedUser) {
+            try {
               const parsedUser = JSON.parse(storedUser);
               if (parsedUser && typeof parsedUser === "object") {
                 setUser(parsedUser);
               }
+            } catch (e) {
+              console.error("Erreur parsing user:", e);
             }
+          }
+
+          // Tenter de récupérer le profil utilisateur via GraphQL en arrière-plan
+          try {
+            await fetchMe();
+          } catch {
+            console.warn(
+              "Impossible de refetch le profil, utilisation des données locales"
+            );
           }
         }
       } catch (error) {
@@ -98,17 +152,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         );
         localStorage.removeItem("user");
         localStorage.removeItem("token");
+        setIsAuthenticated(false);
       } finally {
         setIsLoading(false);
       }
     };
 
     initAuth();
-  }, [fetchMe]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const signIn = async (newToken: string, userData?: User) => {
     localStorage.setItem("token", newToken);
     setToken(newToken);
+    setIsAuthenticated(true);
 
     if (userData) {
       localStorage.setItem("user", JSON.stringify(userData));
@@ -124,6 +181,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     localStorage.removeItem("user");
     setToken(null);
     setUser(null);
+    setIsAuthenticated(false);
   };
 
   const refetchUser = async () => {
@@ -138,7 +196,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         user,
         token,
         isLoading,
-        isAuthenticated: !!user && !!token,
+        isAuthenticated,
         signIn,
         signOut,
         refetchUser,

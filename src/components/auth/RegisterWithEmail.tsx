@@ -1,10 +1,17 @@
 "use client";
+import {
+  LOGIN_MUTATION,
+  REGISTER_MUTATION,
+} from "@/graphql/mutations/user-mutations";
+import { useMutation } from "@apollo/client";
 import React, { useState } from "react";
 import { useToaster } from "../formationUi/Toaster";
-import { useMutation } from "@apollo/client";
-import { REGISTER_MUTATION, LOGIN_MUTATION } from "@/graphql/mutations/user-mutations";
 
-export default function RegisterWithEmail({ onSuccess }: { onSuccess: () => void }) {
+export default function RegisterWithEmail({
+  onSuccess,
+}: {
+  onSuccess: () => void;
+}) {
   const { addToast } = useToaster();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -26,14 +33,26 @@ export default function RegisterWithEmail({ onSuccess }: { onSuccess: () => void
             addToast("Compte créé avec succès !", "success");
             onSuccess();
           } else {
-            setError(loginData?.login?.error || "Erreur lors de la connexion automatique");
+            setError(
+              loginData?.login?.error ||
+                "Erreur lors de la connexion automatique"
+            );
             setSuccess(false);
-            addToast(loginData?.login?.error || "Erreur lors de la connexion automatique", "error");
+            addToast(
+              loginData?.login?.error ||
+                "Erreur lors de la connexion automatique",
+              "error"
+            );
           }
         } catch (loginErr: unknown) {
           if (loginErr instanceof Error) {
-            setError(loginErr.message || "Erreur lors de la connexion automatique");
-            addToast(loginErr.message || "Erreur lors de la connexion automatique", "error");
+            setError(
+              loginErr.message || "Erreur lors de la connexion automatique"
+            );
+            addToast(
+              loginErr.message || "Erreur lors de la connexion automatique",
+              "error"
+            );
           } else {
             setError("Erreur lors de la connexion automatique");
             addToast("Erreur lors de la connexion automatique", "error");
@@ -43,7 +62,10 @@ export default function RegisterWithEmail({ onSuccess }: { onSuccess: () => void
       } else {
         setError(data.register?.error || "Erreur lors de l'inscription");
         setSuccess(false);
-        addToast(data.register?.error || "Erreur lors de l'inscription", "error");
+        addToast(
+          data.register?.error || "Erreur lors de l'inscription",
+          "error"
+        );
       }
     },
     onError: (err) => setError(err.message),
@@ -62,7 +84,10 @@ export default function RegisterWithEmail({ onSuccess }: { onSuccess: () => void
   };
 
   return (
-    <form onSubmit={handleSubmit} className="form-control gap-2 w-full max-w-xs mx-auto">
+    <form
+      onSubmit={handleSubmit}
+      className="form-control gap-2 w-full max-w-xs mx-auto"
+    >
       <input
         type="text"
         placeholder="Nom complet"
@@ -88,7 +113,9 @@ export default function RegisterWithEmail({ onSuccess }: { onSuccess: () => void
         required
       />
       {error && <div className="text-error text-sm mt-1">{error}</div>}
-      {success && <div className="text-success text-sm mt-1">Inscription réussie !</div>}
+      {success && (
+        <div className="text-success text-sm mt-1">Inscription réussie !</div>
+      )}
       <button className="btn btn-primary mt-2" disabled={loading} type="submit">
         {loading ? "Inscription..." : "S'inscrire"}
       </button>

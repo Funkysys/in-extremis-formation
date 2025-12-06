@@ -29,3 +29,4 @@ export const LIST_CHATS_QUERY = gql`
     }
   }
 `;
+

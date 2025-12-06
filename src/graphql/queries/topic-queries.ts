@@ -24,7 +24,7 @@ export const GET_ALL_TOPICS = gql`
 `;
 
 export const GET_TRAINERS_BY_TOPIC = gql`
-  query($topicId: ID!) {
+  query ($topicId: ID!) {
     trainersByTopic(topicId: $topicId) {
       id
       description
@@ -37,7 +37,7 @@ export const GET_TRAINERS_BY_TOPIC = gql`
 `;
 
 export const GET_TOPICS_BY_TRAINER = gql`
-  query($trainerId: ID!) {
+  query ($trainerId: ID!) {
     trainer(id: $trainerId) {
       id
       topics {
@@ -48,3 +48,4 @@ export const GET_TOPICS_BY_TRAINER = gql`
     }
   }
 `;
+

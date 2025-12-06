@@ -1,15 +1,15 @@
 "use client";
+import { ME_QUERY } from "@/graphql/queries/user-queries";
+import { useQuery } from "@apollo/client";
 import Link from "next/link";
-import React, { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import { useState } from "react";
 import {
   HiOutlineClipboardList,
   HiOutlineUserCircle,
   HiUserGroup,
 } from "react-icons/hi";
 import { IoArrowBack } from "react-icons/io5";
-import { useQuery } from "@apollo/client";
-import { ME_QUERY } from "@/graphql/queries/user-queries";
 
 export default function Sidebar() {
   const [open, setOpen] = useState(false);
@@ -20,7 +20,7 @@ export default function Sidebar() {
     pathname.startsWith("/formateur") && !isFormateurRoot;
   // Apollo pour récupérer les rôles
   const { data } = useQuery(ME_QUERY);
-  const roles = data?.me?.roles?.map((r: { name: string }) => r.name) || [];
+  const roles = data?.me?.role ? [data.me.role] : [];
   const isAdmin = roles.includes("admin");
 
   return (

@@ -84,3 +84,4 @@ export const GET_SEARCH_SUGGESTIONS_QUERY = gql`
     }
   }
 `;
+

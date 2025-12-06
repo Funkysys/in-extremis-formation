@@ -3,7 +3,7 @@
 import { gql } from "@apollo/client";
 
 export const COURSE_COMMENTS_QUERY = gql`
-  query($course_id: String!) {
+  query ($course_id: String!) {
     course_comments(course_id: $course_id) {
       id
       content
@@ -44,9 +44,7 @@ export const COURSE_COMMENTS_QUERY = gql`
           id
           email
           username
-          isOauth
           isActive
-          isSuperuser
           createdAt
           updatedAt
           oauthAccounts {
@@ -75,7 +73,7 @@ export const COURSE_COMMENTS_QUERY = gql`
 `;
 
 export const COMMENT_QUERY = gql`
-  query($id: String!) {
+  query ($id: String!) {
     comment(id: $id) {
       id
       content
@@ -88,21 +86,9 @@ export const COMMENT_QUERY = gql`
         id
         email
         username
-        isOauth
         isActive
-        isSuperuser
         createdAt
         updatedAt
-        oauthAccounts {
-          id
-          provider
-          providerAccountId
-          accessToken
-          refreshToken
-          expiresAt
-          createdAt
-          updatedAt
-        }
       }
       replies {
         id
@@ -116,4 +102,3 @@ export const COMMENT_QUERY = gql`
     }
   }
 `;
-

@@ -26,3 +26,4 @@ export const DELETE_IMAGE_MUTATION = gql`
     }
   }
 `;
+

@@ -43,3 +43,4 @@ export const GET_COURSE_LIKES_COUNT_QUERY = gql`
     }
   }
 `;
+

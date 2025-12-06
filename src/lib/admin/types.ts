@@ -8,7 +8,7 @@ export interface AdminUser {
   isSuperuser: boolean;
   is_premium?: boolean;
   createdAt: string;
-  roles?: { name: string }[];
+  role?: string;
 }
 
 export interface AdminVideo {

@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import FilterCheckboxGroup from "./FilterCheckboxGroup";
-import PriceRangeFilter from "./PriceRangeFilter";
 import SortSelect from "./SortSelect";
 import {
   DEFAULT_CATEGORIES,
@@ -43,13 +42,13 @@ export default function SearchFilters({
     });
   };
 
-  const handlePriceChange = (type: "min" | "max", value: string) => {
-    const numValue = value ? parseFloat(value) : undefined;
-    onFilterChange({
-      ...activeFilters,
-      [type === "min" ? "minPrice" : "maxPrice"]: numValue,
-    });
-  };
+  // const handlePriceChange = (type: "min" | "max", value: string) => {
+  //   const numValue = value ? parseFloat(value) : undefined;
+  //   onFilterChange({
+  //     ...activeFilters,
+  //     [type === "min" ? "minPrice" : "maxPrice"]: numValue,
+  //   });
+  // };
 
   const handleSortChange = (sortBy: string) => {
     onFilterChange({
@@ -91,7 +90,7 @@ export default function SearchFilters({
           )}
           <button
             onClick={() => setIsExpanded(!isExpanded)}
-            className="lg:hidden p-2 hover:bg-slate-100 dark:hover:bg-gray-700 rounded"
+            className="p-2 rounded lg:hidden hover:bg-slate-100 dark:hover:bg-gray-700"
           >
             <svg
               width="20"
@@ -132,11 +131,11 @@ export default function SearchFilters({
           onChange={handleLevelChange}
         />
 
-        <PriceRangeFilter
+        {/* <PriceRangeFilter
           minPrice={activeFilters.minPrice}
           maxPrice={activeFilters.maxPrice}
           onChange={handlePriceChange}
-        />
+        /> */}
       </div>
     </div>
   );

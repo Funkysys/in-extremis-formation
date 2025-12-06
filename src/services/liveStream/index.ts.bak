@@ -1,0 +1,165 @@
+/**
+ * Service principal de streaming live
+ * Responsabilité : Orchestration uniquement
+ */
+
+import { ChunkProcessor } from "./ChunkProcessor";
+import { MediaSourceManager } from "./MediaSourceManager";
+import type {
+  LiveStreamCallbacks,
+  LiveStreamConfig,
+  LiveStreamStatus,
+  SignalingMessage,
+} from "./types";
+import { WebSocketManager } from "./WebSocketManager";
+
+class LiveStreamService {
+  // Managers
+  private mediaSourceManager = new MediaSourceManager();
+  private webSocketManager = new WebSocketManager();
+  private chunkProcessor: ChunkProcessor;
+
+  // État
+  private status: LiveStreamStatus = "disconnected";
+  private callbacks: LiveStreamCallbacks = {};
+  private videoElement: HTMLVideoElement | null = null;
+
+  // Protection
+  private isStarting = false;
+  private lastStopTime = 0;
+
+  constructor() {
+    this.chunkProcessor = new ChunkProcessor(this.mediaSourceManager);
+  }
+
+  /**
+   * Démarre le streaming
+   */
+  async startStream(
+    videoElement: HTMLVideoElement,
+    config: LiveStreamConfig,
+    callbacks?: LiveStreamCallbacks
+  ): Promise<void> {
+    // Protection contre les appels multiples
+    if (this.isStarting || this.webSocketManager.isConnected()) {
+      return;
+    }
+
+    this.isStarting = true;
+    this.videoElement = videoElement;
+    this.callbacks = callbacks || {};
+
+    try {
+      this.updateStatus("connecting");
+
+      // Initialiser MediaSource
+      await this.mediaSourceManager.initialize(videoElement);
+
+      // Configurer le callback updateend
+      this.mediaSourceManager.onUpdateEnd(() => {
+        this.chunkProcessor.onAppendComplete();
+      });
+
+      // Connecter WebSocket
+      await this.webSocketManager.connect(config, {
+        onBinaryData: (data) => this.handleVideoData(data),
+        onSignaling: (message) => this.handleSignaling(message),
+        onDisconnect: () => this.updateStatus("disconnected"),
+      });
+
+      this.updateStatus("connected");
+    } catch (error) {
+      this.handleError(error as Error);
+      throw error;
+    } finally {
+      this.isStarting = false;
+    }
+  }
+
+  /**
+   * Gère les données vidéo
+   */
+  private handleVideoData(data: ArrayBuffer): void {
+    // Passer en streaming au premier chunk
+    if (this.status === "connected") {
+      this.updateStatus("streaming");
+    }
+
+    this.chunkProcessor.addChunk(data);
+  }
+
+  /**
+   * Gère les messages de signaling
+   */
+  private handleSignaling(message: SignalingMessage): void {
+    switch (message.type) {
+      case "metadata":
+        this.callbacks.onMetadata?.(message.data || {});
+        break;
+
+      case "viewer_count":
+        if (typeof message.viewer_count === "number") {
+          this.callbacks.onViewerCount?.(message.viewer_count);
+        }
+        break;
+
+      default:
+        console.log("📨 Signaling:", message.type);
+    }
+  }
+
+  /**
+   * Envoie un message
+   */
+  sendMessage(type: string, data?: Record<string, unknown>): void {
+    this.webSocketManager.send(type, data);
+  }
+
+  /**
+   * Arrête le streaming
+   */
+  stopStream(): void {
+    this.isStarting = false;
+    this.lastStopTime = Date.now();
+
+    this.webSocketManager.disconnect();
+    this.chunkProcessor.clear();
+    this.mediaSourceManager.cleanup();
+
+    if (this.videoElement?.src) {
+      URL.revokeObjectURL(this.videoElement.src);
+    }
+
+    this.updateStatus("disconnected");
+  }
+
+  /**
+   * Met à jour le statut
+   */
+  private updateStatus(status: LiveStreamStatus): void {
+    this.status = status;
+    this.callbacks.onStatusChange?.(status);
+  }
+
+  /**
+   * Gère les erreurs
+   */
+  private handleError(error: Error): void {
+    console.error("❌ Streaming:", error);
+    this.updateStatus("error");
+    this.callbacks.onError?.(error);
+  }
+
+  /**
+   * Getters
+   */
+  getStatus(): LiveStreamStatus {
+    return this.status;
+  }
+
+  isStreaming(): boolean {
+    return this.status === "streaming";
+  }
+}
+
+export const liveStreamService = new LiveStreamService();

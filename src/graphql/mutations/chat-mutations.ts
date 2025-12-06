@@ -36,3 +36,4 @@ export const DELETE_CHAT_MUTATION = gql`
     deleteChat(id: $id)
   }
 `;
+

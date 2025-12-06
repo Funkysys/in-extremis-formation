@@ -10,12 +10,8 @@ export const LOGIN_MUTATION = gql`
         id
         email
         username
-        isOauth
         isActive
-        isSuperuser
-        roles {
-          name
-        }
+        role
       }
       accessToken
     }
@@ -30,9 +26,7 @@ export const REGISTER_MUTATION = gql`
         id
         email
         username
-        isOauth
         isActive
-        isSuperuser
       }
       accessToken
     }
@@ -47,21 +41,9 @@ export const CREATE_USER_MUTATION = gql`
         id
         email
         username
-        isOauth
         isActive
-        isSuperuser
         createdAt
         updatedAt
-        oauthAccounts {
-          id
-          provider
-          providerAccountId
-          accessToken
-          refreshToken
-          expiresAt
-          createdAt
-          updatedAt
-        }
       }
       error
     }
@@ -76,17 +58,8 @@ export const UPDATE_MY_PROFILE_MUTATION = gql`
         id
         email
         username
-        zipCode
-        phone
-        address
-        city
-        country
-        isOauth
         isActive
-        isSuperuser
-        roles {
-          name
-        }
+        role
       }
       error
     }
@@ -101,9 +74,7 @@ export const UPDATE_USER_MUTATION = gql`
         id
         email
         username
-        isOauth
         isActive
-        isSuperuser
         createdAt
         updatedAt
         oauthAccounts {
@@ -151,9 +122,7 @@ export const UPDATE_USER_ROLES_MUTATION = gql`
         id
         email
         username
-        isOauth
         isActive
-        isSuperuser
         createdAt
         updatedAt
         oauthAccounts {

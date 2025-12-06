@@ -45,7 +45,7 @@ export interface User {
 
   username: string;
 
-  roles: Role[];
+  role: string;
 }
 
 export type CartItem = {

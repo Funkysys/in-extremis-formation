@@ -33,3 +33,4 @@ export const LIST_ACCOUNTS_QUERY = gql`
     }
   }
 `;
+

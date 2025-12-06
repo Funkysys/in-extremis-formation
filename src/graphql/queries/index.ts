@@ -13,6 +13,7 @@ export * from "./comment-queries";
 export * from "./course-queries";
 export * from "./image-queries";
 export * from "./likes";
+export * from "./live-queries";
 export * from "./playlists";
 export * from "./purchase-queries";
 export * from "./search";

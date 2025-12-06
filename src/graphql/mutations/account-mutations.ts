@@ -40,3 +40,4 @@ export const DELETE_ACCOUNT_MUTATION = gql`
     deleteAccount(id: $id)
   }
 `;
+

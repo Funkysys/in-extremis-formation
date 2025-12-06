@@ -21,3 +21,4 @@ export const DONATION_QUERY = gql`
     }
   }
 `;
+

@@ -3,8 +3,12 @@
 import { gql } from "@apollo/client";
 
 export const CREATE_COMMENT_MUTATION = gql`
-  mutation($content: String!, $course_id: String!, $parent_id: String) {
-    create_comment(content: $content, course_id: $course_id, parent_id: $parent_id) {
+  mutation ($content: String!, $course_id: String!, $parent_id: String) {
+    create_comment(
+      content: $content
+      course_id: $course_id
+      parent_id: $parent_id
+    ) {
       id
       content
       user_id
@@ -16,21 +20,9 @@ export const CREATE_COMMENT_MUTATION = gql`
         id
         email
         username
-        isOauth
         isActive
-        isSuperuser
         createdAt
         updatedAt
-        oauthAccounts {
-          id
-          provider
-          providerAccountId
-          accessToken
-          refreshToken
-          expiresAt
-          createdAt
-          updatedAt
-        }
       }
       replies {
         id
@@ -46,7 +38,7 @@ export const CREATE_COMMENT_MUTATION = gql`
 `;
 
 export const UPDATE_COMMENT_MUTATION = gql`
-  mutation($id: String!, $content: String!) {
+  mutation ($id: String!, $content: String!) {
     update_comment(id: $id, content: $content) {
       id
       content
@@ -60,7 +52,7 @@ export const UPDATE_COMMENT_MUTATION = gql`
 `;
 
 export const DELETE_COMMENT_MUTATION = gql`
-  mutation($id: String!) {
+  mutation ($id: String!) {
     delete_comment(id: $id) {
       success
       error

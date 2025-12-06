@@ -6,29 +6,10 @@ export const USER_QUERY = gql`
       id
       email
       username
-      zipCode
-      phone
-      address
-      city
-      country
-      isOauth
       isActive
-      isSuperuser
-      roles {
-        name
-      }
+      role
       createdAt
       updatedAt
-      oauthAccounts {
-        id
-        provider
-        providerAccountId
-        accessToken
-        refreshToken
-        expiresAt
-        createdAt
-        updatedAt
-      }
     }
   }
 `;

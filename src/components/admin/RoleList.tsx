@@ -66,7 +66,7 @@ export default function RoleList() {
         <tbody>
           {users.map((user) => {
             const userRoles =
-              selectedRoles[user.id] || user.roles?.map((r) => r.name) || [];
+              selectedRoles[user.id] || (user.role ? [user.role] : []);
             return (
               <UserRoleRow
                 key={user.id}

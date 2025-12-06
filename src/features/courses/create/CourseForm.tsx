@@ -1,14 +1,15 @@
-import { ToastService } from "@/services/toastService";
 import {
   ApolloClient,
   NormalizedCacheObject,
   useApolloClient,
 } from "@apollo/client";
 import { useRouter } from "next/navigation";
-import React, { useRef, useState } from "react";
+import { useRef } from "react";
 import { ChaptersList } from "./ChaptersList";
-import { CourseService } from "./courseService";
+import { FormActions } from "./FormActions";
+import { FormStatus } from "./FormStatus";
 import { useCourseForm } from "./useCourseForm";
+import { useCourseSubmit } from "./useCourseSubmit";
 import { VideoSection, VideoSectionRef } from "./VideoSection";
 
 export function CourseForm() {
@@ -34,6 +35,15 @@ export function CourseForm() {
   const apolloClient = useApolloClient() as ApolloClient<NormalizedCacheObject>;
   const videoSectionRef = useRef<VideoSectionRef>(null);
 
+  const { handleSubmit, uploadStep } = useCourseSubmit(
+    formState,
+    isValid,
+    setIsSubmitting,
+    setError,
+    apolloClient,
+    videoSectionRef
+  );
+
   const handleChapterClick = (timestamp: number) => {
     videoSectionRef.current?.getCurrentTime();
     setCurrentTime(timestamp);
@@ -44,86 +54,13 @@ export function CourseForm() {
     addChapter(title, timestamp);
   };
 
-  const [uploadStep, setUploadStep] = useState<string>("");
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!isValid) {
-      setError("Please fill all required fields");
-      ToastService.error("Please fill all required fields");
-      return;
-    }
-
-    if (!formState.videoFile) {
-      setError("Please select a video for the course");
-      ToastService.error("Please select a video for the course");
-      return;
-    }
-
-    try {
-      setIsSubmitting(true);
-      setError(null);
-
-      // Upload video
-      setUploadStep("Uploading video...");
-      ToastService.info("Starting video upload");
-      let videoMetadata;
-      if (videoSectionRef.current) {
-        videoMetadata = await videoSectionRef.current.uploadVideo();
-        if (!videoMetadata) {
-          throw new Error("Video upload failed");
-        }
-        setUploadStep("Video uploaded successfully");
-      } else {
-        throw new Error("Video section reference not available");
-      }
-
-      // Create course and chapters
-      setUploadStep("Creating course...");
-      ToastService.info("Creating your course");
-      const courseService = new CourseService(apolloClient);
-      const result = await courseService.createCourse(formState, videoMetadata);
-
-      setUploadStep("Course created successfully!");
-      ToastService.success("Course created successfully!");
-
-      // Redirect to course page
-      setTimeout(() => {
-        router.push(`/formateur/mes-formations/${result.courseId}`);
-      }, 1500); // Short delay to show success message
-    } catch (err) {
-      console.error("Error creating course:", err);
-      const errorMessage =
-        err instanceof Error
-          ? err.message
-          : "An error occurred while creating the course";
-      setError(errorMessage);
-      ToastService.error(errorMessage);
-      setUploadStep("");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
   return (
     <div className="max-w-4xl mx-auto">
-      {error && (
-        <div className="bg-red-900/50 border border-red-500 text-white p-4 rounded mb-6">
-          {error}
-        </div>
-      )}
-
-      {uploadStep && (
-        <div className="bg-blue-900/50 border border-blue-500 text-white p-4 rounded mb-6">
-          <div className="flex items-center">
-            {isSubmitting && (
-              <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-white mr-3"></div>
-            )}
-            <p>{uploadStep}</p>
-          </div>
-        </div>
-      )}
+      <FormStatus
+        error={error}
+        uploadStep={uploadStep}
+        isSubmitting={isSubmitting}
+      />
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
@@ -191,39 +128,13 @@ export function CourseForm() {
           </div>
         </div>
 
-        <div className="flex items-center justify-between pt-4 border-t border-gray-700">
-          <div className="flex items-center">
-            <input
-              type="checkbox"
-              id="publish"
-              checked={formState.isPublished}
-              onChange={(e) => setPublished(e.target.checked)}
-              className="mr-2"
-            />
-            <label htmlFor="publish">Publish immediately</label>
-          </div>
-
-          <div className="flex gap-4">
-            <button
-              type="button"
-              onClick={() => router.back()}
-              className="px-4 py-2 border border-gray-600 rounded hover:bg-gray-700"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              disabled={isSubmitting || !isValid}
-              className={`px-6 py-2 rounded text-white ${
-                isSubmitting || !isValid
-                  ? "bg-blue-800 cursor-not-allowed"
-                  : "bg-blue-600 hover:bg-blue-700"
-              }`}
-            >
-              {isSubmitting ? "Creating..." : "Create Course"}
-            </button>
-          </div>
-        </div>
+        <FormActions
+          isSubmitting={isSubmitting}
+          isPublished={formState.isPublished}
+          isValid={isValid}
+          onPublishToggle={setPublished}
+          onCancel={() => router.back()}
+        />
       </form>
     </div>
   );

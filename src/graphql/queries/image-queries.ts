@@ -33,3 +33,4 @@ export const IMAGE_QUERY = gql`
     }
   }
 `;
+

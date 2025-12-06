@@ -40,3 +40,4 @@ export const DELETE_PAYMENT_MUTATION = gql`
     deletePayment(id: $id)
   }
 `;
+

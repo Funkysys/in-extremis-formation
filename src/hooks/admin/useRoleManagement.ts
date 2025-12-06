@@ -11,17 +11,15 @@ const USERS_QUERY = gql`
     users {
       id
       email
-      fullName
-      roles {
-        name
-      }
+      username
+      role
     }
   }
 `;
 
 const ROLES_QUERY = gql`
   query {
-    roles {
+    role {
       id
       name
       description
@@ -51,7 +49,7 @@ export const useRoleManagement = () => {
   const [success, setSuccess] = useState<string | null>(null);
 
   const users: User[] = usersData?.users || [];
-  const roles: Role[] = rolesData?.roles || [];
+  const roles: Role[] = rolesData?.role ? [rolesData.role] : [];
 
   const handleSave = async (userId: string) => {
     setSaving(userId);
@@ -59,8 +57,9 @@ export const useRoleManagement = () => {
     setSuccess(null);
 
     try {
-      const prevRoles =
-        users.find((u) => u.id === userId)?.roles?.map((r) => r.name) || [];
+      const prevRoles = users.find((u) => u.id === userId)?.role
+        ? [users.find((u) => u.id === userId)?.role || ""]
+        : [];
       const nextRoles = selectedRoles[userId] || prevRoles;
       const wasTrainer =
         prevRoles.includes("formateur") || prevRoles.includes("admin");
