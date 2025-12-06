@@ -61,7 +61,7 @@ export function useStreamConnection(
     callbacks.setStatus("disconnected");
     callbacks.setViewerCount(0);
     callbacks.setMetadata(null);
-  }, [hasConnected, callbacks]);
+  }, [hasConnected, callbacks, service]);
 
   return { connect, disconnect };
 }

@@ -1,7 +1,6 @@
 "use client";
 import { useAuth } from "@/providers/AuthProvider";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 import { useQuery } from "@apollo/client";
 import { GET_ACTIVE_LIVES } from "@/graphql/queries/live-queries";
 

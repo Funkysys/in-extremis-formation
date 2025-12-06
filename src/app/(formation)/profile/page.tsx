@@ -1,7 +1,7 @@
 "use client";
 
-import { LIST_PAYMENTS_QUERY } from "@/graphql/queries/paymentQueries";
-import { ME_QUERY } from "@/graphql/queries/userQueries";
+import { LIST_PAYMENTS_QUERY } from "@/graphql/queries/payment-queries";
+import { ME_QUERY } from "@/graphql/queries/user-queries";
 import { useAuth } from "@/providers/AuthProvider";
 import { useQuery } from "@apollo/client";
 import { useEffect } from "react";

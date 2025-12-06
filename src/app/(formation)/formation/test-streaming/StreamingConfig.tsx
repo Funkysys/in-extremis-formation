@@ -4,7 +4,6 @@ interface StreamingConfigProps {
   availableQualities: string[];
   onVideoIdChange: (id: string) => void;
   onQualityChange: (quality: string) => void;
-  hasStreamUrl: boolean;
 }
 
 export function StreamingConfig({
@@ -13,7 +12,6 @@ export function StreamingConfig({
   availableQualities,
   onVideoIdChange,
   onQualityChange,
-  hasStreamUrl,
 }: StreamingConfigProps) {
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-8">

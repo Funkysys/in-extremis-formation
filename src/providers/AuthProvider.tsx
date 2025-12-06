@@ -10,6 +10,7 @@ type User = {
   username: string;
   isActive: boolean;
   is_premium?: boolean;
+  isSuperuser?: boolean;
   role?: string;
   createdAt: string;
   updatedAt: string;

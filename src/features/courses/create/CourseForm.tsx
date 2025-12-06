@@ -41,7 +41,7 @@ export function CourseForm() {
     setIsSubmitting,
     setError,
     apolloClient,
-    videoSectionRef
+    videoSectionRef as React.RefObject<{ uploadVideo: () => Promise<unknown> }>
   );
 
   const handleChapterClick = (timestamp: number) => {

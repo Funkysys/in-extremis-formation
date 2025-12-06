@@ -87,7 +87,7 @@ export function SecureVideoPlayer({
           tooltips: { controls: true, seek: true },
           fullscreen: { enabled: true, fallback: true, iosNative: true },
           quality: {
-            default: currentQuality === "auto" ? undefined : parseInt(currentQuality),
+            default: currentQuality === "auto" ? (availableQualities.filter((q) => q !== "auto").map((q) => parseInt(q))[0] || 720) : parseInt(currentQuality),
             options: availableQualities.filter((q) => q !== "auto").map((q) => parseInt(q)),
             forced: true,
             onChange: (quality: number) => {

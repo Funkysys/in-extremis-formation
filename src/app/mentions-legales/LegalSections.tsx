@@ -1,6 +1,4 @@
-interface EditorSectionProps {}
-
-export function EditorSection({}: EditorSectionProps) {
+export function EditorSection() {
   return (
     <section>
       <h2

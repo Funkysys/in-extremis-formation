@@ -5,7 +5,7 @@ import { LiveBroadcaster } from "@/components/live/LiveBroadcaster";
 import { LiveStreamPlayer } from "@/components/live/LiveStreamPlayer";
 import { ParticipantsList } from "@/components/live/ParticipantsList";
 import { useAuth } from "@/providers/AuthProvider";
-import { use, useMemo, useState } from "react";
+import { use, useCallback, useMemo, useState } from "react";
 
 // Salons disponibles pour le live
 // Ces salons seront créés automatiquement de façon éphémère lors de la première connexion
@@ -55,7 +55,7 @@ export default function LiveStreamPage({
   // Génération du room_id unique pour chaque salon
   // Format: live-{timestamp}-{salonId}
   // Les rooms sont éphémères et seront auto-créées/auto-supprimées
-  const getRoomId = (salonId: string) => `${id}-${salonId}`;
+  const getRoomId = useCallback((salonId: string) => `${id}-${salonId}`, [id]);
 
   // Pour le formateur : démarrer un live
   const startStream = () => {
@@ -111,7 +111,7 @@ export default function LiveStreamPage({
   // Mémoïser le currentRoomId pour éviter les re-renders inutiles du ChatRoom
   const currentRoomId = useMemo(
     () => getRoomId(selectedRoom),
-    [id, selectedRoom]
+    [selectedRoom, getRoomId]
   );
 
   // console.log("📍 Page render - currentRoomId:", currentRoomId);

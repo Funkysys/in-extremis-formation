@@ -1,13 +1,3 @@
-interface PlayerStateProps {
-  isLoading: boolean;
-  error: string | null;
-  streamUrl: string | null;
-  method: string | null;
-  videoId: string;
-  className: string;
-  retry: () => void;
-}
-
 export function LoadingState({ className }: { className: string }) {
   return (
     <div

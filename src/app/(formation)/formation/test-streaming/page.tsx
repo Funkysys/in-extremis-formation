@@ -64,7 +64,6 @@ export default function TestStreamingPage() {
           availableQualities={availableQualities}
           onVideoIdChange={setTestVideoId}
           onQualityChange={handleQualityChange}
-          hasStreamUrl={!!streamUrl}
         />
 
         {capabilities && <BrowserCapabilities capabilities={capabilities} />}

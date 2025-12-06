@@ -24,6 +24,7 @@ import type {
 } from "./liveStream/types";
 
 // Classe obsolète - ne pas utiliser
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 class _DeprecatedLiveStreamService {
   // WebSocket
   private ws: WebSocket | null = null;

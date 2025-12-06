@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 interface ActuCardProps {
   actu: {
     id: number;
@@ -29,9 +31,10 @@ export function ActuCard({ actu }: ActuCardProps) {
     <div className="flex flex-col flex-shrink-0 w-full h-full md:flex-row">
       {actu.image && (
         <div className="flex-shrink-0 w-full md:w-1/2 h-1/2 md:h-full">
-          <img
+          <Image
             src={actu.image}
             alt={actu.title}
+            fill
             className="object-cover w-full h-full"
           />
         </div>

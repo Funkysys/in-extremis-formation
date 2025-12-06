@@ -12,12 +12,6 @@ interface LiveStream {
   startedAt?: string;
 }
 
-interface LiveSectionsProps {
-  activeLives: LiveStream[];
-  pastLives: LiveStream[];
-  lives: LiveStream[];
-}
-
 export function ActiveLivesSection({
   activeLives,
 }: {

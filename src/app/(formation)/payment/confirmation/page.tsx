@@ -19,7 +19,12 @@ export default function ConfirmationPage() {
   const { checkPaymentStatus } = usePayment();
 
   const [status, setStatus] = useState<VerificationStatus>("checking");
-  const [paymentData, setPaymentData] = useState<any>(null);
+  const [paymentData, setPaymentData] = useState<{
+    amount: number;
+    status: string;
+    description?: string;
+    created_at?: string;
+  } | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const paymentId = searchParams.get("payment_id");
@@ -63,6 +68,7 @@ export default function ConfirmationPage() {
 
   useEffect(() => {
     verifyPayment();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paymentId]);
 
   return (

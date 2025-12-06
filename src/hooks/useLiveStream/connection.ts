@@ -1,4 +1,5 @@
 import type { LiveStreamService } from "@/services/liveStream";
+import type { LiveStreamStatus } from "@/services/liveStream/types";
 import type { UseLiveStreamOptions } from "./types";
 
 export async function connectToStream(
