@@ -1,6 +1,6 @@
 "use client";
 
-import { usePayment } from "@/hooks/usePayment";
+import { usePayment } from "@/hooks/payments";
 import { useState } from "react";
 import { AmountSelector } from "./CheckoutForm/AmountSelector";
 import { ErrorAlert } from "./CheckoutForm/ErrorAlert";

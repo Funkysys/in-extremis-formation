@@ -1,8 +1,10 @@
 "use client";
 
-import { useOnlineStatus } from "@/hooks/useOnlineStatus";
-import { usePushNotifications } from "@/hooks/usePushNotifications";
-import { useServiceWorker } from "@/hooks/useServiceWorker";
+import {
+  useOnlineStatus,
+  usePushNotifications,
+  useServiceWorker,
+} from "@/hooks/pwa";
 
 export function PWAStatus() {
   const { registration, isInstalled, updateAvailable } = useServiceWorker();

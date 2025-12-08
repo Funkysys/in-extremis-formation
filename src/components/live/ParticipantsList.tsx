@@ -1,6 +1,6 @@
 "use client";
 
-import { useLiveParticipants } from "@/hooks/useLiveParticipants";
+import { useLiveParticipants } from "@/hooks/live";
 
 interface ParticipantsListProps {
   roomId: string;

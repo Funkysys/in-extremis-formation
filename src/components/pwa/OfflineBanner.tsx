@@ -1,6 +1,6 @@
 "use client";
 
-import { useOnlineStatus } from "@/hooks/useOnlineStatus";
+import { useOnlineStatus } from "@/hooks/pwa";
 import { useEffect, useState } from "react";
 
 export function OfflineBanner() {

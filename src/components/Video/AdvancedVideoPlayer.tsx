@@ -5,8 +5,7 @@
 
 "use client";
 
-import { useAdvancedHlsPlayer } from "@/hooks/useAdvancedHlsPlayer";
-import { useAdvancedVideoControls } from "@/hooks/useAdvancedVideoControls";
+import { useAdvancedHlsPlayer, useAdvancedVideoControls } from "@/hooks/video";
 import type { VideoQuality } from "@/services/videoStreamingService";
 import { useState } from "react";
 import { AdvancedControlBar } from "./AdvancedControlBar";

@@ -2,7 +2,7 @@
 
 import Card from "@/components/vitrineUi/Card";
 import { datas } from "@/data/stages";
-import { usePerformanceTracking } from "@/hooks/usePerformanceTracking";
+import { usePerformanceTracking } from "@/hooks/utils";
 import { logger } from "@/services/logger";
 import { CardType } from "@/types/cards";
 import { useCallback, useEffect, useRef, useState } from "react";

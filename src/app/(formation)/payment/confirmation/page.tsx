@@ -1,6 +1,6 @@
 "use client";
 
-import { usePayment } from "@/hooks/usePayment";
+import { usePayment } from "@/hooks/payments";
 import { paymentService } from "@/services/paymentService";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";

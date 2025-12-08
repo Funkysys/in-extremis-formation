@@ -1,6 +1,6 @@
 "use client";
 
-import { useServiceWorker } from "@/hooks/useServiceWorker";
+import { useServiceWorker } from "@/hooks/pwa";
 import { useEffect, useState } from "react";
 
 export function UpdateNotification() {

@@ -4,7 +4,7 @@ import VideoChaptersModal from "@/components/formateur/VideoChaptersModal";
 import { VideoUploadZone } from "@/components/formateur/VideoUploadZone";
 import { UPDATE_COURSE_MUTATION } from "@/graphql/mutations/course-mutations";
 import { COURSE_BY_TITLE_QUERY } from "@/graphql/queries/course-queries";
-import { useVideoUpload } from "@/hooks/useVideoUpload";
+import { useVideoUpload } from "@/hooks/video";
 import { useMutation, useQuery } from "@apollo/client";
 import Image from "next/image";
 import Link from "next/link";

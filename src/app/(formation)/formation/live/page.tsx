@@ -5,11 +5,11 @@ import {
   EmptyLivesMessage,
   PastLivesSection,
 } from "@/components/live/LiveSections";
-import { useCreateLive, useLiveStreams } from "./useLiveStreams";
+import { useCreateLive, useLiveList } from "@/hooks/live";
 
 export default function LiveListPage() {
   const { lives, activeLives, pastLives, isLoading, isFormateur } =
-    useLiveStreams();
+    useLiveList();
   const { handleCreateLive } = useCreateLive();
 
   if (isLoading) {

@@ -6,7 +6,7 @@ import {
   REORDER_PLAYLIST_COURSES_MUTATION,
 } from "@/graphql/mutations/playlists";
 import { GET_PLAYLIST_DETAIL_QUERY } from "@/graphql/queries/playlists";
-import { usePlaylistDetail } from "@/hooks/usePlaylists";
+import { usePlaylistDetail } from "@/hooks/user";
 import { useAuth } from "@/providers/AuthProvider";
 import { useMutation } from "@apollo/client";
 import Link from "next/link";

@@ -3,7 +3,7 @@
  * Se connecte au WebSocket du chat pour écouter les arrivées/départs
  */
 
-import { useWebSocketChat } from "./useWebSocketChat";
+import { useWebSocketChat } from "@/hooks/chat";
 import { useEffect, useState } from "react";
 
 export interface Participant {

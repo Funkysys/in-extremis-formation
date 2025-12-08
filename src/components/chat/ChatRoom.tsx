@@ -1,6 +1,6 @@
 "use client";
 
-import { useWebSocketChat } from "@/hooks/useWebSocketChat";
+import { useWebSocketChat } from "@/hooks/chat";
 import { useAuth } from "@/providers/AuthProvider";
 import { useEffect, useRef, useState } from "react";
 import { ChatHeader } from "./ChatRoom/ChatHeader";

@@ -2,7 +2,7 @@
  * Sélecteur de périphériques vidéo avec détection OBS
  */
 
-import { VideoDeviceInfo } from "@/hooks/useVideoDevices";
+import { VideoDeviceInfo } from "@/hooks/video/streaming/useVideoDevices";
 
 interface DeviceSelectorProps {
   devices: VideoDeviceInfo[];

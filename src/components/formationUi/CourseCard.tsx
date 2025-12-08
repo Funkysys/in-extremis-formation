@@ -2,8 +2,7 @@ import { LikeButton } from "@/components/likes";
 import { AddToPlaylistButton } from "@/components/playlists";
 import { ShareButton } from "@/components/share";
 import { COURSES_QUERY } from "@/graphql/queries";
-import { usePerformanceTracking } from "@/hooks/usePerformanceTracking";
-import { usePrefetchOnHover } from "@/hooks/usePrefetch";
+import { usePerformanceTracking, usePrefetchOnHover } from "@/hooks/utils";
 import Image from "next/image";
 import Link from "next/link";
 

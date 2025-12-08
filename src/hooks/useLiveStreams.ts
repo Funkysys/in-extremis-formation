@@ -1,8 +1,8 @@
 "use client";
-import { useAuth } from "@/providers/AuthProvider";
-import { useRouter } from "next/navigation";
-import { useQuery } from "@apollo/client";
 import { GET_ACTIVE_LIVES } from "@/graphql/queries/live-queries";
+import { useAuth } from "@/providers/AuthProvider";
+import { useQuery } from "@apollo/client";
+import { useRouter } from "next/navigation";
 
 interface LiveStream {
   streamId: string;
@@ -17,9 +17,13 @@ interface LiveStream {
 
 export function useLiveStreams() {
   const { user, isLoading } = useAuth();
-  
+
   // Query GraphQL pour récupérer les lives actifs (refresh toutes les 5 secondes)
-  const { data, loading: livesLoading, error } = useQuery(GET_ACTIVE_LIVES, {
+  const {
+    data,
+    loading: livesLoading,
+    error,
+  } = useQuery(GET_ACTIVE_LIVES, {
     pollInterval: 5000, // Rafraîchir toutes les 5 secondes
     fetchPolicy: "network-only", // Toujours fetch depuis le réseau
   });

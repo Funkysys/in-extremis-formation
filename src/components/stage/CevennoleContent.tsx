@@ -3,7 +3,7 @@
 import { Breadcrumb } from "@/components/stage/Breadcrumb";
 import { StageHero } from "@/components/stage/StageHero";
 import { StageModules } from "@/components/stage/StageModules";
-import { useFadeOutScroll } from "@/hooks/useFadeOutScroll";
+import { useFadeOutScroll } from "@/hooks/ui";
 import { AccommodationSection } from "./CevennoleContent/AccommodationSection";
 import { ContactSection } from "./CevennoleContent/ContactSection";
 import { PracticalInfoSection } from "./CevennoleContent/PracticalInfoSection";

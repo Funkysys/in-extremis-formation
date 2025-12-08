@@ -1,7 +1,7 @@
 "use client";
 
-import { useBroadcast } from "@/hooks/useBroadcast";
-import { useVideoDevices } from "@/hooks/useVideoDevices";
+import { useBroadcast } from "@/hooks/live";
+import { useVideoDevices } from "@/hooks/video";
 import { useEffect, useRef, useState } from "react";
 import { BroadcastPreview } from "./BroadcastPreview";
 import { SourceSelector } from "./SourceSelector";

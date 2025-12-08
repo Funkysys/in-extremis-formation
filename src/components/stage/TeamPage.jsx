@@ -1,6 +1,6 @@
 "use client";
 import team from "@/data/teachersData";
-import { usePerformanceTracking } from "@/hooks/usePerformanceTracking";
+import { usePerformanceTracking } from "@/hooks/utils";
 import { logger } from "@/services/logger";
 import { performanceMonitor } from "@/services/performanceMonitor";
 import gsap from "gsap";

@@ -8,7 +8,7 @@ import {
   SearchFilters,
   SearchResults,
 } from "@/components/search";
-import { useSearchCourses } from "@/hooks/useSearchCourses";
+import { useSearchCourses } from "@/hooks/courses";
 import { useSearchParams } from "next/navigation";
 
 const ITEMS_PER_PAGE = 12;

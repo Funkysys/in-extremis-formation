@@ -1,5 +1,4 @@
-import { useDebouncedValue } from "@/hooks/useDebouncedValue";
-import { usePerformanceTracking } from "@/hooks/usePerformanceTracking";
+import { useDebouncedValue, usePerformanceTracking } from "@/hooks/utils";
 import { useEffect, useState } from "react";
 
 interface Filters {

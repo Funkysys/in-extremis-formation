@@ -2,7 +2,7 @@
 
 import { RequireAuth } from "@/components/auth/RequireAuth";
 import { CreatePlaylistModal, PlaylistCard } from "@/components/playlists";
-import { usePlaylists } from "@/hooks/usePlaylists";
+import { usePlaylists } from "@/hooks/user";
 import { useAuth } from "@/providers/AuthProvider";
 import { useState } from "react";
 

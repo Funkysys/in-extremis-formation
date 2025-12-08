@@ -1,6 +1,6 @@
 "use client";
 
-import { usePlaylists } from "@/hooks/usePlaylists";
+import { usePlaylists } from "@/hooks/user";
 import { useAuth } from "@/providers/AuthProvider";
 import { useRouter } from "next/navigation";
 import { useState } from "react";

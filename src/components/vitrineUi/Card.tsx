@@ -1,5 +1,5 @@
 "use client";
-import { usePerformanceTracking } from "@/hooks/usePerformanceTracking";
+import { usePerformanceTracking } from "@/hooks/utils";
 // import { usePrefetchOnHover } from "@/hooks/usePrefetch"; // TODO: Réactiver avec query GraphQL
 import { useTheme } from "@/providers/ThemeProvider";
 import { CardType } from "@/types";

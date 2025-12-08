@@ -1,19 +1,16 @@
 /**
- * Hook React pour le streaming live via WebSocket
+ * Hook React pour le streaming live via WebSocket (Player/Viewer)
  */
 
 import { LiveStreamService } from "@/services/liveStream";
 import type { LiveStreamStatus } from "@/services/liveStream/types";
 import { useEffect, useRef, useState } from "react";
-import type {
-  UseLiveStreamOptions,
-  UseLiveStreamReturn,
-} from "./useLiveStream/types";
-import { useStreamConnection } from "./useLiveStream/useStreamConnection";
+import type { UseLiveStreamOptions, UseLiveStreamReturn } from "./types";
+import { useStreamConnection } from "./useStreamConnection";
 
 export type { UseLiveStreamOptions, UseLiveStreamReturn };
 
-export function useLiveStream(
+export function useLivePlayer(
   videoRef: React.RefObject<HTMLVideoElement | null>,
   options: UseLiveStreamOptions = {}
 ): UseLiveStreamReturn {
@@ -26,13 +23,9 @@ export function useLiveStream(
   const hasConnected = useRef(false);
   const optionsRef = useRef(options);
 
-  // Créer une instance fraîche du service pour ce composant
+  // Créer une instance du service UNE SEULE FOIS (jamais recrée pendant le render)
   const serviceRef = useRef<LiveStreamService | null>(null);
-  if (!serviceRef.current || !serviceRef.current.isValid()) {
-    if (serviceRef.current) {
-      console.log("🔄 Service invalide, recréation");
-      serviceRef.current.stopStream();
-    }
+  if (!serviceRef.current) {
     console.log("✨ Création instance LiveStreamService dans useLiveStream");
     serviceRef.current = new LiveStreamService();
   }
@@ -56,12 +49,12 @@ export function useLiveStream(
 
     if (optionsRef.current.autoConnect && !hasConnected.current && isMounted) {
       console.log(
-        "⏳ useLiveStream: Debounce de 2 secondes avant connexion..."
+        "⏳ useLiveStream: Debounce de 500ms avant connexion (viewer)..."
       );
       connectTimeout = setTimeout(() => {
         if (isMounted && !hasConnected.current) {
           console.log(
-            "🎬 useLiveStream: Tentative de connexion après debounce (2s)"
+            "🎬 useLiveStream: Tentative de connexion après debounce (500ms)"
           );
           connect().catch(console.error);
         } else {
@@ -69,7 +62,7 @@ export function useLiveStream(
             "⚠️ useLiveStream: Connexion annulée (déjà connecté ou démonté)"
           );
         }
-      }, 2000);
+      }, 500); // Réduit de 2000ms à 500ms pour connexion plus rapide
     }
 
     return () => {

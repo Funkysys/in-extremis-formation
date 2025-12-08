@@ -1,6 +1,6 @@
 "use client";
 
-import { useLikes } from "@/hooks/useLikes";
+import { useLikes } from "@/hooks/user";
 import { useAuth } from "@/providers/AuthProvider";
 import { useRouter } from "next/navigation";
 

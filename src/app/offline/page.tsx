@@ -4,7 +4,7 @@
  * Page hors ligne - Affichée quand l'utilisateur est offline
  */
 
-import { useOnlineStatus } from "@/hooks/useOnlineStatus";
+import { useOnlineStatus } from "@/hooks/pwa";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 

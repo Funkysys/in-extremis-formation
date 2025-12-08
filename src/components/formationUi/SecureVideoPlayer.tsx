@@ -1,15 +1,18 @@
 "use client";
+import type { VideoQuality } from "@/services/videoStreamingService";
 import dynamic from "next/dynamic";
 import "plyr-react/plyr.css";
-import { useSecureVideo } from "./SecureVideoPlayer/useSecureVideo";
 import {
-  LoadingState,
   ErrorState,
+  LoadingState,
   NoVideoIdState,
   PreparingState,
 } from "./SecureVideoPlayer/PlayerStates";
-import { QualityControls, MethodBadge } from "./SecureVideoPlayer/VideoControls";
-import type { VideoQuality } from "@/services/videoStreamingService";
+import { useSecureVideo } from "./SecureVideoPlayer/useSecureVideo";
+import {
+  MethodBadge,
+  QualityControls,
+} from "./SecureVideoPlayer/VideoControls";
 
 const Plyr = dynamic(() => import("plyr-react"), { ssr: false });
 
@@ -40,7 +43,8 @@ export function SecureVideoPlayer({
 
   if (isLoading) return <LoadingState className={className} />;
   if (!videoId) return <NoVideoIdState className={className} />;
-  if (error) return <ErrorState error={error} retry={retry} className={className} />;
+  if (error)
+    return <ErrorState error={error} retry={retry} className={className} />;
   if (!streamUrl) return <PreparingState className={className} />;
 
   const sourceType = method === "hls" ? "application/x-mpegURL" : "video/mp4";
@@ -87,8 +91,15 @@ export function SecureVideoPlayer({
           tooltips: { controls: true, seek: true },
           fullscreen: { enabled: true, fallback: true, iosNative: true },
           quality: {
-            default: currentQuality === "auto" ? (availableQualities.filter((q) => q !== "auto").map((q) => parseInt(q))[0] || 720) : parseInt(currentQuality),
-            options: availableQualities.filter((q) => q !== "auto").map((q) => parseInt(q)),
+            default:
+              currentQuality === "auto"
+                ? availableQualities
+                    .filter((q) => q !== "auto")
+                    .map((q) => parseInt(q))[0] || 720
+                : parseInt(currentQuality),
+            options: availableQualities
+              .filter((q) => q !== "auto")
+              .map((q) => parseInt(q)),
             forced: true,
             onChange: (quality: number) => {
               const newQuality = `${quality}p` as VideoQuality;

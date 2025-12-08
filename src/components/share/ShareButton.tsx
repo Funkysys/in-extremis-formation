@@ -1,6 +1,6 @@
 "use client";
 
-import { useShare } from "@/hooks/useShare";
+import { useShare } from "@/hooks/utils";
 
 interface ShareButtonProps {
   courseId: string;

@@ -140,7 +140,7 @@ export default function LiveStreamPage({
           </div>
 
           {/* Contrôles formateur */}
-          {isFormateur && (
+          {!isLoading && isFormateur && (
             <div className="flex gap-2">
               {!isStreamActive ? (
                 <button

@@ -47,19 +47,19 @@ export function useVideoDebugLogger() {
   };
 
   const onTimeUpdate = (video: HTMLVideoElement) => {
-    // Log initial + toutes les 2 secondes
+    // Log toutes les secondes pour détecter si le temps avance
     const lastLog = video.dataset.lastLogTime
       ? parseInt(video.dataset.lastLogTime)
       : 0;
     const now = Date.now();
 
-    if (now - lastLog > 2000 || lastLog === 0) {
+    if (now - lastLog > 1000 || lastLog === 0) {
+      const bufferedEnd =
+        video.buffered.length > 0 ? video.buffered.end(0).toFixed(3) : "0";
       console.log(
-        `⏱️ currentTime: ${video.currentTime.toFixed(1)}s, paused: ${
+        `⏱️ Time: ${video.currentTime.toFixed(3)}s, paused: ${
           video.paused
-        }, readyState: ${video.readyState}, buffered: ${
-          video.buffered.length
-        } range(s)`
+        }, ready: ${video.readyState}, buffered: 0-${bufferedEnd}s`
       );
       video.dataset.lastLogTime = now.toString();
     }

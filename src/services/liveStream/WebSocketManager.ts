@@ -43,7 +43,10 @@ export class WebSocketManager {
 
       this.ws.onmessage = (event) => this.handleMessage(event);
 
-      this.ws.onerror = () => reject(new Error("Erreur WebSocket"));
+      this.ws.onerror = (error) => {
+        console.error("❌ WebSocket error:", error);
+        reject(new Error("Erreur WebSocket"));
+      };
 
       this.ws.onclose = () => {
         console.log("🔌 WebSocket déconnecté");
@@ -58,6 +61,7 @@ export class WebSocketManager {
   private handleMessage(event: MessageEvent): void {
     // Message binaire = chunk vidéo
     if (event.data instanceof ArrayBuffer) {
+      console.log(`📦 Chunk reçu: ${event.data.byteLength} bytes`);
       this.onBinaryData?.(event.data);
       return;
     }

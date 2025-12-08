@@ -1,6 +1,6 @@
 "use client";
 import { GENERATE_VIDEO_TOKEN } from "@/graphql/queries/video-token-queries";
-import { useVideoStreaming } from "@/hooks/useVideoStreaming";
+import { useVideoStreaming } from "@/hooks/video";
 import { useAuth } from "@/providers/AuthProvider";
 import type { VideoQuality } from "@/services/videoStreamingService";
 import { useQuery } from "@apollo/client";

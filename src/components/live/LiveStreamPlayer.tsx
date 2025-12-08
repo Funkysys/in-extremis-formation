@@ -1,9 +1,11 @@
 "use client";
 
-import { useHlsPlayer } from "@/hooks/useHlsPlayer";
-import { useLiveStream } from "@/hooks/useLiveStream";
-import { useVideoControls } from "@/hooks/useVideoControls";
-import { useVideoDebugLogger } from "@/hooks/useVideoDebugLogger";
+import { useLivePlayer } from "@/hooks/live";
+import {
+  useHlsPlayer,
+  useVideoControls,
+  useVideoDebugLogger,
+} from "@/hooks/video";
 import { useEffect, useRef, useState } from "react";
 import { VideoControls } from "./VideoControls";
 import { VideoOverlay } from "./VideoOverlay";
@@ -47,7 +49,7 @@ export function LiveStreamPlayer({
     streamUrl,
   });
 
-  const liveStream = useLiveStream(videoRef, {
+  const liveStream = useLivePlayer(videoRef, {
     streamId: streamId || `stream-${Date.now()}`,
     autoConnect: useWebSocket,
     token,
@@ -78,13 +80,22 @@ export function LiveStreamPlayer({
     setStreamMethod("websocket");
     setError(liveStream.error?.message || null);
 
-    // ⚠️ NE PAS appeler play() manuellement !
-    // L'attribut autoPlay sur <video> gère déjà le démarrage automatique
-    // Appeler play() pendant que le SourceBuffer traite des chunks peut le corrompre
-    if (liveStream.isStreaming) {
-      controls.setIsPlaying(true);
+    // Log quand le stream devient actif, mais ne pas forcer play() ici
+    // Le play() sera déclenché par l'événement canplay quand des données seront disponibles
+    if (liveStream.isStreaming && videoRef.current) {
+      const video = videoRef.current;
+
+      console.log(
+        "🎬 Stream actif (readyState:",
+        video.readyState,
+        "paused:",
+        video.paused,
+        "buffered:",
+        video.buffered.length,
+        ") - En attente de données pour démarrer..."
+      );
     }
-  }, [useWebSocket, liveStream.error, liveStream.isStreaming, controls]);
+  }, [useWebSocket, liveStream.error, liveStream.isStreaming, videoRef]);
 
   const handleQualityChange = (quality: typeof selectedQuality) => {
     setSelectedQuality(quality);
@@ -117,8 +128,44 @@ export function LiveStreamPlayer({
         onLoadedMetadata={(e) => {
           const video = e.currentTarget;
           debugLogger.onLoadedMetadata(video);
-          // ⚠️ NE PAS appeler play() ici ! autoPlay le gère déjà
         }}
+        onLoadedData={(e) => {
+          const video = e.currentTarget;
+          console.log("📦 loadeddata: Premières données chargées", {
+            readyState: video.readyState,
+            paused: video.paused,
+            currentTime: video.currentTime,
+          });
+        }}
+        onCanPlay={(e) => {
+          const video = e.currentTarget;
+          console.log("✅ canplay: Vidéo prête à jouer", {
+            readyState: video.readyState,
+            paused: video.paused,
+            currentTime: video.currentTime,
+          });
+          // Si la vidéo est en pause, forcer play()
+          if (useWebSocket && video.paused) {
+            console.log("🔄 canplay: Forçage play() car vidéo en pause");
+            video
+              .play()
+              .catch((err) => console.error("❌ play() failed:", err));
+          }
+        }}
+        onCanPlayThrough={(e) => {
+          console.log(
+            "✅✅ canplaythrough: Lecture sans interruption possible",
+            {
+              readyState: e.currentTarget.readyState,
+              paused: e.currentTarget.paused,
+            }
+          );
+        }}
+        onPlaying={() =>
+          console.log("▶️ playing: La vidéo est en cours de lecture")
+        }
+        onWaiting={() => console.log("⏳ waiting: En attente de données...")}
+        onStalled={() => console.log("🚫 stalled: Chargement bloqué")}
         onTimeUpdate={(e) => debugLogger.onTimeUpdate(e.currentTarget)}
       >
         Votre navigateur ne supporte pas la lecture vidéo.
