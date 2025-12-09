@@ -87,7 +87,6 @@ export function ChatRoom({ roomId, roomName, className = "" }: ChatRoomProps) {
         typingUsers={typingUsers}
         messagesEndRef={messagesEndRef}
       />
-      <p> COUCOU </p>
       <ChatInput
         inputMessage={inputMessage}
         isConnected={isConnected}
