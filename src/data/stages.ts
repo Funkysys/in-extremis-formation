@@ -191,9 +191,9 @@ export const stagesDetailsData = {
     ],
     prices: {
       full: "300€",
-      reduced: "150€",
+      minor: "150€",
     },
-    reducedInfo: "Jeunes moins de 16 ans",
+    minorInfo: "Jeunes moins de 16 ans",
     accommodation:
       "Des options d'hébergement en gîte ou en auberge sont disponibles à proximité. Merci de nous contacter pour plus d'informations.",
     meals: "Hébergement et repas non inclus",

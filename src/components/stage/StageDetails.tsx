@@ -78,8 +78,24 @@ export function StageDetails({ stage }: StageDetailsProps) {
           <p>
             <strong>Tarif plein :</strong> {data.prices.full}
             <br />
-            <strong>Tarif réduit ({data.reducedInfo}) :</strong>{" "}
-            {data.prices.reduced}
+            {"reduced" in data.prices &&
+              data.prices.reduced &&
+              "reducedInfo" in data && (
+                <>
+                  <strong>Tarif réduit ({data.reducedInfo}) :</strong>{" "}
+                  {data.prices.reduced}
+                  <br />
+                </>
+              )}
+            {"minor" in data.prices &&
+              data.prices.minor &&
+              "minorInfo" in data &&
+              data.minorInfo && (
+                <>
+                  <strong>Tarif minoré ({data.minorInfo}) :</strong>{" "}
+                  {data.prices.minor}
+                </>
+              )}
           </p>
         </StageInfoCard>
       </div>
