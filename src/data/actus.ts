@@ -23,13 +23,13 @@ export const actus: Actu[] = [
   },
   {
     id: 2,
-    title: "Stage Cévenol - Mars 2025",
+    title: "Nos Conférences/débats en ligne",
     description:
-      "Du 3 au 7 mars 2025 à Lasalle (Gard). Stage intensif d'improvisation musicale de 5 jours dans le magnifique cadre des Cévennes. Création collective, techniques d'improvisation et performance finale.",
+      "Rejoignez-nous pour nos conférences/débats en ligne sur des sujets de musique et société. Nos intervenants partagent leurs expériences et réflexions sur des thèmes variés, offrant un espace d'échange et de discussion pour tous les passionnés de musique. également à retrouver sur nos chaines YouTube et Podcloud.",
     date: "2025-03-03",
-    link: "/stage",
-    image: "/images/actus/stage_cevenol.png",
-    type: "stage",
+    link: "https://podcloud.fr/podcast/in-extremis-society",
+    image: "/images/actus/conferences.png",
+    type: "event",
   },
   {
     id: 3,
