@@ -83,7 +83,11 @@ export function StageRegistration({ registration }: StageRegistrationProps) {
     );
   }
 
-  // Cas standard avec les documents
+  // Cas standard avec les documents (si on arrive ici, on a forcément description, form, image)
+  if (!("description" in registration)) {
+    return null;
+  }
+
   return (
     <div
       className="p-8 text-center rounded-lg"

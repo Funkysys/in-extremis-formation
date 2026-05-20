@@ -58,7 +58,7 @@ export const stagesDetailsData = {
       meals:
         "Hébergement et repas non inclus. Possibilité de restauration sur place ou à proximité.",
       registration: {
-        unavailable: true,
+        unavailable: true as const,
         message: "Documents d'inscription indisponibles pour le moment",
       },
       image: "/images/ecole_de_musique.jpg",
@@ -198,7 +198,7 @@ export const stagesDetailsData = {
       "Des options d'hébergement en gîte ou en auberge sont disponibles à proximité. Merci de nous contacter pour plus d'informations.",
     meals: "Hébergement et repas non inclus",
     registration: {
-      contact: true,
+      contact: true as const,
       message: "Pour vous inscrire veuillez vous rapprocher de la Malterie",
       email: "lamalterie.prog@gmail.com",
     },
