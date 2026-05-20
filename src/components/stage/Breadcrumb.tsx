@@ -20,6 +20,7 @@ export function Breadcrumb() {
     let label = segment.charAt(0).toUpperCase() + segment.slice(1);
     if (segment === "stage") label = "Stages";
     if (segment === "cevennole") label = "Stage Cévenol";
+    if (segment === "bretagne") label = "Stage Breton";
 
     breadcrumbItems.push({
       label,

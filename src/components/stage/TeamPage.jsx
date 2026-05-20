@@ -34,12 +34,12 @@ const TeamPage = ({ title }) => {
         teamSize: team.length,
         firstTeamSize: firstTeam.length,
         secondTeamSize: secondTeam.length,
-      }
+      },
     );
 
     const stopMeasure = performanceMonitor.startMeasure(
       "TeamPage - GSAP Init",
-      "component"
+      "component",
     );
 
     const animations = [
@@ -104,7 +104,7 @@ const TeamPage = ({ title }) => {
       >{`(équipe variable selon les stages et l'effectif)`}</h3>
       <div
         ref={cardContainerRef}
-        className={`${styles.cardContainer} grid gap-2 grid-cols-4 md:grid-cols-2 lg:grid-cols-3`}
+        className={`${styles.cardContainer} grid gap-2 grid-cols-4 md:grid-cols-2 lg:grid-cols-3 mt-12`}
       >
         {firstTeam.map((elt) => (
           <TeacherDescr key={elt.id} elt={elt} />
@@ -112,7 +112,7 @@ const TeamPage = ({ title }) => {
       </div>
       <div
         ref={cardContainerRef2}
-        className={`${styles.cardContainer} grid gap-2 grid-cols-4 md:grid-cols-2 lg:grid-cols-3`}
+        className={`${styles.cardContainer} grid gap-2 grid-cols-4 md:grid-cols-2 lg:grid-cols-3 mt-12`}
       >
         {secondTeam.map((elt) => (
           <TeacherDescr key={elt.id} elt={elt} />

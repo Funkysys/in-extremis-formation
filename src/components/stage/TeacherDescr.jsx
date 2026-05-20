@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -9,6 +11,7 @@ const TeacherDescr = ({ elt }) => {
   const handleOnClick = () => {
     setToggle(!toggle);
   };
+
   return (
     <div key={elt.id} className={`${styles.teacherCard} `}>
       <h3 className={styles.name}>{elt.name}</h3>
@@ -19,9 +22,7 @@ const TeacherDescr = ({ elt }) => {
             alt={elt.alt}
             fill
             className={styles.customImg}
-            sizes="(max-width: 768px) 100vw,
-                                    (max-width: 1200px) 50vw,
-                                    33vw"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         </div>
         <div className={toggle ? styles.activeBtn : styles.addDescr}>
@@ -35,11 +36,11 @@ const TeacherDescr = ({ elt }) => {
       </div>
       <div className={toggle ? styles.activeDescr : styles.links}>
         {elt.descrLinks.length > 1 ? (
-          elt.descrLinks.map((el) => {
+          elt.descrLinks.map((el, index) => {
             return (
               <Link
                 className={styles.linkContent}
-                key={elt.id * Math.random()}
+                key={`${elt.id}-link-${index}`}
                 href={`https://${el.link}`}
                 target="_blank"
               >
@@ -50,7 +51,7 @@ const TeacherDescr = ({ elt }) => {
         ) : (
           <Link
             className={styles.linkContent}
-            key={elt.id * Math.random()}
+            key={`${elt.id}-link-0`}
             href={`https://${elt.descrLinks[0].link}`}
             target="_blank"
           >

@@ -1,7 +1,9 @@
 import { Breadcrumb } from "@/components/stage/Breadcrumb";
-import StageContent from "@/components/stage/StageContent";
-import StagePresentation from "@/components/stage/StagePresentation";
+import { PresentationSection } from "@/components/stage/PresentationSection";
+import { StageSelector } from "@/components/stage/StageSelector";
 import TeamPage from "@/components/stage/TeamPage";
+import { TestimonialsSection } from "@/components/stage/TestimonialsSection";
+import { VideoSection } from "@/components/stage/VideoSection";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -55,6 +57,7 @@ const StagePage = () => {
         className="overflow-x-hidden overflow-y-scroll"
         style={{ background: "var(--color-background-stage)" }}
       >
+        {/* Hero Header */}
         <header
           className="w-[100vw] h-[100vh] flex flex-col justify-center items-center relative"
           style={{
@@ -88,9 +91,13 @@ const StagePage = () => {
             </div>
           </div>
         </header>
-        <StageContent />
-        <StagePresentation />
-        <TeamPage title={"Notre équipe"} />
+
+        {/* Sections de contenu */}
+        <PresentationSection />
+        <TeamPage title={"Nos intervenants"} />
+        <VideoSection />
+        <TestimonialsSection />
+        <StageSelector />
       </main>
     </>
   );

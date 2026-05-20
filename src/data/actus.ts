@@ -13,22 +13,22 @@ export interface Actu {
 export const actus: Actu[] = [
   {
     id: 1,
-    title: "Stage Cévenol - Improvisation Musicale",
+    title: "Stage Breton - Improvisation Musicale",
     description:
       "Du 3 au 7 mars 2025 à Lasalle (Gard). Stage intensif d'improvisation musicale, création collective et performance finale.",
     date: "2025-03-03",
-    link: "/stage/cevennole",
-    image: "/images/actus/stage_cevenol.png",
+    link: "/stage/breton",
+    image: "/images/actus/stage_breton.png",
     type: "stage",
   },
   {
     id: 2,
-    title: "Stage SPECIAL BLUES Lotois hivernal 2026",
+    title: "Nos Conférences débats sur les thèmes de musique et société",
     description:
-      "Du 27 février au 1er mars 2026 à cajarc dans le Lot, retrouvez notre stage spécial blues hivernal.",
+      "Rejoignez-nous pour nos prochaines conférences débats sur les thèmes de musique et société, avec des intervenants passionnants et des discussions enrichissantes. Sinon, vous pouvez aussi les voirs en replay sur notre chaîne YouTube ou en podcast sur Podcloud !",
     date: "2026-02-27",
-    link: "/stage",
-    image: "/images/actus/stage_hiver_lot.png",
+    link: "/conferences",
+    image: "/images/actus/conferences.png",
     type: "cours",
   },
   {

@@ -51,6 +51,66 @@
   --color-border-stage: #e5b887;
 }
 
+/* Thème Bretagne - Inspiré de l'océan et de la mer */
+.theme-dark-bretagne {
+  --color-background-stage: #0a1628;
+  --color-background-secondary-stage: #0f2744;
+  --color-background-tertiary-stage: #1a3a5c;
+  --color-foreground-stage: #c2e7ff;
+  --color-primary-stage: #5eb3ff;
+  --color-secondary-stage: #0d1f35;
+  --color-button-bg-stage: #1e5a8e;
+  --color-button-hover-bg-stage: #3d8fd1;
+  --color-button-text-stage: #e0f2ff;
+  --color-button-hover-text-stage: #0a1628;
+  --color-border-stage: #2d5a7b;
+}
+
+.theme-light-bretagne {
+  --color-background-stage: #f0f9ff;
+  --color-background-secondary-stage: #e0f2fe;
+  --color-background-tertiary-stage: #bae6fd;
+  --color-foreground-stage: #0c2d48;
+  --color-primary-stage: #0369a1;
+  --color-secondary-stage: #dbeafe;
+  --color-button-bg-stage: #0284c7;
+  --color-button-hover-bg-stage: #075985;
+  --color-button-text-stage: #f0f9ff;
+  --color-button-hover-text-stage: #f0f9ff;
+  --color-border-stage: #7dd3fc;
+}
+
+/* Thème Lot - Inspiré des causses et pierres calcaires */
+.theme-dark-lot {
+  --color-background-stage: #1a1612;
+  --color-background-secondary-stage: #2a2520;
+  --color-background-tertiary-stage: #3d362e;
+  --color-foreground-stage: #e8dfd5;
+  --color-primary-stage: #d4a574;
+  --color-secondary-stage: #1f1b17;
+  --color-button-bg-stage: #8b6f47;
+  --color-button-hover-bg-stage: #b89968;
+  --color-button-text-stage: #faf7f2;
+  --color-button-hover-text-stage: #1a1612;
+  --color-border-stage: #5a4a3a;
+}
+
+.theme-light-lot {
+  --color-background-stage: #faf7f2;
+  --color-background-secondary-stage: #f5ede3;
+  --color-background-tertiary-stage: #e8dbc8;
+  --color-foreground-stage: #2d2318;
+  --color-primary-stage: #8b6f47;
+  --color-secondary-stage: #f0e8db;
+  --color-button-bg-stage: #a88a5e;
+  --color-button-hover-bg-stage: #6b5436;
+  --color-button-text-stage: #faf7f2;
+  --color-button-hover-text-stage: #faf7f2;
+  --color-border-stage: #d4c4b0;
+}
+
 body {
-  transition: background 0.3s, color 0.3s;
+  transition:
+    background 0.3s,
+    color 0.3s;
 }

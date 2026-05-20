@@ -7,7 +7,10 @@
   justify-content: space-around;
   align-items: center;
   text-align: center;
-  transition: background 0.3s ease, color 0.3s ease;
+  padding: 4rem 1rem;
+  transition:
+    background 0.3s ease,
+    color 0.3s ease;
 }
 
 .cardContainer {
@@ -36,7 +39,10 @@
   padding: 20px 30px;
   box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
   border: 1px solid var(--color-border-stage);
-  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .interContainer {
@@ -53,7 +59,11 @@
   opacity: 0;
   border-bottom: 2px solid var(--color-border-stage);
   margin-top: 20px;
-  transition: opacity 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  margin-bottom: 1.5rem;
+  transition:
+    opacity 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease;
 }
 
 .photo {
@@ -81,7 +91,9 @@
   font-size: 2em;
   background: var(--color-button-bg-stage);
   color: var(--color-button-text-stage);
-  transition: background 0.3s ease, color 0.3s ease;
+  transition:
+    background 0.3s ease,
+    color 0.3s ease;
   cursor: pointer;
 }
 
@@ -102,7 +114,9 @@
   font-size: 2em;
   background: var(--color-button-hover-bg-stage);
   color: var(--color-button-hover-text-stage);
-  transition: background 0.3s ease, color 0.3s ease;
+  transition:
+    background 0.3s ease,
+    color 0.3s ease;
   cursor: pointer;
 }
 
