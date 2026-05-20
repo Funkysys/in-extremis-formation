@@ -13,29 +13,29 @@ export interface Actu {
 export const actus: Actu[] = [
   {
     id: 1,
-    title: "Stage Breton - Improvisation Musicale",
+    title: "Stages d'Improvisation Musicale 2026",
     description:
-      "Du 3 au 7 mars 2025 à Lasalle (Gard). Stage intensif d'improvisation musicale, création collective et performance finale.",
-    date: "2025-03-03",
-    link: "/stage/breton",
-    image: "/images/actus/stage_breton.png",
+      "Découvrez nos différents stages d'improvisation musicale : Stage du Lot (février, juillet, août), Stage Cévenol (mars) et Stage Breton (juillet). Des moments uniques pour explorer la création collective et développer votre pratique musicale.",
+    date: "2026-02-01",
+    link: "/stage",
+    image: "/images/actus/stages.png",
     type: "stage",
   },
   {
     id: 2,
-    title: "Nos Conférences débats sur les thèmes de musique et société",
+    title: "Stage Cévenol - Mars 2025",
     description:
-      "Rejoignez-nous pour nos prochaines conférences débats sur les thèmes de musique et société, avec des intervenants passionnants et des discussions enrichissantes. Sinon, vous pouvez aussi les voirs en replay sur notre chaîne YouTube ou en podcast sur Podcloud !",
-    date: "2026-02-27",
-    link: "/conferences",
-    image: "/images/actus/conferences.png",
-    type: "cours",
+      "Du 3 au 7 mars 2025 à Lasalle (Gard). Stage intensif d'improvisation musicale de 5 jours dans le magnifique cadre des Cévennes. Création collective, techniques d'improvisation et performance finale.",
+    date: "2025-03-03",
+    link: "/stage",
+    image: "/images/actus/stage_cevenol.png",
+    type: "stage",
   },
   {
     id: 3,
     title: "Nos dernières vidéos sur YouTube",
     description:
-      "Découvrez nos nouvelles vidéos pédagogiques sur notre chaîne YouTube, couvrant divers aspects de la musique ou annonçant les ateliers à venir sur notre serveur discord.",
+      "Découvrez nos nouvelles vidéos pédagogiques sur notre chaîne YouTube : tutoriels, ateliers en ligne, conférences et annonces des prochains événements sur notre serveur Discord.",
     date: "2025-11-21",
     link: "https://www.youtube.com/@AssociationInExtremis",
     image: "/images/actus/youtube.png",
