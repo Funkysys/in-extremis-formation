@@ -93,11 +93,11 @@ const StagePage = () => {
         </header>
 
         {/* Sections de contenu */}
-        <PresentationSection />
-        <TeamPage title={"Nos intervenants"} />
         <VideoSection />
-        <TestimonialsSection />
+        <PresentationSection />
         <StageSelector />
+        <TeamPage title={"Nos intervenants"} />
+        <TestimonialsSection />
       </main>
     </>
   );
