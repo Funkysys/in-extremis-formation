@@ -1,8 +1,5 @@
-import { cards } from "@/data/tools";
 import Image from "next/image";
 import Link from "next/link";
-import { CardType } from "../../types/cards";
-import LinksCard from "./LinksCard";
 
 const ThirdPart: React.FC = () => {
   return (
@@ -55,28 +52,6 @@ const ThirdPart: React.FC = () => {
       >
         En savoir plus
       </Link>
-
-      <div className="w-full mt-10 mb-20">
-        <h2
-          className="mb-6 text-3xl italic text-center font-Montserrat"
-          style={{ color: "var(--color-foreground)" }}
-        >
-          Ainsi que nos différents outils
-        </h2>
-        <div className="grid grid-cols-1 gap-4 py-10 md:grid-cols-2 lg:grid-cols-4 xl:grid-col-6 lg:p-10">
-          {cards.map((card: CardType) => (
-            <LinksCard
-              id={card.id}
-              key={card.id}
-              title={card.title}
-              description={card.description}
-              imageUrl={card.imageUrl}
-              link={card.link}
-              mail={card.mail}
-            />
-          ))}
-        </div>
-      </div>
     </section>
   );
 };
