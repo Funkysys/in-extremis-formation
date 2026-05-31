@@ -129,7 +129,6 @@ export const stagesDetailsData = {
         "Hébergement et repas non inclus. Possibilité de restauration sur place ou à proximité.",
       registration: {
         description: "/images/lot/aout/description_2026.pdf",
-        form: "/images/lot/aout/formulaire_inscription_2026.pdf",
         parental: "/images/lot/aout/autorisation_parentale_aout2026.pdf",
         image: "/images/lot/aout/autorisation_parentale_aout2026_image.pdf",
       },
@@ -195,12 +194,10 @@ export const stagesDetailsData = {
     },
     minorInfo: "Jeunes moins de 16 ans",
     accommodation:
-      "Des options d'hébergement en gîte ou en auberge sont disponibles à proximité. Merci de nous contacter pour plus d'informations.",
+      "Des options d'hébergement en gîte ou en auberge sont disponibles à proximité. Merci de contacter l'office du tourisme locale pour plus d'informations.",
     meals: "Hébergement et repas non inclus",
     registration: {
-      contact: true as const,
-      message: "Pour vous inscrire veuillez vous rapprocher de la Malterie",
-      email: "lamalterie.prog@gmail.com",
+      form: "/images/lot/aout/formulaire_inscription_bretagne_juillet26.pdf",
     },
     image: "/images/bretagne.png",
     venues:
