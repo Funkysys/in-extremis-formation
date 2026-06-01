@@ -105,7 +105,7 @@ export function StageRegistration({ registration }: StageRegistrationProps) {
         className="mb-6 italic text-md"
         style={{ color: "var(--color-foreground-stage)" }}
       >
-        “selon les effectifs, possibilité de s’inscrire à la journée, nous
+        selon les effectifs, possibilité de s’inscrire à la journée, nous
         contacter directement
       </p>
 

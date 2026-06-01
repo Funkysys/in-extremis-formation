@@ -75,28 +75,28 @@ export function StageDetails({ stage }: StageDetailsProps) {
         </StageInfoCard>
 
         <StageInfoCard icon="💰" title="Tarifs">
-          <p>
-            <strong>Tarif plein :</strong> {data.prices.full}
-            <br />
+          <div className="space-y-1">
+            <p>
+              <strong>Tarif plein :</strong> {data.prices.full}
+            </p>
             {"reduced" in data.prices &&
               data.prices.reduced &&
               "reducedInfo" in data && (
-                <>
+                <p>
                   <strong>Tarif réduit ({data.reducedInfo}) :</strong>{" "}
                   {data.prices.reduced}
-                  <br />
-                </>
+                </p>
               )}
             {"minor" in data.prices &&
               data.prices.minor &&
               "minorInfo" in data &&
               data.minorInfo && (
-                <>
+                <p>
                   <strong>Tarif minoré ({data.minorInfo}) :</strong>{" "}
                   {data.prices.minor}
-                </>
+                </p>
               )}
-          </p>
+          </div>
         </StageInfoCard>
       </div>
 
