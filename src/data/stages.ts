@@ -198,7 +198,7 @@ export const stagesDetailsData = {
       "Des options d'hébergement en gîte ou en auberge sont disponibles à proximité. Merci de contacter l'office du tourisme locale pour plus d'informations.",
     meals: "Hébergement et repas non inclus",
     registration: {
-      form: "/images/lot/aout/formulaire_inscription_bretagne_juillet26.pdf",
+      form: "/images/formulaire_inscription_bretagne_juillet26.pdf",
     },
     image: "/images/bretagne.png",
     venues:
