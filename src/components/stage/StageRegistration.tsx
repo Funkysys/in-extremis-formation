@@ -5,24 +5,19 @@ import { StageButton } from "./StageButton";
 interface StageRegistrationProps {
   registration:
     | {
-        description: string;
+        description?: string;
         form: string;
-        parental: string;
-        image: string;
-      }
-    | {
-        description: string;
-        form: string;
-        image: string;
+        parental?: string;
+        image?: string;
       }
     | {
         unavailable: true;
-        message: string;
+        message?: string;
       }
     | {
         contact: true;
-        message: string;
-        email: string;
+        message?: string;
+        email?: string;
       };
 }
 
@@ -106,26 +101,36 @@ export function StageRegistration({ registration }: StageRegistrationProps) {
         Les inscriptions sont ouvertes ! Ne tardez pas à réserver votre place
         pour ce stage unique.
       </p>
+      <p
+        className="mb-6 italic text-md"
+        style={{ color: "var(--color-foreground-stage)" }}
+      >
+        “selon les effectifs, possibilité de s’inscrire à la journée, nous
+        contacter directement
+      </p>
 
       <div className="flex flex-col gap-4">
-        <StageButton href={registration.description}>
-          📄 Document descriptif du stage (PDF)
-        </StageButton>
+        {registration.description && (
+          <StageButton href={registration.description}>
+            📄 Document descriptif du stage (PDF)
+          </StageButton>
+        )}
         <StageButton href={registration.form}>
           ✍️ S&apos;inscrire au stage
         </StageButton>
-        {"parental" in registration && (
+        {registration.parental && (
           <StageButton href={registration.parental}>
             👨‍👩‍👧 Autorisation parentale
           </StageButton>
         )}
-        <StageButton href={registration.image}>
-          📸 {
-            "parental" in registration 
+        {registration.image && (
+          <StageButton href={registration.image}>
+            📸{" "}
+            {registration.parental
               ? "Autorisation parentale + droit à l'image"
-              : "Document de droit à l'image"
-          }
-        </StageButton>
+              : "Document de droit à l'image"}
+          </StageButton>
+        )}
       </div>
     </div>
   );
