@@ -26,6 +26,7 @@ export function StageButton({
         backgroundColor: "var(--color-button-bg-stage)",
         color: "var(--color-button-text-stage)",
       }}
+      target="_blank"
     >
       {children}
     </Link>
