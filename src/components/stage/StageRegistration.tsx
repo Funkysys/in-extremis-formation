@@ -78,8 +78,9 @@ export function StageRegistration({ registration }: StageRegistrationProps) {
     );
   }
 
-  // Cas standard avec les documents (si on arrive ici, on a forcément description, form, image)
-  if (!("description" in registration)) {
+  // Cas standard avec les documents (form est obligatoire)
+  // À ce stade, on sait que registration a un champ 'form'
+  if (!("form" in registration)) {
     return null;
   }
 
