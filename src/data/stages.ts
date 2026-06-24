@@ -131,7 +131,7 @@ export const stagesDetailsData = {
         description: "/images/lot/aout/description_2026.pdf",
         form: "/images/lot/aout/formulaire_inscription_aout26.pdf",
         parental: "/images/lot/aout/autorisation_parentale_aout2026.pdf",
-        image: "/images/lot/aout/autorisation_parentale_aout2026_image.pdf",
+        image: "/images/lot/aout/formulaire_inscription_aout2026.pdf",
       },
       image: "/images/ecole_de_musique.jpg",
       venues:
